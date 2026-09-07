@@ -1,0 +1,433 @@
+$ react-router dev
+[restart] Relaunching with NODE_OPTIONS: --conditions=development
+Port 5173 is in use, trying another one...
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5174[22m/[39m
+[2m  [32m➜[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
+[2m9:25:51 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m connected.
+[2m9:25:52 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: Cannot apply unknown utility class `tnum`[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/niteinheaven/Desktop/Data/Code/ace-stores/app/app.css[39m
+      at onInvalidCandidate (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:1879)
+      at $e (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:16:39470)
+      at file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:711
+      at Hr (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1775)
+      at P (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1377)
+      at Ve (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:172)
+      at pn (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:294)
+      at async Ea (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:631)
+      at async zf (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:1406)
+      at async fu (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/node/dist/index.mjs:10:3458)
+[2m9:25:52 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: Cannot apply unknown utility class `tnum`[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/niteinheaven/Desktop/Data/Code/ace-stores/app/app.css[39m
+      at onInvalidCandidate (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:1879)
+      at $e (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:16:39470)
+      at file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:711
+      at Hr (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1775)
+      at P (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1377)
+      at Ve (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:172)
+      at pn (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:294)
+      at async Ea (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:631)
+      at async zf (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:1406)
+      at async fu (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/node/dist/index.mjs:10:3458)
+[2m9:25:52 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: Cannot apply unknown utility class `tnum`[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/niteinheaven/Desktop/Data/Code/ace-stores/app/app.css[39m
+      at onInvalidCandidate (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:1879)
+      at $e (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:16:39470)
+      at file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:711
+      at Hr (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1775)
+      at P (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1377)
+      at Ve (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:172)
+      at pn (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:294)
+      at async Ea (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:631)
+      at async zf (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:1406)
+      at async fu (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/node/dist/index.mjs:10:3458)
+[2m9:25:52 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: Cannot apply unknown utility class `tnum`[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/niteinheaven/Desktop/Data/Code/ace-stores/app/app.css[39m
+      at onInvalidCandidate (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:1879)
+      at $e (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:16:39470)
+      at file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:711
+      at Hr (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1775)
+      at P (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1377)
+      at Ve (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:172)
+      at pn (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:294)
+      at async Ea (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:631)
+      at async zf (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:1406)
+      at async fu (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/node/dist/index.mjs:10:3458)
+[2m9:25:52 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: Cannot apply unknown utility class `tnum`[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/niteinheaven/Desktop/Data/Code/ace-stores/app/app.css[39m
+      at onInvalidCandidate (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:1879)
+      at $e (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:16:39470)
+      at file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:711
+      at Hr (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1775)
+      at P (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1377)
+      at Ve (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:172)
+      at pn (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:294)
+      at async Ea (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:631)
+      at async zf (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:1406)
+      at async fu (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/node/dist/index.mjs:10:3458)
+TypeError: Cannot read properties of undefined (reading 'id')
+    at useSignalPlayer (C:\Users\niteinheaven\Desktop\Data\Code\ace-stores\app\components\SignalStrip.tsx:42:12)
+    at Home (C:\Users\niteinheaven\Desktop\Data\Code\ace-stores\app\routes\home.tsx:40:18)
+    at Object.react_stack_bottom_frame (C:\Users\niteinheaven\Desktop\Data\Code\ace-stores\node_modules\react-dom\cjs\react-dom-server.node.development.js:10288:18)
+    at renderWithHooks (C:\Users\niteinheaven\Desktop\Data\Code\ace-stores\node_modules\react-dom\cjs\react-dom-server.node.development.js:5298:19)
+    at renderElement (C:\Users\niteinheaven\Desktop\Data\Code\ace-stores\node_modules\react-dom\cjs\react-dom-server.node.development.js:5733:23)
+    at retryNode (C:\Users\niteinheaven\Desktop\Data\Code\ace-stores\node_modules\react-dom\cjs\react-dom-server.node.development.js:6664:31)
+    at renderNodeDestructive (C:\Users\niteinheaven\Desktop\Data\Code\ace-stores\node_modules\react-dom\cjs\react-dom-server.node.development.js:6614:11)
+    at finishFunctionComponent (C:\Users\niteinheaven\Desktop\Data\Code\ace-stores\node_modules\react-dom\cjs\react-dom-server.node.development.js:5342:13)
+    at renderElement (C:\Users\niteinheaven\Desktop\Data\Code\ace-stores\node_modules\react-dom\cjs\react-dom-server.node.development.js:5788:11)
+    at retryNode (C:\Users\niteinheaven\Desktop\Data\Code\ace-stores\node_modules\react-dom\cjs\react-dom-server.node.development.js:6664:31)
+[2m9:31:19 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/routes/home.tsx[22m
+[2m9:31:19 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+TypeError: Cannot read properties of undefined (reading 'id')
+    at useSignalPlayer (C:\Users\niteinheaven\Desktop\Data\Code\ace-stores\app\components\SignalStrip.tsx:42:12)
+    at Home (C:\Users\niteinheaven\Desktop\Data\Code\ace-stores\app\routes\home.tsx:40:18)
+    at Object.react_stack_bottom_frame (C:\Users\niteinheaven\Desktop\Data\Code\ace-stores\node_modules\react-dom\cjs\react-dom-server.node.development.js:10288:18)
+    at renderWithHooks (C:\Users\niteinheaven\Desktop\Data\Code\ace-stores\node_modules\react-dom\cjs\react-dom-server.node.development.js:5298:19)
+    at renderElement (C:\Users\niteinheaven\Desktop\Data\Code\ace-stores\node_modules\react-dom\cjs\react-dom-server.node.development.js:5733:23)
+    at retryNode (C:\Users\niteinheaven\Desktop\Data\Code\ace-stores\node_modules\react-dom\cjs\react-dom-server.node.development.js:6664:31)
+    at renderNodeDestructive (C:\Users\niteinheaven\Desktop\Data\Code\ace-stores\node_modules\react-dom\cjs\react-dom-server.node.development.js:6614:11)
+    at finishFunctionComponent (C:\Users\niteinheaven\Desktop\Data\Code\ace-stores\node_modules\react-dom\cjs\react-dom-server.node.development.js:5342:13)
+    at renderElement (C:\Users\niteinheaven\Desktop\Data\Code\ace-stores\node_modules\react-dom\cjs\react-dom-server.node.development.js:5788:11)
+    at retryNode (C:\Users\niteinheaven\Desktop\Data\Code\ace-stores\node_modules\react-dom\cjs\react-dom-server.node.development.js:6664:31)
+[2m9:33:14 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/routes/home.tsx[22m
+[2m9:33:14 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m9:39:01 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/Nav.tsx[22m
+[2m9:39:01 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/Nav.tsx[22m
+[2m9:39:01 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/Nav.tsx[22m
+[2m9:39:01 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2massets/Logo/ACE Stores Logo/Ace Stores White .png[22m
+[2m9:39:01 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m9:39:05 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/Nav.tsx[22m
+[2m9:39:05 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/Nav.tsx[22m
+[2m9:39:05 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/Nav.tsx[22m
+[2m9:39:05 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2massets/Logo/ACE Stores Logo/Ace Stores White .png[22m
+[2m9:39:05 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m9:42:48 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css[22m
+[2m9:42:48 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css[22m
+[2m9:42:48 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css[22m
+[2m9:42:48 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mhmr update [39m[2m/app/app.css[22m
+[2m9:42:48 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/SignalStrip.tsx[22m
+[2m9:42:48 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/SignalStrip.tsx[22m
+[2m9:42:48 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/SignalStrip.tsx, /app/app.css[22m
+[2m9:42:48 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/components/SignalStrip.tsx[22m
+[2m9:42:48 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m9:42:49 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/checkout.tsx[22m
+[2m9:42:49 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/checkout.tsx[22m
+[2m9:42:49 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css, /app/routes/checkout.tsx[22m
+[2m9:42:49 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/routes/checkout.tsx[22m
+[2m9:42:49 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m9:57:18 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m9:57:18 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m9:57:32 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m9:58:20 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css[22m
+[2m9:58:20 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css[22m
+[2m9:58:20 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css[22m
+[2m9:58:20 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mhmr update [39m[2m/app/app.css[22m
+[2m9:58:52 pm[22m [36m[1m[react-router][22m[39m [32mConfig saved[39m
+[2m9:59:47 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/SignalStrip.tsx[22m
+[2m9:59:47 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/SignalStrip.tsx[22m
+[2m9:59:47 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/SignalStrip.tsx, /app/app.css[22m
+[2m9:59:47 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/components/SignalStrip.tsx[22m
+[2m9:59:47 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m9:59:47 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/Callouts.tsx[22m
+[2m9:59:47 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/Callouts.tsx[22m
+[2m9:59:47 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css, /app/components/Callouts.tsx[22m
+[2m9:59:47 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/components/Callouts.tsx[22m
+[2m9:59:47 pm[22m [31m[1m[vite][22m[39m [31m[2m(ssr)[22m[39m An error happened during full reload
+Cannot apply unknown utility class `tnum`
+Error: Cannot apply unknown utility class `tnum`
+    at onInvalidCandidate (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:1879)
+    at $e (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:16:39470)
+    at file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:711
+    at Hr (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1775)
+    at P (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1377)
+    at Ve (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:172)
+    at pn (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:294)
+    at async Ea (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:631)
+    at async zf (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:1406)
+    at async fu (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/node/dist/index.mjs:10:3458)
+    at async z.generate (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/vite/dist/index.mjs:1:6013)
+    at async TransformPluginContext.handler (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/vite/dist/index.mjs:1:3133)
+    at async EnvironmentPluginContainer.transform (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:30932:14)
+    at async loadAndTransform (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:20671:26)
+    at async fetchModule (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:34343:15)
+    at async handleInvoke (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:26886:21)
+    at async EventEmitter.listenerForInvokeHandler (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:26941:13)
+[2m10:02:47 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/Nav.tsx[22m
+[2m10:02:47 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/Nav.tsx[22m
+[2m10:02:47 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/Nav.tsx, /app/app.css[22m
+[2m10:02:47 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/components/Nav.tsx[22m
+[2m10:02:47 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:02:47 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/Footer.tsx[22m
+[2m10:02:47 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/Footer.tsx[22m
+[2m10:02:47 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/Footer.tsx, /app/app.css[22m
+[2m10:02:47 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/components/Footer.tsx[22m
+[2m10:02:47 pm[22m [36m[1m[react-router][22m[39m [32mConfig saved[39m
+[2m10:02:48 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:04:10 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/home.tsx[22m
+[2m10:04:10 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/home.tsx[22m
+[2m10:04:10 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/home.tsx, /app/app.css[22m
+[2m10:04:10 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/routes/home.tsx[22m
+[2m10:04:10 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:04:10 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/catalog.tsx[22m
+[2m10:04:10 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/catalog.tsx[22m
+[2m10:04:10 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css, /app/routes/catalog.tsx[22m
+[2m10:04:10 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/routes/catalog.tsx[22m
+[2m10:04:10 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:05:30 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/pack.$slug.tsx[22m
+[2m10:05:30 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/pack.$slug.tsx[22m
+[2m10:05:30 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css, /app/routes/pack.$slug.tsx[22m
+[2m10:05:30 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/routes/pack.$slug.tsx[22m
+[2m10:05:30 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:05:30 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/checkout.tsx[22m
+[2m10:05:30 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/checkout.tsx[22m
+[2m10:05:30 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css, /app/routes/checkout.tsx[22m
+[2m10:05:30 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/routes/checkout.tsx[22m
+[2m10:05:31 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:06:08 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/checkout.tsx[22m
+[2m10:06:08 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/checkout.tsx[22m
+[2m10:06:08 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css, /app/routes/checkout.tsx[22m
+[2m10:06:08 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/routes/checkout.tsx[22m
+[2m10:06:08 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:06:08 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/library.tsx[22m
+[2m10:06:08 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/library.tsx[22m
+[2m10:06:08 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css, /app/routes/library.tsx[22m
+[2m10:06:08 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/routes/library.tsx[22m
+[2m10:06:08 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/root.tsx[22m
+[2m10:06:08 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/root.tsx[22m
+[2m10:06:08 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/root.tsx, /app/app.css[22m
+[2m10:06:08 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/root.tsx[22m
+[2m10:06:08 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:06:09 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:06:29 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/SignalStrip.tsx[22m
+[2m10:06:29 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/SignalStrip.tsx[22m
+[2m10:06:29 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/SignalStrip.tsx, /app/app.css[22m
+[2m10:06:29 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/components/SignalStrip.tsx[22m
+[2m10:06:29 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:06:29 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/TransitionMonitor.tsx[22m
+[2m10:06:29 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/TransitionMonitor.tsx[22m
+[2m10:06:29 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css, /app/components/TransitionMonitor.tsx[22m
+[2m10:06:29 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/components/TransitionMonitor.tsx[22m
+[2m10:06:29 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:06:53 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/PackRow.tsx[22m
+[2m10:06:53 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/PackRow.tsx[22m
+[2m10:06:53 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/PackRow.tsx, /app/app.css[22m
+[2m10:06:53 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/components/PackRow.tsx[22m
+[2m10:06:53 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/SpectroHero.tsx[22m
+[2m10:06:53 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/SpectroHero.tsx[22m
+[2m10:06:53 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/SpectroHero.tsx, /app/app.css[22m
+[2m10:06:53 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/components/SpectroHero.tsx[22m
+[2m10:06:53 pm[22m [36m[1m[react-router][22m[39m [32mConfig saved[39m
+[2m10:06:53 pm[22m [36m[1m[react-router][22m[39m [32mConfig saved[39m
+Failed to load CSS for C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/app/app.css
+[2m10:07:38 pm[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m Pre-transform error: Cannot apply unknown utility class `tnum`
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/niteinheaven/Desktop/Data/Code/ace-stores/app/app.css[39m
+[2m10:15:04 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:15:04 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:17:16 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/root.tsx[22m
+[2m10:17:16 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/root.tsx[22m
+[2m10:17:16 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/root.tsx, /app/app.css[22m
+[2m10:17:16 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/root.tsx[22m
+[2m10:17:16 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:17:17 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/home.tsx, /app/components/Footer.tsx, /app/components/SignalStrip.tsx, /app/routes/catalog.tsx, /app/routes/pack.$slug.tsx, /app/routes/checkout.tsx, /app/routes/library.tsx, /app/components/PackCard.tsx[22m
+[2m10:17:17 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/home.tsx, /app/components/Footer.tsx, /app/components/SignalStrip.tsx, /app/routes/catalog.tsx, /app/routes/pack.$slug.tsx, /app/routes/checkout.tsx, /app/routes/library.tsx, /app/components/PackCard.tsx[22m
+[2m10:17:17 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/home.tsx, /app/components/Footer.tsx, /app/components/SignalStrip.tsx, /app/routes/catalog.tsx, /app/routes/pack.$slug.tsx, /app/routes/checkout.tsx, /app/routes/library.tsx, /app/components/PackCard.tsx, /app/app.css[22m
+[2m10:17:17 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/data/products.ts[22m
+[2m10:17:17 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/Callouts.tsx[22m
+[2m10:17:17 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/Callouts.tsx[22m
+[2m10:17:17 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css, /app/components/Callouts.tsx[22m
+[2m10:17:17 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/components/Callouts.tsx[22m
+[2m10:17:17 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/home.tsx[22m
+[2m10:17:17 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/home.tsx[22m
+[2m10:17:17 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/home.tsx, /app/app.css[22m
+[2m10:17:17 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/routes/home.tsx[22m
+[2m10:17:17 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:17:17 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:17:17 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:24:19 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/SignalStrip.tsx[22m
+[2m10:24:19 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/SignalStrip.tsx[22m
+[2m10:24:19 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/SignalStrip.tsx, /app/app.css[22m
+[2m10:24:19 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/components/SignalStrip.tsx[22m
+[2m10:24:19 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:24:19 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/TransitionMonitor.tsx[22m
+[2m10:24:19 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/TransitionMonitor.tsx[22m
+[2m10:24:19 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css, /app/components/TransitionMonitor.tsx[22m
+[2m10:24:19 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/components/TransitionMonitor.tsx[22m
+[2m10:24:20 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:27:20 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/pack.$slug.tsx[22m
+[2m10:27:20 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/pack.$slug.tsx[22m
+[2m10:27:20 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css, /app/routes/pack.$slug.tsx[22m
+[2m10:27:20 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/routes/pack.$slug.tsx[22m
+[2m10:27:20 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:27:51 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/catalog.tsx[22m
+[2m10:27:51 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/catalog.tsx[22m
+[2m10:27:51 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css, /app/routes/catalog.tsx[22m
+[2m10:27:51 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/routes/catalog.tsx[22m
+[2m10:27:51 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:27:51 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/library.tsx[22m
+[2m10:27:51 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/routes/library.tsx[22m
+[2m10:27:51 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css, /app/routes/library.tsx[22m
+[2m10:27:51 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/routes/library.tsx[22m
+[2m10:27:51 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:28:16 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/Nav.tsx[22m
+[2m10:28:16 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/Nav.tsx[22m
+[2m10:28:16 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/components/Nav.tsx, /app/app.css[22m
+[2m10:28:16 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mpage reload [39m[2mapp/components/Nav.tsx[22m
+[2m10:28:16 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m program reload
+[2m10:28:17 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css[22m
+[2m10:28:17 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css[22m
+[2m10:28:17 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css[22m
+[2m10:28:17 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mhmr update [39m[2m/app/app.css[22m
+[2m10:28:49 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: Cannot apply unknown utility class `tnum`[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/niteinheaven/Desktop/Data/Code/ace-stores/app/app.css[39m
+      at onInvalidCandidate (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:1879)
+      at $e (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:16:39470)
+      at file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:711
+      at Hr (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1775)
+      at P (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1377)
+      at Ve (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:172)
+      at pn (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:294)
+      at async Ea (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:631)
+      at async zf (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:1406)
+      at async fu (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/node/dist/index.mjs:10:3458)
+      at async z.generate (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/vite/dist/index.mjs:1:6013)
+      at async TransformPluginContext.handler (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/vite/dist/index.mjs:1:3133)
+      at async EnvironmentPluginContainer.transform (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:30932:14)
+      at async loadAndTransform (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:20671:26)
+      at async fetchModule (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:34343:15)
+      at async handleInvoke (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:26886:21)
+      at async EventEmitter.listenerForInvokeHandler (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:26941:13)
+[2m10:28:49 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: Cannot apply unknown utility class `tnum`[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/niteinheaven/Desktop/Data/Code/ace-stores/app/app.css[39m
+      at onInvalidCandidate (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:1879)
+      at $e (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:16:39470)
+      at file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:711
+      at Hr (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1775)
+      at P (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1377)
+      at Ve (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:172)
+      at pn (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:294)
+      at async Ea (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:631)
+      at async zf (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:1406)
+      at async fu (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/node/dist/index.mjs:10:3458)
+      at async z.generate (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/vite/dist/index.mjs:1:6013)
+      at async TransformPluginContext.handler (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/vite/dist/index.mjs:1:3133)
+      at async EnvironmentPluginContainer.transform (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:30932:14)
+      at async loadAndTransform (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:20671:26)
+      at async fetchModule (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:34343:15)
+      at async handleInvoke (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:26886:21)
+      at async EventEmitter.listenerForInvokeHandler (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:26941:13)
+[2m10:28:49 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: Cannot apply unknown utility class `tnum`[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/niteinheaven/Desktop/Data/Code/ace-stores/app/app.css[39m
+      at onInvalidCandidate (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:1879)
+      at $e (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:16:39470)
+      at file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:711
+      at Hr (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1775)
+      at P (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1377)
+      at Ve (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:172)
+      at pn (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:294)
+      at async Ea (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:631)
+      at async zf (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:1406)
+      at async fu (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/node/dist/index.mjs:10:3458)
+      at async z.generate (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/vite/dist/index.mjs:1:6013)
+      at async TransformPluginContext.handler (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/vite/dist/index.mjs:1:3133)
+      at async EnvironmentPluginContainer.transform (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:30932:14)
+      at async loadAndTransform (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:20671:26)
+      at async fetchModule (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:34343:15)
+      at async handleInvoke (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:26886:21)
+      at async EventEmitter.listenerForInvokeHandler (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:26941:13)
+[2m10:28:49 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: Cannot apply unknown utility class `tnum`[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/niteinheaven/Desktop/Data/Code/ace-stores/app/app.css[39m
+      at onInvalidCandidate (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:1879)
+      at $e (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:16:39470)
+      at file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:711
+      at Hr (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1775)
+      at P (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1377)
+      at Ve (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:172)
+      at pn (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:294)
+      at async Ea (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:631)
+      at async zf (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:1406)
+      at async fu (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/node/dist/index.mjs:10:3458)
+      at async z.generate (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/vite/dist/index.mjs:1:6013)
+      at async TransformPluginContext.handler (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/vite/dist/index.mjs:1:3133)
+      at async EnvironmentPluginContainer.transform (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:30932:14)
+      at async loadAndTransform (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:20671:26)
+      at async fetchModule (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:34343:15)
+      at async handleInvoke (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:26886:21)
+      at async EventEmitter.listenerForInvokeHandler (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:26941:13)
+[2m10:28:49 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: Cannot apply unknown utility class `tnum`[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/niteinheaven/Desktop/Data/Code/ace-stores/app/app.css[39m
+      at onInvalidCandidate (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:1879)
+      at $e (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:16:39470)
+      at file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:711
+      at Hr (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1775)
+      at P (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1377)
+      at Ve (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:172)
+      at pn (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:294)
+      at async Ea (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:631)
+      at async zf (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:1406)
+      at async fu (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/node/dist/index.mjs:10:3458)
+      at async z.generate (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/vite/dist/index.mjs:1:6013)
+      at async TransformPluginContext.handler (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/vite/dist/index.mjs:1:3133)
+      at async EnvironmentPluginContainer.transform (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:30932:14)
+      at async loadAndTransform (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:20671:26)
+      at async fetchModule (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:34343:15)
+      at async handleInvoke (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:26886:21)
+      at async EventEmitter.listenerForInvokeHandler (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:26941:13)
+[2m10:28:50 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: Cannot apply unknown utility class `tnum`[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/niteinheaven/Desktop/Data/Code/ace-stores/app/app.css[39m
+      at onInvalidCandidate (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:1879)
+      at $e (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:16:39470)
+      at file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:711
+      at Hr (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1775)
+      at P (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1377)
+      at Ve (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:172)
+      at pn (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:294)
+      at async Ea (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:631)
+      at async zf (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:1406)
+      at async fu (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/node/dist/index.mjs:10:3458)
+      at async z.generate (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/vite/dist/index.mjs:1:6013)
+      at async TransformPluginContext.handler (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/vite/dist/index.mjs:1:3133)
+      at async EnvironmentPluginContainer.transform (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:30932:14)
+      at async loadAndTransform (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:20671:26)
+      at async fetchModule (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:34343:15)
+      at async handleInvoke (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:26886:21)
+      at async EventEmitter.listenerForInvokeHandler (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:26941:13)
+[2m10:29:22 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: Cannot apply unknown utility class `tnum`[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/niteinheaven/Desktop/Data/Code/ace-stores/app/app.css[39m
+      at onInvalidCandidate (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:1879)
+      at $e (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:16:39470)
+      at file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:711
+      at Hr (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1775)
+      at P (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:5:1377)
+      at Ve (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:21:172)
+      at pn (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:294)
+      at async Ea (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:631)
+      at async zf (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/tailwindcss/dist/lib.mjs:38:1406)
+      at async fu (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/node/dist/index.mjs:10:3458)
+      at async z.generate (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/vite/dist/index.mjs:1:6013)
+      at async TransformPluginContext.handler (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/@tailwindcss/vite/dist/index.mjs:1:3133)
+      at async EnvironmentPluginContainer.transform (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:30932:14)
+      at async loadAndTransform (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:20671:26)
+      at async fetchModule (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:34343:15)
+      at async handleInvoke (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:26886:21)
+      at async EventEmitter.listenerForInvokeHandler (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/vite/dist/node/chunks/node.js:26941:13)
+[2m10:29:37 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css[22m
+[2m10:29:37 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css[22m
+[2m10:29:37 pm[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/app/app.css[22m
+[2m10:29:37 pm[22m [36m[1m[vite][22m[39m [34m[2m(ssr)[22m[39m [32mhmr update [39m[2m/app/app.css[22m
+Error: No route matches URL "/together"
+    at getInternalRouterError (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/react-router/dist/development/lib/router/router.js:2764:58)
+    at Object.query (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/react-router/dist/development/lib/router/router.js:1487:16)
+    at handleDocumentRequest (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/react-router/dist/development/lib/server-runtime/server.js:213:36)
+    at requestHandler (file:///C:/Users/niteinheaven/Desktop/Data/Code/ace-stores/node_modules/react-router/dist/development/lib/server-runtime/server.js:123:21)

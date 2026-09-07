@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-07T22:12:00Z",
+  "title": "Design System: ACE Stores",
+  "extensions": {
+    "colorMeta": {
+      "ground": { "role": "neutral", "displayName": "Ground", "canonical": "#0b0c10", "tonalRamp": ["#07080a", "#0b0c10", "#131519", "#1a1d23", "#262a32", "#343945", "#4a515b", "#6a7280"] },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#f5f5f7", "tonalRamp": ["#808089", "#9b9ba3", "#b8b8c0", "#d4d4da", "#f5f5f7", "#ffffff", "#ffffff", "#ffffff"] },
+      "accent": { "role": "primary", "displayName": "Violet Accent", "canonical": "#8b5cf6", "tonalRamp": ["#2e1065", "#4c1d95", "#5b21b6", "#6d28d9", "#7c3aed", "#8b5cf6", "#a78bfa", "#ddd6fe"] },
+      "danger": { "role": "tertiary", "displayName": "Danger", "canonical": "#ff5470", "tonalRamp": ["#4c0519", "#831843", "#9f1239", "#be123c", "#e11d48", "#ff5470", "#fb7185", "#fecdd3"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero claims and section titles — massive, tight, uppercase." },
+      "body": { "displayName": "Body", "purpose": "Blurbs, tenets, checkout copy at 65-75ch." },
+      "label": { "displayName": "Caps Label", "purpose": "Category lines, spec keys, readouts." }
+    },
+    "shadows": [
+      { "name": "card-lift", "value": "0 16px 40px rgba(0,0,0,0.5)", "purpose": "Hover elevation on product cards." },
+      { "name": "panel-raised", "value": "0 8px 24px rgba(0,0,0,0.45)", "purpose": "Sticky or focused surfaces only." }
+    ],
+    "motion": [
+      { "name": "rise-in", "value": "opacity 0→1, translateY 14px→0, 600ms cubic-bezier(0.16,1,0.3,1)", "purpose": "Entrance motion for hero and cards; disabled under prefers-reduced-motion." },
+      { "name": "card-lift", "value": "translateY -4px + shadow, 220ms cubic-bezier(0.16,1,0.3,1)", "purpose": "Hover elevation on cards and tiles." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one solid commerce action per view — ink fill.",
+      "html": "<button class=\"ds-btn-primary\">shop the catalog</button>",
+      "css": ".ds-btn-primary { display:inline-flex; align-items:center; justify-content:center; gap:8px; background:#f5f5f7; color:#0b0c10; border:1px solid transparent; border-radius:8px; font-family:'Inter Tight',sans-serif; font-weight:700; font-size:12.5px; letter-spacing:0.06em; text-transform:uppercase; padding:12px 24px; transition:background-color 140ms ease-out, transform 140ms ease-out; } .ds-btn-primary:hover { background:#ffffff; transform:translateY(-1px); } .ds-btn-primary:focus-visible { outline:2px solid #8b5cf6; outline-offset:2px; }"
+    },
+    {
+      "name": "Accent Button",
+      "kind": "button",
+      "refersTo": "button-accent",
+      "description": "The buy/play action — violet fill.",
+      "html": "<button class=\"ds-btn-accent\">add to cart</button>",
+      "css": ".ds-btn-accent { display:inline-flex; align-items:center; justify-content:center; gap:8px; background:#8b5cf6; color:#0b0c10; border:1px solid transparent; border-radius:8px; font-family:'Inter Tight',sans-serif; font-weight:700; font-size:12.5px; letter-spacing:0.06em; text-transform:uppercase; padding:12px 24px; transition:background-color 140ms ease-out, transform 140ms ease-out; } .ds-btn-accent:hover { background:#a78bfa; transform:translateY(-1px); } .ds-btn-accent:focus-visible { outline:2px solid #8b5cf6; outline-offset:2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary action; hover brightens the border.",
+      "html": "<button class=\"ds-btn-ghost\">view pack</button>",
+      "css": ".ds-btn-ghost { display:inline-flex; align-items:center; justify-content:center; gap:8px; background:transparent; color:#f5f5f7; border:1px solid #262a32; border-radius:8px; font-family:'Inter Tight',sans-serif; font-weight:700; font-size:12.5px; letter-spacing:0.06em; text-transform:uppercase; padding:12px 24px; transition:border-color 140ms ease-out, background-color 140ms ease-out; } .ds-btn-ghost:hover { border-color:#f5f5f7; background:rgba(255,255,255,0.04); } .ds-btn-ghost:focus-visible { outline:2px solid #8b5cf6; outline-offset:2px; }"
+    },
+    {
+      "name": "Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Filter chip; selected fills violet.",
+      "html": "<div style=\"display:flex;gap:6px\"><button class=\"ds-chip\">WAV</button><button class=\"ds-chip ds-chip-on\">MIDI</button></div>",
+      "css": ".ds-chip { background:transparent; color:#9b9ba3; border:1px solid #262a32; border-radius:999px; font-family:'Inter Tight',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:0.05em; text-transform:uppercase; font-variant-numeric:tabular-nums; padding:6px 13px; transition:border-color 140ms ease-out, color 140ms ease-out, background-color 140ms ease-out; } .ds-chip:hover { border-color:#f5f5f7; color:#f5f5f7; } .ds-chip-on, .ds-chip-on:hover { background:#8b5cf6; border-color:#8b5cf6; color:#0b0c10; } .ds-chip:focus-visible { outline:2px solid #8b5cf6; outline-offset:2px; }"
+    },
+    {
+      "name": "Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Text input with violet caret and focus border.",
+      "html": "<input class=\"ds-field\" placeholder=\"you@studio.com\" />",
+      "css": ".ds-field { width:100%; background:#0b0c10; color:#f5f5f7; border:1px solid #262a32; border-radius:8px; font-family:'Inter',sans-serif; font-size:15px; font-variant-numeric:tabular-nums; padding:11px 14px; transition:border-color 140ms ease-out; caret-color:#8b5cf6; } .ds-field:focus { outline:none; border-color:#8b5cf6; } .ds-field::placeholder { color:#808089; }"
+    },
+    {
+      "name": "Product Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "The cover-art-led product unit with lift hover.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-art\"><span class=\"ds-play\">listen</span></div><div class=\"ds-card-body\"><div class=\"ds-caps\">Audio assets · Lo-fi</div><div class=\"ds-card-name\">Night Frequencies</div><div class=\"ds-card-row\"><span class=\"ds-price\">$34.00</span><button class=\"ds-mini\">add</button></div></div></div>",
+      "css": ".ds-card { background:#131519; border:1px solid #262a32; border-radius:16px; overflow:hidden; transition:transform 220ms cubic-bezier(0.16,1,0.3,1), box-shadow 220ms cubic-bezier(0.16,1,0.3,1), border-color 220ms ease-out; } .ds-card:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(0,0,0,0.5); border-color:#343945; } .ds-card-art { position:relative; aspect-ratio:1; background:linear-gradient(135deg,#8b5cf6,#31156b); } .ds-play { position:absolute; right:12px; bottom:12px; background:rgba(11,12,16,0.8); color:#f5f5f7; border-radius:999px; padding:4px 10px; font-family:'Inter Tight',sans-serif; font-weight:700; font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase; } .ds-card-body { padding:16px; } .ds-caps { font-family:'Inter Tight',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase; color:#808089; } .ds-card-name { margin-top:6px; font-family:'Inter Tight',sans-serif; font-weight:700; font-size:18px; letter-spacing:-0.01em; color:#f5f5f7; } .ds-card-row { margin-top:16px; display:flex; align-items:center; justify-content:space-between; } .ds-price { font-family:'Inter Tight',sans-serif; font-weight:700; font-size:20px; font-variant-numeric:tabular-nums; color:#f5f5f7; } .ds-mini { background:transparent; color:#f5f5f7; border:1px solid #262a32; border-radius:8px; font-family:'Inter Tight',sans-serif; font-weight:700; font-size:12.5px; letter-spacing:0.06em; text-transform:uppercase; padding:8px 14px; } .ds-mini:hover { border-color:#f5f5f7; }"
+    },
+    {
+      "name": "Caps Label",
+      "kind": "custom",
+      "refersTo": "label",
+      "description": "The caps label voice for category lines and readouts.",
+      "html": "<span class=\"ds-caps2\">12 packs · one price each</span>",
+      "css": ".ds-caps2 { font-family:'Inter Tight',sans-serif; font-weight:600; font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase; color:#808089; font-variant-numeric:tabular-nums; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Midnight Label",
+    "overview": "The dark creator storefront, chosen by the user and executed against Reason Studios, Signature Sounds, and BOOM Library as the craft bar. Near-black ground, massive uppercase display type, cover-art-led product cards, category tiles, and one confident violet accent. Confident and commercial; the covers carry the color, the chrome stays neutral.",
+    "keyCharacteristics": [
+      "Near-black neutral ground with raised panels and soft 16px card radii",
+      "Inter Tight 800 uppercase display; Inter body; Inter Tight 600 caps labels",
+      "One violet accent for live/active/CTA-support; white-fill primary buttons",
+      "Cover-art-led cards with honest hover-play demos",
+      "Category tiles and featured-pack hero in the reference stores' grammar",
+      "One authored motion: card lift + rise-in entrances"
+    ],
+    "rules": [
+      { "name": "The One-Accent Rule", "body": "Violet is the only accent. It marks what is live, active, or chosen — never decoration, never a second color voice.", "section": "colors" },
+      { "name": "The Cover-Carries-Color Rule", "body": "Product color lives in the cover art. Chrome stays neutral so the catalog reads like a record-shop wall.", "section": "colors" },
+      { "name": "The Honest-Playback Rule", "body": "A card plays only when a real demo exists. Cover-only products show no player and no play badge — the absence is stated, not faked.", "section": "components" },
+      { "name": "The Claim-Is-Content Rule", "body": "Display lines carry product truth, not slogans or eyebrow labels.", "section": "typography" }
+    ],
+    "dos": [
+      "Do lead every product surface with its cover art; the artwork is the merchandise.",
+      "Do reserve violet for live/active/CTA-support and use white-fill buttons for primary commerce actions.",
+      "Do keep hover-play honest: only packs with real demos get the badge and behavior.",
+      "Do use tabular numerals for prices, counts, and readouts."
+    ],
+    "donts": [
+      "Don't add glow, neon, glass, or gradient text — the references are dark but matte.",
+      "Don't introduce a second accent color; violet is the whole voice.",
+      "Don't fake players, reviews, or payment — placeholders stay labeled.",
+      "Don't use Unicode glyphs as icons — draw inline SVG.",
+      "Don't hard-code left/right CSS direction — the Arabic phase requires logical properties."
+    ]
+  }
+}
