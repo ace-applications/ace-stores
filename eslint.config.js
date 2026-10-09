@@ -11,6 +11,16 @@ export default defineConfig([
       ".react-router/",
       "app/routes/+types/",
       "build/",
+      // vendored skill libraries — tracked in git, but deleted in the working
+      // tree (they live at the workspace root now). A clean checkout has them
+      // back, so the ignore must not depend on the directory existing.
+      ".agents/",
+      ".claude/",
+      ".codex/",
+      ".cursor/",
+      ".devin/",
+      ".gemini/",
+      ".grok/",
       // logos and self-hosted fonts are assets, not JS
       "assets/",
       // no JSON plugin configured; package.json/tsconfig are read by tsc
