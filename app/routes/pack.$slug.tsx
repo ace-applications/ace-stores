@@ -1,42 +1,94 @@
 import type { Route } from "./+types/pack.$slug";
 import { Link, useLoaderData } from "react-router";
-import { useMemo } from "react";
-import { FAMILY_LABEL, formatPrice, packBySlug } from "../data/products";
-import { computeWaveform } from "../lib/signal";
-import { packHue } from "../data/products";
-import { Callouts } from "../components/Callouts";
-import { SignalStrip } from "../components/SignalStrip";
-import { TransitionMonitor } from "../components/TransitionMonitor";
+import { FAMILY_LABEL, formatPrice, type Pack } from "../data/products";
+import { fetchCatalog, settings } from "../lib/api";
+import { abs, clamp, pageMeta } from "../lib/seo";
+import logoMain from "../../assets/Logo/ACE Stores Logo/Ace Stores Main.png";
 import { CoverArt } from "../components/CoverArt";
 import { useStore } from "../lib/store";
 
-export function loader({ params }: Route.LoaderArgs) {
-  const pack = packBySlug(params.slug ?? "");
+interface ProductRouteData {
+  pack?: Pack;
+  purchasable?: boolean;
+}
+
+export async function loader({ params }: Route.LoaderArgs) {
+  const packs = await fetchCatalog();
+  const pack = packs.find((p) => p.slug === params.slug);
   if (!pack) throw new Response("Pack not found", { status: 404 });
-  return { pack };
+  // Whether the store can actually take a payment decides if we may claim
+  // InStock — see the JSON-LD below. PRODUCT.md forbids fabricated claims.
+  const { payment_instructions } = await settings().catch(() => ({}) as { payment_instructions?: string });
+  return { pack, purchasable: Boolean(payment_instructions?.trim()) };
 }
 
 export function meta({ matches }: Route.MetaArgs) {
   const match = matches.find((m) => m?.id === "routes/pack.$slug");
-  const pack =
-    match && "loaderData" in match
-      ? (match.loaderData as { pack?: ReturnType<typeof packBySlug> } | undefined)?.pack
-      : undefined;
-  return [
-    { title: pack ? `${pack.name} — ACE Stores` : "ACE Stores" },
-    { name: "description", content: pack?.blurb ?? "Production assets made by ACE." },
-  ];
+  const data = match && "loaderData" in match ? (match.loaderData as ProductRouteData) : undefined;
+  const pack = data?.pack;
+  const title = pack
+    ? `${pack.name} — ${pack.family === "audio" ? "audio pack" : "transition pack"} | ACE Stores`
+    : "ACE Stores";
+  // Lead with what it is and what it costs; the blurb alone is often thin.
+  const description = pack
+    ? clamp(
+        `${pack.name}: ${pack.blurb} ${pack.formats.join(", ")} · ${pack.size}. One price, ${formatPrice(pack.price)}.`,
+        160,
+      )
+    : "Video transition packs and audio assets made by ACE.";
+  const image = abs(pack?.imageUrl ?? logoMain);
+
+  const metas: Route.MetaDescriptors = pageMeta({
+    title,
+    description,
+    image,
+    type: "product",
+  });
+
+  if (pack) {
+    const url = abs(`/pack/${pack.slug}`);
+    metas.push({
+      "script:ld+json": {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Product",
+            name: pack.name,
+            description: pack.blurb,
+            sku: String(pack.productId),
+            category: FAMILY_LABEL[pack.family],
+            brand: { "@type": "Brand", name: "ACE" },
+            image: [abs(pack.imageUrl ?? logoMain)],
+            offers: {
+              "@type": "Offer",
+              price: pack.price,
+              priceCurrency: "EGP",
+              url,
+              // Only claim availability when checkout can actually be completed.
+              ...(data?.purchasable ? { availability: "https://schema.org/InStock" } : {}),
+            },
+          },
+          {
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: abs("/") },
+              { "@type": "ListItem", position: 2, name: "Catalog", item: abs("/catalog") },
+              { "@type": "ListItem", position: 3, name: pack.name, item: url },
+            ],
+          },
+        ],
+      },
+    });
+  }
+
+  return metas;
 }
 
 export default function PackDetail() {
   const { pack } = useLoaderData<typeof loader>();
   const { addToCart, cart, inLibrary, hydrated } = useStore();
   const inCart = cart.includes(pack.id);
-  const owned = hydrated && inLibrary(pack.id);
-  const audio = pack.signal.kind === "audio" ? pack.signal : null;
-  const video = pack.signal.kind === "transition" ? pack.signal : null;
-  const coverWave = useMemo(() => computeWaveform(pack.signal, 220), [pack]);
-  const hue = packHue(pack);
+  const owned = hydrated && inLibrary(pack.productId);
 
   return (
     <div className="mx-auto max-w-6xl px-4 pt-8 sm:px-6">
@@ -54,81 +106,35 @@ export default function PackDetail() {
       </div>
 
       <div className="mt-8 grid items-start gap-8 lg:grid-cols-[7fr_5fr]">
-        {/* ——— cover + the signal ——————————————————————————— */}
+        {/* ——— cover + the placeholder strip ——————————————— */}
         <section>
           <div className="mx-auto max-w-md overflow-hidden rounded-2xl lg:max-w-none">
             <CoverArt pack={pack} className="block aspect-square w-full" />
           </div>
 
-          {audio && pack.hasDemo && (
-            <div className="panel mt-6 rounded-2xl p-5">
-              <div className="hidden md:block">
-                <Callouts facts={pack.contents} />
-              </div>
-              <div className="mt-2 md:mt-0">
-                <SignalStrip pack={pack} height={160} buckets={220} label={false} control />
-              </div>
-              <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-hairline pt-3">
-                <span className="label-caps">
-                  drag the strip to audition — <span className="!text-accent">full demo</span>
-                </span>
-                <span className="label-caps tnum">
-                  {audio.key} · {audio.bpm} bpm · {pack.size}
-                </span>
-              </div>
-            </div>
-          )}
-
-          {video && pack.hasDemo && (
-            <div className="mt-6">
-              <TransitionMonitor pack={pack} />
-              <div className="panel mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl p-4">
-                <span className="label-caps">
-                  cuts on the reel:{" "}
-                  <span className="!text-accent tnum">{String(video.cuts.length).padStart(2, "0")}</span>
-                </span>
-                <span className="label-caps">
-                  kinds:{" "}
-                  <span className="!text-accent">{[...new Set(video.cuts.map((c) => c.kind))].join(" / ")}</span>
-                </span>
-                <span className="label-caps tnum">{pack.size}</span>
-              </div>
-            </div>
-          )}
-
-          {!pack.hasDemo && (
-            <div className="panel mt-6 rounded-2xl p-5">
-              <svg viewBox="0 0 220 100" preserveAspectRatio="none" className="h-40 w-full" aria-hidden>
-                {coverWave.map((v, i) => (
-                  <rect
-                    key={i}
-                    x={i + 0.15}
-                    y={50 - Math.max(2, v * 92) / 2}
-                    width={0.7}
-                    height={Math.max(2, v * 92)}
-                    fill={hue}
-                    fillOpacity={0.4 + 0.5 * v}
-                  />
+          <div className="panel mt-6 rounded-2xl p-5">
+            <div className="label-caps">what&apos;s inside</div>
+            {pack.contents.length > 0 ? (
+              <ul className="mt-3 space-y-2">
+                {pack.contents.map((c) => (
+                  <li key={c.note} className="flex items-baseline gap-3 text-[14px] text-dim">
+                    <span className="label-caps w-14 shrink-0 text-ink">{c.label}</span>
+                    <span className="min-w-0 break-words text-ink">{c.note}</span>
+                  </li>
                 ))}
-              </svg>
-              <div className="mt-3 flex items-center justify-between border-t border-hairline pt-3">
-                <span className="label-caps">demo in production</span>
-                <span className="label-caps !text-accent">contents listed below</span>
-              </div>
-            </div>
-          )}
+              </ul>
+            ) : (
+              <p className="mt-3 text-[14px] text-dim">
+                No preview media yet — this pack ships as a download only.
+              </p>
+            )}
+            <p className="mt-4 border-t border-hairline pt-3 text-[13px] text-dim">
+              <span className="label-caps !text-accent">demo in production</span> — no audio or
+              video preview is published for this pack yet. The file list above is the full manifest.
+            </p>
+          </div>
 
-          <ul className="mt-6 space-y-2 md:sr-only">
-            {pack.contents.map((c) => (
-              <li key={c.label} className="text-[14px] text-dim">
-                <span className="font-display font-bold tracking-wide text-ink uppercase">{c.label}</span>
-                <span className="mx-2 text-faint">—</span>
-                {c.note}
-              </li>
-            ))}
-          </ul>
-
-          <p className="mt-6 max-w-[68ch] text-[15.5px] leading-relaxed text-dim">{pack.blurb}</p>
+          <p className="mt-6 max-w-[68ch] text-[15px] leading-relaxed text-dim">{pack.blurb}</p>
         </section>
 
         {/* ——— the spec panel ————————————————————————————— */}
@@ -136,10 +142,11 @@ export default function PackDetail() {
           <div className="label-caps">spec</div>
           <dl className="mt-4">
             {[
-              ["format", pack.formats.join(", ")],
+              ["format", pack.formats.join(", ") || "—"],
               ["size", pack.size],
+              ["files", String(pack.contents.length)],
               ["license", "standard royalty-free"],
-              ["delivery", "instant — your library after checkout"],
+              ["delivery", "unlocks when we confirm your transfer"],
             ].map(([k, v]) => (
               <div
                 key={k}
@@ -153,7 +160,7 @@ export default function PackDetail() {
 
           <div className="mt-4 border-t border-hairline pt-5">
             <div className="flex items-baseline gap-3">
-              <span className="font-display text-4xl font-extrabold tnum text-ink">
+              <span className="font-display text-4xl font-extrabold price-display text-ink">
                 {formatPrice(pack.price)}
               </span>
               <span className="label-caps">one-time</span>
@@ -175,7 +182,7 @@ export default function PackDetail() {
 
             <p className="mt-4 flex items-center gap-2 text-[12.5px] text-dim">
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent" aria-hidden />
-              download the moment checkout locks
+              downloads unlock when we confirm your transfer
             </p>
           </div>
         </aside>
