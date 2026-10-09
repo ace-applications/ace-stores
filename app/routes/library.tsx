@@ -1,21 +1,49 @@
 import type { Route } from "./+types/library";
-import { Link } from "react-router";
-import { PACKS, formatPrice, type Pack } from "../data/products";
-import { useStore, type Order } from "../lib/store";
-import { downloadReceipt } from "../lib/receipt";
-import { CoverArt } from "../components/CoverArt";
+import { Link, useLoaderData } from "react-router";
+import { useEffect } from "react";
+import { formatDate, formatDay, formatPrice, ORDER_STATUS_LABEL } from "../data/products";
+import { authClient, fetchCatalog } from "../lib/api";
+import { useStore } from "../lib/store";
+import { OrderLine } from "../components/OrderLine";
+import { Shell } from "../components/Shell";
+
+export async function loader() {
+  return { packs: await fetchCatalog() };
+}
 
 export function meta({}: Route.MetaArgs) {
-  return [{ title: "Your library — ACE Stores" }];
+  // Private surface — nothing here belongs in an index.
+  return [{ title: "Your library — ACE Stores" }, { name: "robots", content: "noindex, nofollow" }];
 }
 
 export default function Library() {
+  const { packs } = useLoaderData<typeof loader>();
   const store = useStore();
+  const { data: session } = authClient.useSession();
+  const email = session?.user?.email ?? "";
+  const userId = session?.user?.id;
+  const { refreshOrders } = store;
 
-  if (!store.hydrated) {
+  // An admin approves orders on their own desk, so identity-keyed fetching
+  // leaves this shelf stale. Re-read whenever the buyer arrives here. Keyed on
+  // userId (an id, not the session object) so a session refetch alone does not
+  // re-hit the backend.
+  useEffect(() => {
+    if (userId) void refreshOrders();
+  }, [userId, refreshOrders]);
+
+  if (!session?.user) {
     return (
       <Shell>
-        <p className="label-caps py-16 text-center">reading session…</p>
+        <div className="panel mx-auto max-w-xl rounded-2xl px-6 py-16 text-center">
+          <h1 className="font-display text-3xl font-extrabold text-ink">Your library is gated.</h1>
+          <p className="mx-auto mt-2 max-w-[46ch] text-[14px] text-dim">
+            Sign in — every pack you buy lives here, downloadable any time from any machine.
+          </p>
+          <Link to="/sign-in?next=/library" className="btn btn-accent mt-8">
+            sign in
+          </Link>
+        </div>
       </Shell>
     );
   }
@@ -52,54 +80,31 @@ export default function Library() {
         <h1 className="font-display text-4xl font-extrabold tracking-[-0.02em] text-ink uppercase">
           Your shelf
         </h1>
-        {store.email && (
-          <span className="label-caps tnum max-w-[16rem] truncate sm:max-w-none">{store.email}</span>
-        )}
+        <span className="label-caps tnum max-w-[16rem] truncate sm:max-w-none">{email}</span>
       </div>
 
-      {store.orders.map((order) => {
-        const packs = order.items
-          .map((id) => PACKS.find((p) => p.id === id))
-          .filter((p): p is Pack => Boolean(p));
-        return (
-          <section key={order.id} className="mt-8">
-            <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-hairline pb-2">
-              <h2 className="font-display text-sm font-bold tracking-[0.09em] text-accent uppercase">
-                order {order.id}
-              </h2>
-              <span className="label-caps tnum">{new Date(order.date).toLocaleString()}</span>
-            </div>
-            <ul>
-              {packs.map((p) => (
-                <li
-                  key={p.id}
-                  className="flex flex-wrap items-center justify-between gap-3 border-b border-hairline py-4"
-                >
-                  <div className="flex min-w-0 items-center gap-4">
-                    <div className="hidden w-14 overflow-hidden rounded-lg sm:block">
-                      <CoverArt pack={p} showTitle={false} className="block aspect-square w-full" />
-                    </div>
-                    <div className="min-w-0">
-                      <Link
-                        to={`/pack/${p.slug}`}
-                        className="font-display text-lg font-bold text-ink hover:text-accent"
-                      >
-                        {p.name}
-                      </Link>
-                      <div className="label-caps mt-0.5">
-                        {p.formats.join(" · ")} · {p.size} · {formatPrice(p.price)}
-                      </div>
-                    </div>
-                  </div>
-                  <button type="button" className="btn btn-ghost px-4! py-2!" onClick={() => downloadReceipt(p, order)}>
-                    download manifest
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </section>
-        );
-      })}
+      {store.orders.map((order) => (
+        <section key={order.id} className="mt-8">
+          <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-hairline pb-2">
+            <h2 className="font-chrome text-sm font-bold tracking-[0.09em] text-accent uppercase">
+              order {order.id} ·{" "}
+              <span className="!text-dim">{ORDER_STATUS_LABEL[order.status] ?? order.status}</span>
+            </h2>
+            <span className="label-caps tnum">{formatDate(order.createdAt)}</span>
+          </div>
+          <ul>
+            {order.items.map((it) => (
+              <OrderLine
+                key={it.id}
+                item={it}
+                order={order}
+                pack={packs.find((p) => p.productId === it.productId)}
+                email={email}
+              />
+            ))}
+          </ul>
+        </section>
+      ))}
 
       <section className="mt-14">
         <h2 className="label-caps">order history</h2>
@@ -108,29 +113,24 @@ export default function Library() {
             <tr className="label-caps">
               <th scope="col" className="border-b border-hairline py-2 font-semibold">order</th>
               <th scope="col" className="border-b border-hairline py-2 font-semibold">date</th>
-              <th scope="col" className="hidden border-b border-hairline py-2 font-semibold sm:table-cell">packs</th>
+              <th scope="col" className="hidden border-b border-hairline py-2 font-semibold sm:table-cell">status</th>
               <th scope="col" className="border-b border-hairline py-2 text-right font-semibold">total</th>
             </tr>
           </thead>
           <tbody className="tnum text-dim">
-            {store.orders.map((o) => {
-              const total = o.items.reduce((s, id) => s + (PACKS.find((p) => p.id === id)?.price ?? 0), 0);
-              return (
-                <tr key={o.id}>
-                  <td className="border-b border-hairline py-2.5 text-ink">{o.id}</td>
-                  <td className="border-b border-hairline py-2.5">{new Date(o.date).toLocaleDateString()}</td>
-                  <td className="hidden border-b border-hairline py-2.5 sm:table-cell">{o.items.length}</td>
-                  <td className="border-b border-hairline py-2.5 text-right text-ink">{formatPrice(total)}</td>
-                </tr>
-              );
-            })}
+            {store.orders.map((o) => (
+              <tr key={o.id}>
+                <td className="border-b border-hairline py-2.5 text-ink">{o.id}</td>
+                <td className="border-b border-hairline py-2.5">{formatDay(o.createdAt)}</td>
+                <td className="hidden border-b border-hairline py-2.5 sm:table-cell">
+                    {ORDER_STATUS_LABEL[o.status] ?? o.status}
+                  </td>
+                <td className="border-b border-hairline py-2.5 text-right text-ink">{formatPrice(o.totalPrice)}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </section>
     </Shell>
   );
-}
-
-function Shell({ children }: { children: React.ReactNode }) {
-  return <div className="mx-auto max-w-6xl px-4 pt-10 pb-8 sm:px-6">{children}</div>;
 }

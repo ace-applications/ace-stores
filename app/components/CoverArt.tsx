@@ -21,8 +21,18 @@ function hueFor(pack: Pack) {
   return HUES[idx];
 }
 
-/** simple deterministic bar heights for audio covers */
-function barsFor(pack: Pack, n: number): number[] {
+/** fit the product name inside 336px of a 400px viewBox by stepping size down */
+function coverTitleSize(name: string): number {
+  const n = name.length;
+  if (n <= 14) return 34;
+  if (n <= 18) return 28;
+  if (n <= 24) return 23;
+  if (n <= 30) return 19;
+  return 16;
+}
+
+/** simple deterministic bar heights, seeded off the pack id */
+export function barsFor(pack: Pack, n: number): number[] {
   let a = pack.id.charCodeAt(0) * 31 + pack.id.length * 97;
   const out: number[] = [];
   for (let i = 0; i < n; i++) {
@@ -50,7 +60,7 @@ export function CoverArt({
       viewBox="0 0 400 400"
       className={className}
       role="img"
-      aria-label={`${pack.name} cover art (placeholder)`}
+      aria-label={`${pack.name} cover`}
     >
       <defs>
         <linearGradient id={gid} x1="0" y1="0" x2="1" y2="1">
@@ -61,7 +71,10 @@ export function CoverArt({
 
       <rect width="400" height="400" fill={`url(#${gid})`} />
 
-      {isVideo ? (
+      {pack.imageUrl ? (
+        // real product thumbnail; expired presigned URLs fall back to the gradient above
+        <image href={pack.imageUrl} width="400" height="400" preserveAspectRatio="xMidYMid slice" />
+      ) : isVideo ? (
         <>
           {/* cut-frame motif: two offset frames with a whip seam */}
           <g opacity="0.32">
@@ -73,10 +86,6 @@ export function CoverArt({
             <rect x="198" y="146" width="150" height="150" fill="#ffffff" opacity="0.14" />
           </g>
           <rect x="188" y="60" width="5" height="280" fill="#0b0c10" opacity="0.6" transform="rotate(8 200 200)" />
-          {pack.signal.kind === "transition" &&
-            pack.signal.cuts.map((c, i) => (
-              <rect key={i} x={60 + i * 56} y="330" width="26" height="5" fill="#ffffff" opacity="0.5" />
-            ))}
         </>
       ) : (
         <>
@@ -100,12 +109,14 @@ export function CoverArt({
             x="32"
             y="72"
             fill="#ffffff"
-            fontFamily="Inter Tight, Inter, sans-serif"
-            fontWeight="800"
-            fontSize="34"
+            fontFamily="Red Rose, Inter Tight, Inter, sans-serif"
+            fontWeight="700"
+            /* the cover IS the product — never truncate its name; step the size
+               down instead so "Whip Cut Transitions" reads in full */
+            fontSize={coverTitleSize(pack.name)}
             letterSpacing="-0.5"
           >
-            {pack.name.length > 14 ? `${pack.name.slice(0, 13)}.` : pack.name}
+            {pack.name}
           </text>
           <text
             x="32"

@@ -1,18 +1,17 @@
 import { formatPrice, type Pack } from "../data/products";
-import type { Order } from "./store";
+import type { OrderShape } from "./api";
 
 /**
- * Instant delivery, demonstrated honestly: until real pack files are
- * uploaded, "download" issues the order receipt manifest — a real file a
- * customer could archive — instead of pretending to deliver media.
+ * Per-pack order manifest — a real downloadable file certifying the
+ * license against the server order. Real media ships via the library.
  */
-export function downloadReceipt(pack: Pack, order: Order) {
+export function downloadReceipt(pack: Pack, order: OrderShape, email: string) {
   const text = [
     "ACE STORES — ORDER MANIFEST",
     "===========================",
     `order       ${order.id}`,
-    `date        ${new Date(order.date).toLocaleString()}`,
-    `licensee    ${order.email}`,
+    `date        ${new Date(order.createdAt).toLocaleString()}`,
+    `licensee    ${email}`,
     "",
     `pack        ${pack.name}`,
     `family      ${pack.family} / ${pack.sub}`,
@@ -23,7 +22,7 @@ export function downloadReceipt(pack: Pack, order: Order) {
     "contents:",
     ...pack.contents.map((c) => `  - ${c.note}`),
     "",
-    "Pack files are delivered with your real inventory. This manifest",
+    "Pack files are delivered from your library. This manifest",
     "verifies the license above against your order.",
   ].join("\n");
 

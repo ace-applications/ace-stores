@@ -6,6 +6,7 @@ colors:
   panel: "#131519"
   panel-raised: "#1a1d23"
   hairline: "#262a32"
+  hairline-bright: "#343945"
   ink: "#f5f5f7"
   body-dim: "#9b9ba3"
   label-faint: "#808089"
@@ -14,21 +15,52 @@ colors:
   danger: "#ff5470"
 typography:
   display:
-    fontFamily: "Inter Tight, Inter, sans-serif"
+    fontFamily: "Red Rose, Inter Tight, Inter, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "clamp(2.8rem, 6vw, 5.4rem)"
+    fontWeight: 700
+    lineHeight: 0.98
+    letterSpacing: "-0.03em"
+  display-formal:
+    fontFamily: "Inter Tight, Inter, ui-sans-serif, system-ui, sans-serif"
     fontSize: "clamp(2.8rem, 6vw, 5.4rem)"
     fontWeight: 800
     lineHeight: 0.98
     letterSpacing: "-0.03em"
   body:
-    fontFamily: "Inter, system-ui, sans-serif"
+    fontFamily: "Janna LT, ui-serif, Georgia, serif"
     fontSize: "15px"
     fontWeight: 400
     lineHeight: 1.6
   label:
-    fontFamily: "Inter Tight, Inter, sans-serif"
+    fontFamily: "Inter Tight, Inter, ui-sans-serif, system-ui, sans-serif"
     fontSize: "11.5px"
     fontWeight: 600
     letterSpacing: "0.1em"
+  metadata:
+    fontFamily: "Inter Tight, Inter, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "13.5px"
+    fontWeight: 600
+    letterSpacing: "0.05em"
+  button:
+    fontFamily: "Inter Tight, Inter, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "12.5px"
+    fontWeight: 700
+    letterSpacing: "0.06em"
+  micro:
+    fontFamily: "Inter Tight, Inter, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "10.5px"
+    fontWeight: 700
+    letterSpacing: "0.08em"
+  cover-title:
+    fontFamily: "Red Rose, Inter Tight, Inter, ui-sans-serif, system-ui, sans-serif"
+    fontWeight: 700
+    fontSize: "34px"
+    letterSpacing: "-0.5px"
+  cover-sub:
+    fontFamily: "Inter Tight, Inter, ui-sans-serif, system-ui, sans-serif"
+    fontWeight: 600
+    fontSize: "13px"
+    letterSpacing: "2.4px"
 rounded:
   card: "16px"
   control: "8px"
@@ -67,6 +99,10 @@ components:
     backgroundColor: "{colors.panel}"
     textColor: "{colors.ink}"
     rounded: "{rounded.card}"
+  catalog-body:
+    fontFamily: "Janna LT, ui-serif, Georgia, serif"
+    fontSize: "15px"
+    lineHeight: 1.6
 ---
 
 # Design System: ACE Stores
@@ -77,9 +113,11 @@ components:
 
 The dark creator storefront, chosen by the user and executed against three named competitors (Reason Studios, Signature Sounds, BOOM Library) as the craft bar. Near-black ground, massive uppercase display type, cover-art-led product cards, category tiles, and one confident violet accent. Confident and commercial where the previous world was laboratory-restrained; the covers carry the color, the chrome stays neutral.
 
+This revision replaces the previous Inter-only type system with a warmer, more record-store voice: a single distinctive display face for claims, big labels, and the cover lockup; a readable serif body for blurbs and long copy; and a tight sans family reserved for the chrome layer — caps labels, readouts, buttons, and metadata. Inter is only a fallback in that chrome stack.
+
 **Key Characteristics:**
 - Near-black neutral ground (#0b0c10) with raised panels and soft 16px card radii
-- Inter Tight 800 uppercase display; Inter body; Inter Tight 600 caps labels
+- Red Rose display for the loudest claim + cover titles; Inter Tight for tight caps chrome; Janna LT for body copy
 - One violet accent (#8b5cf6) for live/active/CTA-support; white-fill primary buttons
 - Cover-art-led cards: every product shows authored duotone artwork, hover-plays its demo
 - Category tiles and featured-pack hero in the grammar of the reference stores
@@ -109,20 +147,30 @@ A commercial dark palette where color is either neutral chrome or the accent voi
 
 ## Typography
 
-**Display Font:** Inter Tight 800 (with Inter fallback)
-**Body Font:** Inter (with system fallback)
-**Label Font:** Inter Tight 600 caps
+**Display Font:** Red Rose 700 for the loudest claim lines and cover artwork titles, with Inter Tight / Inter as a fallback stack when the display face is unavailable.
 
-**Character:** One family, two voices — massive tight uppercase for claims, quiet caps for labels. The commercial-storefront register the references share.
+**Chrome Font:** Inter Tight for tight uppercase labels, metadata, buttons, and tabular readouts. This is the only place the Inter Tight family owns the voice by default.
+
+**Body Font:** Janna LT for paragraphs, blurbs, tenets, and other long copy. Serif body is what gives the store its warm mid-footer register against the otherwise tight chrome.
+
+**Mutual fallback policy.** The two display routes — Red Rose for display-formal-less voices, Inter Tight for chrome — share an Inter Tight + Inter + system-ui stack. The body route falls back to a standard serif stack. Nothing falls back to Inter by default for body copy.
 
 ### Hierarchy
-- **Display** (800, clamp(2.8rem–5.4rem), 0.98, −0.03em, uppercase): hero claims and section titles.
+- **Display** (Red Rose 700, clamp(2.8rem–5.4rem), 0.98, −0.03em, uppercase): hero claims and section titles.
+- **Display-formal** (Inter Tight 800, same scale and tracking): used when a claim line must feel tighter and more label-like than the display voice.
 - **Title** (700–800, 18–24px, −0.01em): pack names, order headers.
-- **Body** (400, 15px, 1.6, 65–75ch): blurbs, tenets, checkout copy.
-- **Label** (600, 11.5px, +0.1em, uppercase): category lines, spec keys, readouts.
+- **Body** (Janna LT 400, 15px, 1.6, 65–75ch): blurbs, tenets, checkout copy.
+- **Label** (Inter Tight 600, 11.5px, +0.1em, uppercase): category lines, spec keys, readouts.
+- **Metadata** (Inter Tight 600, 12.5–14px, +0.05em): helper text, spec readouts, nav labels — the compact Inter Tight family beneath 15px body.
+- **Button** (Inter Tight 700 caps, 12.5px, +0.06em): commerce actions.
+- **Micro** (Inter Tight 700 caps, 10.5px, +0.08em): badges, play labels, tiny chrome.
 
 ### Named Rules
 **The Claim-Is-Content Rule.** Display lines carry product truth ("Transitions. Sounds. Made by ACE."), not slogans or eyebrow labels.
+
+**The Serif-Body Rule.** Long copy reads in a serif voice so the store is not a wall of neutral sans. The chrome around that copy stays tight and sans.
+
+**The Two-Display Rule.** Red Rose is the loud voice. Inter Tight is the tight voice. They are not interchangeable; pick one by warmth and register, not by weight alone.
 
 ## Layout
 
@@ -169,6 +217,7 @@ Pack contents annotated onto the demo strip: two staggered label rows, hairlines
 - **Do** reserve violet for live/active/CTA-support and use white-fill buttons for primary commerce actions.
 - **Do** keep hover-play honest: only packs with real demos get the badge and behavior.
 - **Do** use tabular numerals for prices, counts, and readouts.
+- **Do** set body copy in a serif voice and keep the small caps chrome in a tight sans so each register stays readable at its own job.
 
 ### Don't:
 - **Don't** add glow, neon, glass, or gradient text — the references are dark but matte.
@@ -176,3 +225,4 @@ Pack contents annotated onto the demo strip: two staggered label rows, hairlines
 - **Don't** fake players, reviews, or payment — placeholders stay labeled.
 - **Don't** use Unicode glyphs as icons — draw inline SVG.
 - **Don't** hard-code left/right CSS direction — the Arabic phase requires logical properties.
+- **Don't** use Inter as the primary type voice — it is a fallback only, not the face of the store.

@@ -1,24 +1,33 @@
 import type { Route } from "./+types/home";
-import { Link } from "react-router";
-import { PACKS, formatPrice, packBySlug, type Pack } from "../data/products";
-import { useSignalPlayer } from "../components/SignalStrip";
+import { Link, useLoaderData } from "react-router";
+import { formatPrice, type Pack } from "../data/products";
+import { fetchCatalog, API_BASE } from "../lib/api";
+import { organizationJsonLd } from "../root";
+import { abs, pageMeta } from "../lib/seo";
+import logoMain from "../../assets/Logo/ACE Stores Logo/Ace Stores main.png";
 import { PackCard } from "../components/PackCard";
 import { CoverArt } from "../components/CoverArt";
+import { useStore } from "../lib/store";
+
+export async function loader() {
+  try {
+    return { packs: await fetchCatalog(), error: false };
+  } catch {
+    return { packs: [], error: true };
+  }
+}
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "ACE Stores — production assets made by the maker" },
-    {
-      name: "description",
-      content:
-        "Video transition packs and audio assets for music production, made and sold by ACE. One price per pack, instant download.",
-    },
+    ...pageMeta({
+      title: "ACE Stores — video transition packs & audio assets",
+      description:
+        "Video transition packs and audio assets for editors and producers, made and sold by ACE. One price per pack, instant self-serve download to your library.",
+      image: abs(logoMain),
+    }),
+    { "script:ld+json": organizationJsonLd() },
   ];
 }
-
-const FEATURED_SLUG = "night-frequencies";
-const VIDEO_TILE_SLUG = "whip-cut";
-const AUDIO_TILE_SLUG = "house-organs";
 
 const TENETS = [
   {
@@ -26,22 +35,30 @@ const TENETS = [
     text: "Every pack is produced by ACE — the same hands that use it. Nothing licensed in, nothing resold.",
   },
   {
-    label: "Audition before you buy",
-    text: "Hover a cover and it plays. Open a pack and scrub the demo to the moment you need. No account, no gate.",
+    label: "Know what you're buying",
+    text: "Every pack lists its exact files, formats and total size before you pay. No account needed to look.",
   },
   {
-    label: "Checkout to timeline in minutes",
-    text: "One price per pack. The moment your order locks, it's in your library — download again any time.",
+    label: "Download again, any time",
+    text: "One price per pack. Once we confirm your transfer the files unlock in your library — and stay there, on any machine.",
   },
 ];
 
 export default function Home() {
-  const featured = packBySlug(FEATURED_SLUG) as Pack;
-  const player = useSignalPlayer(featured);
-  const videoTile = packBySlug(VIDEO_TILE_SLUG) as Pack;
-  const audioTile = packBySlug(AUDIO_TILE_SLUG) as Pack;
-  const videoCount = PACKS.filter((p) => p.family === "video").length;
-  const audioCount = PACKS.filter((p) => p.family === "audio").length;
+  const { packs, error } = useLoaderData<typeof loader>();
+  const store = useStore();
+  const { addToCart } = store;
+  const featured = packs[0];
+  const inCart = featured ? store.cart.includes(featured.id) : false;
+  const owned = featured ? store.hydrated && store.inLibrary(featured.productId) : false;
+  const videoTile = packs.find((p) => p.family === "video");
+  const audioTile = packs.find((p) => p.family === "audio");
+  const videoCount = packs.filter((p) => p.family === "video").length;
+  const audioCount = packs.filter((p) => p.family === "audio").length;
+  const tiles = [
+    videoTile && { pack: videoTile, title: "Video transitions", count: videoCount, to: "/catalog?family=video" },
+    audioTile && { pack: audioTile, title: "Audio assets", count: audioCount, to: "/catalog?family=audio" },
+  ].filter((t): t is { pack: Pack; title: string; count: number; to: string } => Boolean(t));
 
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -55,22 +72,19 @@ export default function Home() {
             <br />
             <span className="text-accent">Made by ACE.</span>
           </h1>
-          <p className="mt-6 max-w-[52ch] text-[15.5px] leading-relaxed text-dim">
+          <p className="mt-6 max-w-[52ch] text-[15px] leading-relaxed text-dim">
             Video transition packs and audio assets for creators — produced in house, sold at one
-            price, and in your library minutes after checkout. Hover a cover to hear it before you
-            buy.
+            price, and downloadable the moment we confirm your transfer.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link to="/catalog" className="btn btn-primary">
               shop the catalog
             </Link>
-            <a href="#featured" className="btn btn-ghost">
-              hear the featured pack
-            </a>
           </div>
         </div>
 
         {/* featured pack */}
+        {featured && (
         <div id="featured" className="panel-raised rise-in rounded-2xl p-5" style={{ animationDelay: "120ms" }}>
           <div className="label-caps">featured pack</div>
           <div className="mt-3 overflow-hidden rounded-xl">
@@ -80,38 +94,37 @@ export default function Home() {
             <h2 className="font-display text-2xl font-bold tracking-[-0.01em] text-ink">
               {featured.name}
             </h2>
-            <span className="font-display text-2xl font-bold tnum text-ink">
+            <span className="font-display text-2xl font-bold price-display text-ink">
               {formatPrice(featured.price)}
             </span>
           </div>
           <p className="mt-2 line-clamp-2 text-[13.5px] leading-relaxed text-dim">{featured.blurb}</p>
           <div className="mt-5 flex flex-wrap items-center gap-2.5">
-            <button type="button" className="btn btn-accent" onClick={() => void player.toggle()}>
-              {player.playing ? (
-                <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden>
-                  <rect x="1" y="1" width="8" height="8" fill="currentColor" />
-                </svg>
-              ) : (
-                <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden>
-                  <path d="M2 1l7 4-7 4z" fill="currentColor" />
-                </svg>
-              )}
-              {player.playing ? "stop" : "play demo"}
-            </button>
+            {inCart ? (
+              <Link to="/checkout" className="btn btn-accent">
+                in cart → checkout
+              </Link>
+            ) : owned ? (
+              <Link to="/library" className="btn btn-accent">
+                in your library →
+              </Link>
+            ) : (
+              <button type="button" className="btn btn-accent" onClick={() => addToCart(featured.id)}>
+                add to cart
+              </button>
+            )}
             <Link to={`/pack/${featured.slug}`} className="btn btn-ghost">
               view pack
             </Link>
           </div>
         </div>
+        )}
       </section>
 
       {/* ——— category tiles ———————————————————————————————— */}
       <section className="pb-16">
         <div className="grid gap-4 md:grid-cols-2">
-          {[
-            { pack: videoTile, title: "Video transitions", count: videoCount, to: "/catalog?family=video" },
-            { pack: audioTile, title: "Audio assets", count: audioCount, to: "/catalog?family=audio" },
-          ].map((tile) => (
+          {tiles.map((tile) => (
             <Link
               key={tile.title}
               to={tile.to}
@@ -124,11 +137,13 @@ export default function Home() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ground via-ground/40 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-6">
-                <div className="label-caps !text-dim">{tile.count} packs · one license</div>
+                <div className="label-caps !text-dim">
+                  {tile.count} {tile.count === 1 ? "pack" : "packs"} · one license
+                </div>
                 <div className="mt-1 font-display text-3xl font-extrabold tracking-[-0.02em] text-ink uppercase">
                   {tile.title}
                 </div>
-                <span className="mt-2 inline-block font-display text-[12.5px] font-bold tracking-[0.08em] text-accent uppercase">
+                <span className="mt-2 inline-block font-chrome text-[12.5px] font-bold tracking-[0.08em] text-accent uppercase">
                   discover →
                 </span>
               </div>
@@ -138,22 +153,30 @@ export default function Home() {
       </section>
 
       {/* ——— the catalog —————————————————————————————————— */}
-      <section className="pb-16">
+      <section className="mt-16 pb-16">
         <div className="flex flex-wrap items-baseline justify-between gap-3">
           <h2 className="font-display text-3xl font-extrabold tracking-[-0.02em] text-ink uppercase">
             The catalog
           </h2>
-          <span className="label-caps tnum">{PACKS.length} packs · one price each</span>
+          <span className="label-caps tnum">{packs.length} packs · one price each</span>
         </div>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {PACKS.map((p, i) => (
-            <PackCard key={p.id} pack={p} delay={Math.min(i, 7) * 50} />
-          ))}
-        </div>
+        {packs.length > 0 ? (
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {packs.map((p, i) => (
+              <PackCard key={p.id} pack={p} delay={Math.min(i, 7) * 50} />
+            ))}
+          </div>
+        ) : (
+          <p className="mt-6 text-[14px] text-dim">
+            {error
+              ? `Could not reach the store API at ${API_BASE} — is the backend running?`
+              : "No packs live yet — inventory lands here first."}
+          </p>
+        )}
       </section>
 
       {/* ——— made by the maker ————————————————————————————— */}
-      <section className="pb-4">
+      <section className="mt-16 pb-4">
         <h2 className="font-display text-3xl font-extrabold tracking-[-0.02em] text-ink uppercase">
           Made by the maker
         </h2>
@@ -163,7 +186,7 @@ export default function Home() {
               key={t.label}
               className="grid gap-2 border-t border-hairline py-6 sm:grid-cols-[240px_1fr] sm:gap-8"
             >
-              <dt className="font-display text-[13px] font-bold tracking-[0.09em] text-accent uppercase">
+              <dt className="font-chrome text-[13px] font-bold tracking-[0.09em] text-accent uppercase">
                 {t.label}
               </dt>
               <dd className="max-w-[68ch] text-[15px] leading-relaxed text-dim">{t.text}</dd>

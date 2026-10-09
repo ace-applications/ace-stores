@@ -9,7 +9,7 @@ export function Footer() {
           <div className="font-display text-xl font-bold tracking-[-0.01em] text-ink">ACE Stores</div>
           <p className="mt-3 max-w-sm text-[13.5px] leading-relaxed text-dim">
             Video transitions and audio assets for creators — produced in house, sold at one price
-            per pack, delivered to your library the moment you check out.
+            per pack, unlocked in your library once we confirm your transfer.
           </p>
           <p className="mt-4 text-[12.5px] text-faint">
             Part of the ACE LLC family — alongside ACE Apps and ACE Magazine.

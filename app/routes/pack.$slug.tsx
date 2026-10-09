@@ -3,7 +3,7 @@ import { Link, useLoaderData } from "react-router";
 import { FAMILY_LABEL, formatPrice, type Pack } from "../data/products";
 import { fetchCatalog, settings } from "../lib/api";
 import { abs, clamp, pageMeta } from "../lib/seo";
-import logoMain from "../../assets/Logo/ACE Stores Logo/Ace Stores Main.png";
+import logoMain from "../../assets/Logo/ACE Stores Logo/Ace Stores main.png";
 import { CoverArt } from "../components/CoverArt";
 import { useStore } from "../lib/store";
 

@@ -1,38 +1,31 @@
 /**
- * Store state — cart, orders, and the customer library.
+ * Store state — the cart and the customer library.
  *
- * Session-local for this build (localStorage). Wiring a real account
- * backend, payment provider, and entitlement service replaces this module
- * without touching the components.
+ * Cart persists in localStorage; orders are the server's truth, synced
+ * from `GET /orders/me` whenever the session changes.
  */
 
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
-
-export interface Order {
-  id: string;
-  email: string;
-  items: string[];
-  date: string;
-}
+import { authClient, myOrders, type OrderShape } from "./api";
 
 interface StoreState {
   cart: string[];
-  orders: Order[];
-  email: string | null;
+  orders: OrderShape[];
 }
 
 interface StoreApi extends StoreState {
   addToCart: (id: string) => void;
   removeFromCart: (id: string) => void;
   clearCart: () => void;
-  placeOrder: (email: string) => Order;
-  inLibrary: (id: string) => boolean;
+  refreshOrders: () => Promise<void>;
+  /** true when any PAID order owns this product */
+  inLibrary: (productId: number) => boolean;
   hydrated: boolean;
 }
 
 const KEY = "ace-store-v1";
-const EMPTY: StoreState = { cart: [], orders: [], email: null };
+const EMPTY: StoreState = { cart: [], orders: [] };
 
 const StoreContext = createContext<StoreApi | null>(null);
 
@@ -40,11 +33,10 @@ function load(): StoreState {
   try {
     const raw = localStorage.getItem(KEY);
     if (!raw) return EMPTY;
-    const parsed = JSON.parse(raw) as StoreState;
+    const parsed = JSON.parse(raw) as Partial<StoreState>;
     return {
       cart: Array.isArray(parsed.cart) ? parsed.cart : [],
-      orders: Array.isArray(parsed.orders) ? parsed.orders : [],
-      email: typeof parsed.email === "string" ? parsed.email : null,
+      orders: [],
     };
   } catch {
     return EMPTY;
@@ -52,8 +44,13 @@ function load(): StoreState {
 }
 
 export function StoreProvider({ children }: { children: ReactNode }) {
+  // localStorage is client-only, so the cart cannot be a lazy initializer —
+  // SSR would render an empty cart and hydration would mismatch. The
+  // `hydrated` flag is what lets callers distinguish "empty" from "not yet
+  // read", which is why this is an effect and not useState(load).
   const [state, setState] = useState<StoreState>(EMPTY);
   const [hydrated, setHydrated] = useState(false);
+  const { data: session } = authClient.useSession();
 
   useEffect(() => {
     setState(load());
@@ -63,11 +60,35 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!hydrated) return;
     try {
-      localStorage.setItem(KEY, JSON.stringify(state));
+      localStorage.setItem(KEY, JSON.stringify({ cart: state.cart }));
     } catch {
       /* storage unavailable — state stays in memory */
     }
-  }, [state, hydrated]);
+  }, [state.cart, hydrated]);
+
+  // Orders follow the session, and nothing else: an admin approves an order on
+  // their own desk, so identity-keyed fetching alone leaves the buyer's shelf
+  // stale forever. `refreshOrders()` is the only way to re-read, and the
+  // library route calls it on entry.
+  const userId = session?.user?.id;
+  useEffect(() => {
+    if (!userId) {
+      setState((s) => ({ ...s, orders: [] }));
+      return;
+    }
+    let alive = true;
+    myOrders()
+      .then((orders) => alive && setState((s) => ({ ...s, orders })))
+      .catch(() => alive && setState((s) => ({ ...s, orders: [] })));
+    return () => {
+      alive = false;
+    };
+  }, [userId]);
+
+  const refreshOrders = useCallback(async () => {
+    const orders = await myOrders().catch(() => [] as OrderShape[]);
+    setState((s) => ({ ...s, orders }));
+  }, []);
 
   const api = useMemo<StoreApi>(() => {
     const addToCart = (id: string) =>
@@ -75,24 +96,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     const removeFromCart = (id: string) =>
       setState((s) => ({ ...s, cart: s.cart.filter((c) => c !== id) }));
     const clearCart = () => setState((s) => ({ ...s, cart: [] }));
-    const placeOrder = (email: string) => {
-      const order: Order = {
-        id: `ACE-${Date.now().toString(36).toUpperCase()}`,
-        email,
-        items: [...state.cart],
-        date: new Date().toISOString(),
-      };
-      setState((s) => ({
-        ...s,
-        orders: [order, ...s.orders],
-        email,
-        cart: [],
-      }));
-      return order;
-    };
-    const inLibrary = (id: string) => state.orders.some((o) => o.items.includes(id));
-    return { ...state, addToCart, removeFromCart, clearCart, placeOrder, inLibrary, hydrated };
-  }, [state, hydrated]);
+    const inLibrary = (productId: number) =>
+      state.orders.some((o) => o.status === "paid" && o.items.some((it) => it.productId === productId));
+    return { ...state, addToCart, removeFromCart, clearCart, refreshOrders, inLibrary, hydrated };
+  }, [state, hydrated, refreshOrders]);
 
   return <StoreContext.Provider value={api}>{children}</StoreContext.Provider>;
 }
