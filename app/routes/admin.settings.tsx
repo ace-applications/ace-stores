@@ -2,6 +2,7 @@ import type { Route } from "./+types/admin.settings";
 import { useState } from "react";
 import { useLoaderData, useRevalidator } from "react-router";
 import { adminSettings, adminUpdateSettings } from "../lib/admin-api";
+import { friendlyError } from "../lib/errors";
 
 export async function loader({ request }: Route.LoaderArgs) {
   try {
@@ -31,7 +32,7 @@ export default function AdminSettings() {
       await adminUpdateSettings({ payment_instructions: payment });
       revalidator.revalidate();
     } catch (err) {
-      setActionError(err instanceof Error ? err.message : "Failed");
+      setActionError(friendlyError(err, "Those settings didn't save. Try again."));
       setSaving(false);
     }
   }

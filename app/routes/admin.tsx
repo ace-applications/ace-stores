@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useLoaderData, useRevalidator, useSearchParams, Link } from "react-router";
 import { formatDate, formatPrice } from "../data/products";
 import { adminApproveOrder, adminOrders, adminRejectOrder, adminRevokeOrder } from "../lib/admin-api";
+import { friendlyError } from "../lib/errors";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const status = new URL(request.url).searchParams.get("status") ?? "pending_payment";
@@ -46,7 +47,7 @@ export default function Admin() {
       await fn();
       revalidator.revalidate();
     } catch (e) {
-      setActionError(e instanceof Error ? e.message : "Failed");
+      setActionError(friendlyError(e, "That didn't save. Try again."));
       setBusy(null);
     }
   }

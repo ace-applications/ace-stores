@@ -1,7 +1,7 @@
 import type { Route } from "./+types/catalog";
 import { useMemo, useState } from "react";
 import { useLoaderData, useSearchParams } from "react-router";
-import { FAMILY_LABEL, type Family } from "../data/products";
+import { FAMILY_LABEL, type Family, type Pack } from "../data/products";
 import { fetchCatalog, API_BASE } from "../lib/api";
 import { abs, pageMeta } from "../lib/seo";
 import logoMain from "../../assets/Logo/ACE Stores Logo/Ace Stores main.png";
@@ -15,13 +15,50 @@ export async function loader() {
   }
 }
 
-export function meta({}: Route.MetaArgs) {
-  return pageMeta({
+export function meta({ matches }: Route.MetaArgs) {
+  const match = matches.find((m) => m?.id === "routes/catalog");
+  const data = match && "loaderData" in match ? (match.loaderData as { packs: Pack[] }) : undefined;
+
+  const metas: Route.MetaDescriptors = pageMeta({
     title: "Catalog — video transition packs & audio assets | ACE Stores",
     description:
       "Browse every ACE pack: video transitions and audio assets, one price each. Filter by family and format, and see exact file lists before you buy.",
     image: abs(logoMain),
   });
+
+  // The catalog is the store's main landing page, so it lists what it holds.
+  // Built from the same packs the page renders — never a hand-maintained list.
+  const packs = data?.packs ?? [];
+  if (packs.length > 0) {
+    metas.push({
+      "script:ld+json": {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: "ACE Stores catalog",
+        numberOfItems: packs.length,
+        itemListElement: packs.map((pack, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          url: abs(`/pack/${pack.slug}`),
+          item: {
+            "@type": "Product",
+            name: pack.name,
+            description: pack.blurb,
+            sku: String(pack.productId),
+            brand: { "@type": "Brand", name: "ACE" },
+            offers: {
+              "@type": "Offer",
+              price: pack.price,
+              priceCurrency: "EGP",
+              url: abs(`/pack/${pack.slug}`),
+            },
+          },
+        })),
+      },
+    });
+  }
+
+  return metas;
 }
 
 type FamilyFilter = "all" | Family;

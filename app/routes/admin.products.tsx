@@ -15,6 +15,7 @@ import {
   adminTags,
   adminUpdateProduct,
 } from "../lib/admin-api";
+import { friendlyError } from "../lib/errors";
 
 export async function loader({ request }: Route.LoaderArgs) {
   try {
@@ -57,7 +58,7 @@ export default function AdminProducts() {
       await fn();
       revalidator.revalidate();
     } catch (e) {
-      setActionError(e instanceof Error ? e.message : "Failed");
+      setActionError(friendlyError(e, "That didn't save. Try again."));
       setBusy(null);
     }
   }

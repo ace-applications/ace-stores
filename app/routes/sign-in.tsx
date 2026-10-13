@@ -2,6 +2,7 @@ import type { Route } from "./+types/sign-in";
 import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router";
 import { authClient } from "../lib/api";
+import { friendlyError } from "../lib/errors";
 
 export function meta({}: Route.MetaArgs) {
   // Private surface — nothing here belongs in an index.
@@ -32,12 +33,12 @@ export default function SignIn() {
           ? await authClient.signIn.email({ email, password, rememberMe: true })
           : await authClient.signUp.email({ email, password, name });
       if (res.error) {
-        setError(res.error.message ?? "Something went wrong.");
+        setError(friendlyError(res.error, "That didn't work. Try again."));
         return;
       }
       navigate(next, { replace: true });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
+      setError(friendlyError(err, "We couldn't sign you in. Try again."));
     } finally {
       setBusy(false);
     }

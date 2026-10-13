@@ -1,5 +1,6 @@
 import { createAuthClient } from "better-auth/react";
 import type { Pack } from "../data/products";
+import { ApiError } from "./errors";
 
 export const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8787";
 
@@ -57,14 +58,15 @@ export async function api<T>(path: string, init?: RequestInit, req?: Request): P
     },
   });
   if (!res.ok) {
-    let msg = `${init?.method ?? "GET"} ${path} → ${res.status}`;
+    let serverMessage: string | undefined;
     try {
-      const body = (await res.json()) as { error?: string };
-      if (body?.error) msg += `: ${body.error}`;
+      const body = (await res.json()) as { error?: unknown };
+      // zod failures answer { error: { name: "ZodError", ... } } — not a sentence
+      if (typeof body?.error === "string") serverMessage = body.error;
     } catch {
       /* non-JSON body — status alone is enough */
     }
-    throw new Error(msg);
+    throw new ApiError(res.status, path, serverMessage);
   }
   return (await res.json()) as T;
 }

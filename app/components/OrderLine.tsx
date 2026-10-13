@@ -4,6 +4,7 @@ import { formatPrice, type Pack } from "../data/products";
 import { orderDownloadUrl, type OrderItemShape, type OrderShape } from "../lib/api";
 import { downloadReceipt } from "../lib/receipt";
 import { CoverArt } from "./CoverArt";
+import { friendlyError } from "../lib/errors";
 
 /**
  * One Order line: thumb, title link, metadata, and whatever the order's
@@ -98,9 +99,7 @@ function FileDownloads({ order, pack }: { order: OrderShape; pack: Pack | undefi
                 a.click();
               } catch (e) {
                 setError(
-                  e instanceof Error
-                    ? `${f.name}: ${e.message}`
-                    : `${f.name} could not start — try again in a moment.`,
+                  `${f.name}: ${friendlyError(e, "couldn't start — try again in a moment.")}`,
                 );
               } finally {
                 setBusy(false);
