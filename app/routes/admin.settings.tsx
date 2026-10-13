@@ -33,6 +33,7 @@ export default function AdminSettings() {
       revalidator.revalidate();
     } catch (err) {
       setActionError(friendlyError(err, "Those settings didn't save. Try again."));
+    } finally {
       setSaving(false);
     }
   }

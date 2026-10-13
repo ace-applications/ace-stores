@@ -48,6 +48,7 @@ export default function Admin() {
       revalidator.revalidate();
     } catch (e) {
       setActionError(friendlyError(e, "That didn't save. Try again."));
+    } finally {
       setBusy(null);
     }
   }
