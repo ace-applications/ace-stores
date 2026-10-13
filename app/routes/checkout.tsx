@@ -29,6 +29,9 @@ export function meta({}: Route.MetaArgs) {
 
 type Step = "cart" | "details" | "done";
 
+/** Copy approved for showing a buyer; anything else is treated as unknown. */
+class CheckoutError extends Error {}
+
 export default function Checkout() {
   const { packs, paymentInstructions } = useLoaderData<typeof loader>();
   const store = useStore();
@@ -210,11 +213,28 @@ export default function Checkout() {
     setBusy(true);
     setError(null);
     try {
-      if (!file) throw new Error("Attach the payment screenshot to place the order.");
+      if (!file) throw new CheckoutError("Attach the payment screenshot to place the order.");
       const ref = reference.trim() || undefined;
-      const pre = await presignScreenshot(file.type);
-      const put = await fetch(pre.uploadUrl, { method: "PUT", body: file });
-      if (!put.ok) throw new Error("Screenshot upload failed — try again.");
+
+      let pre: Awaited<ReturnType<typeof presignScreenshot>>;
+      try {
+        pre = await presignScreenshot(file.type);
+      } catch {
+        // never surface the raw request line — a buyer needs a next step, not a status
+        throw new CheckoutError(
+          "We couldn't start the upload, so your receipt didn't send. Your cart is safe — try again in a moment, or email us and we'll take the order another way.",
+        );
+      }
+
+      try {
+        const put = await fetch(pre.uploadUrl, { method: "PUT", body: file });
+        if (!put.ok) throw new Error("upload rejected");
+      } catch {
+        throw new CheckoutError(
+          "Your receipt didn't finish uploading. Your cart is safe — try again in a moment, or email us and we'll take the order another way.",
+        );
+      }
+
       const placed = await createOrder({
         items: items.map((p) => ({ productId: Number(p.id) })),
         paymentReference: ref,
@@ -225,7 +245,11 @@ export default function Checkout() {
       setOrder(placed);
       setStep("done");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Order failed — try again.");
+      setError(
+        err instanceof CheckoutError
+          ? err.message
+          : "Something went wrong placing your order. Your cart is safe — try again.",
+      );
     } finally {
       setBusy(false);
     }
