@@ -10,7 +10,7 @@
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "doctor": "npx react-doctor@latest",
-    "deploy": "bun run build && wrangler deploy",
+    "deploy": "bun run build && wrangler deploy -c build/server/wrangler.json",
     "preview": "bun run build && wrangler dev",
     "cf-typegen": "wrangler types"
   },

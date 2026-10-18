@@ -1,5 +1,8 @@
 // Frontend Worker (`ace`). `main` + assets are wired by the @cloudflare/
 // vite-plugin build; wrangler.jsonc in build/ is generated, never hand-edit.
+// ALWAYS deploy with `-c build/server/wrangler.json` (see package.json deploy
+// script) — this root config has no `assets` entry, so a root-config deploys
+// ships no static files and every /assets/* request 404s into the worker.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "ace",
