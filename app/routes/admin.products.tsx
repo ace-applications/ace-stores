@@ -344,7 +344,7 @@ export default function AdminProducts() {
         </section>
 
         <div className="mt-8 space-y-6">
-          {products.length === 0 ? (
+          {error ? null : products.length === 0 ? (
             <div className="panel rounded-2xl p-6">
               <p className="text-dim">No products yet.</p>
               <p className="label-caps mt-2">create one above, then attach files and a thumbnail</p>

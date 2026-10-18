@@ -1,5 +1,5 @@
 import type { Route } from "./+types/admin.settings";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLoaderData, useRevalidator } from "react-router";
 import { adminSettings, adminUpdateSettings } from "../lib/admin-api";
 import { friendlyError } from "../lib/errors";
@@ -24,7 +24,7 @@ export function HydrateFallback() {
       <div className="skeleton h-8 w-40" />
       <div className="mt-6 panel rounded-2xl p-6">
         <div className="skeleton h-4 w-40" />
-        <div className="skeleton mt-3 h-40" style={{ height: 160 }} />
+        <div className="skeleton mt-3" style={{ height: 160 }} />
         <div className="skeleton mt-4 h-9 w-24" />
       </div>
     </>
@@ -38,6 +38,11 @@ export default function AdminSettings() {
   const [saving, setSaving] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
   const clean = payment === (settings.payment_instructions ?? "");
+  // the Retry button refetches — the form must follow or "Save" would reseed
+  // the textarea from the failed load's empty value
+  useEffect(() => {
+    setPayment(settings.payment_instructions ?? "");
+  }, [settings]);
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
@@ -91,8 +96,10 @@ export default function AdminSettings() {
             <button type="submit" className="btn btn-primary" disabled={saving || clean || error}>
               {saving ? "Saving…" : "Save"}
             </button>
-            {!clean && !saving && !error && <span className="label-caps" role="status">unsaved changes</span>}
-            {!clean && saving && <span className="label-caps" role="status">saving — don't close this tab…</span>}
+            {/* always-mounted live region so SRs reliably announce the text change */}
+            <span className="label-caps" role="status">
+              {saving ? "saving — don't close this tab…" : clean || error ? "" : "unsaved changes"}
+            </span>
           </div>
         </form>
     </>

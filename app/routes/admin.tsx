@@ -139,7 +139,7 @@ export default function Admin() {
       )}
 
       <div className="mt-6 space-y-4" aria-busy={busy !== null}>
-        {orders.length === 0 ? (
+        {!error && orders.length === 0 ? (
           <div className="panel rounded-2xl p-6">
             <p className="text-dim">{current === "all" ? "No orders yet." : `No ${statusLabel(current)} orders yet.`}</p>
             <p className="label-caps mt-2">
