@@ -4,11 +4,12 @@ import { useLoaderData, useRevalidator } from "react-router";
 import { adminSettings, adminUpdateSettings } from "../lib/admin-api";
 import { friendlyError } from "../lib/errors";
 
-export async function loader({ request }: Route.LoaderArgs) {
+/** clientLoader on purpose: see admin.tsx — SSR would send no session cookie. */
+export async function clientLoader() {
   try {
-    return { settings: await adminSettings(request), error: false };
+    return { settings: await adminSettings(), error: false } as const;
   } catch {
-    return { settings: {} as Record<string, string>, error: true };
+    return { settings: {} as Record<string, string>, error: true } as const;
   }
 }
 
@@ -18,7 +19,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function AdminSettings() {
-  const { settings, error } = useLoaderData<typeof loader>();
+  const { settings, error } = useLoaderData<typeof clientLoader>();
   const revalidator = useRevalidator();
   const [payment, setPayment] = useState(settings.payment_instructions ?? "");
   const [saving, setSaving] = useState(false);

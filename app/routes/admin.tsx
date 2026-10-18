@@ -5,10 +5,14 @@ import { formatDate, formatPrice } from "../data/products";
 import { adminApproveOrder, adminOrders, adminRejectOrder, adminRevokeOrder } from "../lib/admin-api";
 import { friendlyError } from "../lib/errors";
 
-export async function loader({ request }: Route.LoaderArgs) {
+/** clientLoader on purpose: SSR runs in the frontend Worker, where the page's
+ *  cookie jar is the page host — not the API host — so the admin fetch arrives
+ *  anonymous on *.workers.dev (localhost shared the jar across ports). The
+ *  browser carries the session cookie itself. Admin is noindex, so no SSR loss. */
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   const status = new URL(request.url).searchParams.get("status") ?? "pending_payment";
   try {
-    return { orders: await adminOrders(status, request), status, error: false };
+    return { orders: await adminOrders(status), status, error: false };
   } catch {
     return { orders: [], status, error: true };
   }
@@ -26,7 +30,7 @@ function statusLabel(s: string) {
 }
 
 export default function Admin() {
-  const { orders, status, error } = useLoaderData<typeof loader>();
+  const { orders, status, error } = useLoaderData<typeof clientLoader>();
   const [search, setSearch] = useSearchParams();
   const revalidator = useRevalidator();
   const [busy, setBusy] = useState<number | null>(null);
@@ -76,7 +80,14 @@ export default function Admin() {
 
       <nav className="mt-6 flex flex-wrap gap-2">
         {STATUSES.map((s) => (
-          <button key={s} type="button" className="chip" data-on={current === s} onClick={() => setStatus(s)}>
+          <button
+            key={s}
+            type="button"
+            className="chip"
+            data-on={current === s}
+            aria-pressed={current === s}
+            onClick={() => setStatus(s)}
+          >
             {statusLabel(s)}
           </button>
         ))}
@@ -105,7 +116,7 @@ export default function Admin() {
                 </div>
                 <div className="text-right">
                   <div className="font-display text-xl font-bold price-display text-ink">{formatPrice(o.totalPrice)}</div>
-                  <div className="label-caps mt-1">{o.status}</div>
+                  <div className="label-caps mt-1">{statusLabel(o.status)}</div>
                   {o.paymentReference && (
                     <div className="mt-1 text-[12.5px] text-dim tnum">Ref: {o.paymentReference}</div>
                   )}
@@ -126,7 +137,7 @@ export default function Admin() {
                   <summary className="btn btn-ghost cursor-pointer">View payment screenshot</summary>
                   <img
                     src={o.screenshotUrl}
-                    alt="Payment screenshot"
+                    alt={`Payment screenshot — order #${o.id}`}
                     className="mt-4 max-w-full rounded-lg border border-hairline"
                     loading="lazy"
                   />

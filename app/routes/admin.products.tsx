@@ -17,12 +17,13 @@ import {
 } from "../lib/admin-api";
 import { friendlyError } from "../lib/errors";
 
-export async function loader({ request }: Route.LoaderArgs) {
+/** clientLoader on purpose: see admin.tsx — SSR would send no session cookie. */
+export async function clientLoader() {
   try {
-    const [products, tags] = await Promise.all([adminProductsList(request), adminTags(request)]);
-    return { products, tags, error: false };
+    const [products, tags] = await Promise.all([adminProductsList(), adminTags()]);
+    return { products, tags, error: false } as const;
   } catch {
-    return { products: [], tags: [], error: true };
+    return { products: [], tags: [], error: true } as const;
   }
 }
 
@@ -31,13 +32,13 @@ export function meta({}: Route.MetaArgs) {
   return [{ title: "Admin — Products" }, { name: "robots", content: "noindex, nofollow" }];
 }
 
-async function uploadToR2(uploadUrl: string, file: File, contentType: string) {
+async function uploadToBucket(uploadUrl: string, file: File, contentType: string) {
   if (!(await fetch(uploadUrl, { method: "PUT", headers: { "Content-Type": contentType }, body: file })).ok)
     throw new Error("Upload failed");
 }
 
 export default function AdminProducts() {
-  const { products, tags, error } = useLoaderData<typeof loader>();
+  const { products, tags, error } = useLoaderData<typeof clientLoader>();
   const revalidator = useRevalidator();
   const [busy, setBusy] = useState<number | null>(null);
   const [creating, setCreating] = useState(false);
@@ -49,6 +50,15 @@ export default function AdminProducts() {
   const [newTag, setNewTag] = useState("");
   const fileInput = useRef<HTMLInputElement>(null);
   const thumbInput = useRef<HTMLInputElement>(null);
+  // product id the open file picker is picking for — the inputs are shared,
+  // one pair for the whole page, because ref-in-.map would bind every card
+  // to the last rendered product's inputs
+  const pickingFor = useRef<number | null>(null);
+
+  function pick(pid: number, input: React.RefObject<HTMLInputElement | null>) {
+    pickingFor.current = pid;
+    input.current?.click();
+  }
 
   /** every mutation: run, then refresh the loader's data in place */
   async function run(id: number | null, fn: () => Promise<unknown>) {
@@ -78,8 +88,7 @@ export default function AdminProducts() {
       setPrice("");
       setDesc("");
       setPreviewUrl("");
-      setCreating(false);
-    });
+    }).finally(() => setCreating(false));
   }
 
   const deleteProduct = (id: number) =>
@@ -114,7 +123,7 @@ export default function AdminProducts() {
         fileName: f.name,
         contentType: f.type || "application/octet-stream",
       });
-      await uploadToR2(pres.uploadUrl, f, pres.contentType);
+      await uploadToBucket(pres.uploadUrl, f, pres.contentType);
       await adminAddFile(p.id, { name: f.name, storageKey: pres.key, sizeBytes: f.size });
     });
   }
@@ -127,7 +136,7 @@ export default function AdminProducts() {
         fileName: f.name,
         contentType: f.type || "image/png",
       });
-      await uploadToR2(pres.uploadUrl, f, pres.contentType);
+      await uploadToBucket(pres.uploadUrl, f, pres.contentType);
       await adminUpdateProduct(p.id, { thumbnailKey: pres.key });
     });
   }
@@ -155,6 +164,32 @@ export default function AdminProducts() {
             {actionError}
           </p>
         )}
+
+        {/* one hidden pair for the whole page; pickingFor decides the target product */}
+        <input
+          ref={thumbInput}
+          type="file"
+          accept="image/png,image/jpeg,image/webp"
+          hidden
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            const pid = pickingFor.current;
+            if (f && pid != null) uploadThumb({ id: pid }, f);
+            e.target.value = "";
+          }}
+        />
+        <input
+          ref={fileInput}
+          type="file"
+          accept=".zip,application/zip,application/x-zip-compressed,audio/mpeg,audio/wav,image/png,image/jpeg,image/webp"
+          hidden
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            const pid = pickingFor.current;
+            if (f && pid != null) uploadMaterial({ id: pid }, f);
+            e.target.value = "";
+          }}
+        />
 
         <section className="mt-8 panel rounded-2xl p-6">
           <h2 className="font-display text-xl font-bold tracking-[-0.01em] text-ink uppercase">Create product</h2>
@@ -213,7 +248,11 @@ export default function AdminProducts() {
               />
             </div>
             <div className="sm:col-span-2">
-              <button type="submit" className="btn btn-primary" disabled={creating}>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={creating || !title.trim() || price === ""}
+              >
                 Create
               </button>
             </div>
@@ -265,35 +304,13 @@ export default function AdminProducts() {
                   <button
                     className="btn btn-ghost"
                     disabled={busy === p.id}
-                    onClick={() => thumbInput.current?.click()}
+                    onClick={() => pick(p.id, thumbInput)}
                   >
                     Upload thumbnail
                   </button>
-                  <input
-                    ref={thumbInput}
-                    type="file"
-                    accept="image/png,image/jpeg,image/webp"
-                    hidden
-                    onChange={(e) => {
-                      const f = e.target.files?.[0];
-                      if (f) uploadThumb(p, f);
-                      if (e.target) e.target.value = "";
-                    }}
-                  />
-                  <button className="btn btn-ghost" disabled={busy === p.id} onClick={() => fileInput.current?.click()}>
+                  <button className="btn btn-ghost" disabled={busy === p.id} onClick={() => pick(p.id, fileInput)}>
                     Add file
                   </button>
-                  <input
-                    ref={fileInput}
-                    type="file"
-                    accept=".zip,application/zip,application/x-zip-compressed,audio/mpeg,audio/wav,image/png,image/jpeg,image/webp"
-                    hidden
-                    onChange={(e) => {
-                      const f = e.target.files?.[0];
-                      if (f) uploadMaterial(p, f);
-                      if (e.target) e.target.value = "";
-                    }}
-                  />
                   <button className="btn btn-ghost" disabled={busy === p.id} onClick={() => void deleteProduct(p.id)}>
                     Delete
                   </button>
