@@ -23,6 +23,37 @@ export function meta({}: Route.MetaArgs) {
   return [{ title: "Admin — Orders" }, { name: "robots", content: "noindex, nofollow" }];
 }
 
+/** skeleton mirrors the desk's real shape so first paint doesn't flash empty */
+export function HydrateFallback() {
+  return (
+    <>
+      <div className="flex items-baseline justify-between">
+        <div className="skeleton h-8 w-52" />
+        <div className="skeleton h-9 w-28" />
+      </div>
+      <div className="mt-6 flex flex-wrap gap-2">
+        {[112, 128, 76, 96, 88, 90].map((w, i) => (
+          <div key={i} className="skeleton rounded-full" style={{ width: w, height: 32 }} aria-hidden />
+        ))}
+      </div>
+      <div className="mt-6 space-y-4">
+        {[0, 1, 2].map((i) => (
+          <div key={i} className="panel rounded-2xl p-6">
+            <div className="flex justify-between gap-4">
+              <div className="space-y-2">
+                <div className="skeleton h-4 w-24" />
+                <div className="skeleton h-4 w-44" />
+              </div>
+              <div className="skeleton h-6 w-24" />
+            </div>
+            <div className="skeleton mt-5 h-4 w-56" />
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
 const STATUSES = ["all", "pending_payment", "paid", "rejected", "expired", "revoked"] as const;
 
 function statusLabel(s: string) {
@@ -93,19 +124,31 @@ export default function Admin() {
         ))}
       </nav>
 
-      {error && <p className="mt-6 text-danger">Failed to load orders</p>}
+      {error && (
+        <p className="mt-6 flex flex-wrap items-center gap-3 text-danger">
+          Failed to load orders
+          <button type="button" className="btn btn-ghost" onClick={() => revalidator.revalidate()}>
+            Retry
+          </button>
+        </p>
+      )}
       {actionError && (
         <p className="mt-6 text-[13px] text-danger" role="alert">
           {actionError}
         </p>
       )}
 
-      <div className="mt-6 space-y-4">
+      <div className="mt-6 space-y-4" aria-busy={busy !== null}>
         {orders.length === 0 ? (
-          <div className="panel rounded-2xl p-6 text-dim">No orders</div>
+          <div className="panel rounded-2xl p-6">
+            <p className="text-dim">{current === "all" ? "No orders yet." : `No ${statusLabel(current)} orders yet.`}</p>
+            <p className="label-caps mt-2">
+              {current === "pending_payment" ? "buyers reaching checkout appear here with their payment screenshot" : "switch a filter above to see other orders"}
+            </p>
+          </div>
         ) : (
           orders.map((o) => (
-            <article key={o.id} className="panel rounded-2xl p-5 sm:p-6">
+            <article key={o.id} className="panel card-lift rounded-2xl p-5 sm:p-6" aria-busy={busy === o.id}>
               <header className="flex flex-wrap items-baseline justify-between gap-3">
                 <div>
                   <div className="label-caps">Order #{o.id}</div>

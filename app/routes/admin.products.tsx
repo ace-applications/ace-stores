@@ -32,6 +32,51 @@ export function meta({}: Route.MetaArgs) {
   return [{ title: "Admin — Products" }, { name: "robots", content: "noindex, nofollow" }];
 }
 
+export function HydrateFallback() {
+  return (
+    <>
+      <div className="flex items-baseline justify-between">
+        <div className="skeleton h-8 w-44" />
+        <div className="skeleton h-9 w-40" />
+      </div>
+      <div className="mt-8 panel rounded-2xl p-6">
+        <div className="skeleton h-5 w-36" />
+        <div className="mt-5 grid gap-4 sm:grid-cols-2">
+          <div className="skeleton h-[74px] sm:col-span-2" />
+          <div className="skeleton h-[74px]" />
+          <div className="skeleton h-[74px]" />
+        </div>
+        <div className="skeleton mt-4 h-9 w-24" />
+      </div>
+      <div className="mt-8 panel rounded-2xl p-6">
+        <div className="skeleton h-5 w-20" />
+        <div className="mt-4 flex gap-2">
+          {[88, 72, 104].map((w, i) => (
+            <div key={i} className="skeleton rounded-full" style={{ width: w, height: 32 }} />
+          ))}
+        </div>
+      </div>
+      <div className="mt-8 space-y-6">
+        {[0, 1].map((i) => (
+          <div key={i} className="panel rounded-2xl p-6">
+            <div className="flex justify-between gap-3">
+              <div className="space-y-2">
+                <div className="skeleton h-4 w-24" />
+                <div className="skeleton h-6 w-48" />
+                <div className="skeleton h-4 w-20" />
+              </div>
+              <div className="flex gap-2">
+                <div className="skeleton h-9 w-36" />
+                <div className="skeleton h-9 w-24" />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
 async function uploadToBucket(uploadUrl: string, file: File, contentType: string) {
   if (!(await fetch(uploadUrl, { method: "PUT", headers: { "Content-Type": contentType }, body: file })).ok)
     throw new Error("Upload failed");
@@ -158,7 +203,14 @@ export default function AdminProducts() {
           </div>
         </div>
 
-        {error && <p className="mt-6 text-danger">Failed to load</p>}
+        {error && (
+          <p className="mt-6 flex flex-wrap items-center gap-3 text-danger">
+            Failed to load products
+            <button type="button" className="btn btn-ghost" onClick={() => revalidator.revalidate()}>
+              Retry
+            </button>
+          </p>
+        )}
         {actionError && (
           <p className="mt-6 text-[13px] text-danger" role="alert">
             {actionError}
@@ -292,7 +344,13 @@ export default function AdminProducts() {
         </section>
 
         <div className="mt-8 space-y-6">
-          {products.map((p) => (
+          {products.length === 0 ? (
+            <div className="panel rounded-2xl p-6">
+              <p className="text-dim">No products yet.</p>
+              <p className="label-caps mt-2">create one above, then attach files and a thumbnail</p>
+            </div>
+          ) : (
+            products.map((p) => (
             <article key={p.id} className="panel rounded-2xl p-6">
               <header className="flex flex-wrap items-baseline justify-between gap-3">
                 <div>
@@ -367,7 +425,8 @@ export default function AdminProducts() {
                 </div>
               )}
             </article>
-          ))}
+          ))
+          )}
         </div>
     </>
   );
