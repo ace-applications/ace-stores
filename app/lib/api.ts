@@ -4,6 +4,15 @@ import { ApiError } from "./errors";
 
 export const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8787";
 
+/** Server-side transport override. A Worker cannot fetch another *.workers.dev
+ *  hostname (routing returns 404), so the SSR worker routes API calls through a
+ *  service binding instead. Set once by workers/app.ts; the browser path never
+ *  sets it and keeps using plain fetch. */
+let ssrFetch: typeof fetch | null = null;
+export function setSsrFetch(fetchImpl: typeof fetch): void {
+  ssrFetch = fetchImpl;
+}
+
 export const authClient = createAuthClient({ baseURL: API_BASE });
 
 /** mirrors ProductShape in docs/frontend-handoff.md (backend contract) */
@@ -48,7 +57,7 @@ export interface OrderShape {
  */
 export async function api<T>(path: string, init?: RequestInit, req?: Request): Promise<T> {
   const cookie = req?.headers.get("cookie");
-  const res = await fetch(`${API_BASE}${path}`, {
+  const res = await (ssrFetch ?? fetch)(`${API_BASE}${path}`, {
     ...init,
     credentials: "include",
     headers: {

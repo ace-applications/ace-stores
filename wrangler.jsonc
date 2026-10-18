@@ -1,0 +1,14 @@
+// Frontend Worker (`ace`). `main` + assets are wired by the @cloudflare/
+// vite-plugin build; wrangler.jsonc in build/ is generated, never hand-edit.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ace",
+  "main": "./workers/app.ts",
+  "compatibility_date": "2026-10-06",
+  "compatibility_flags": ["nodejs_compat"],
+  "upload_source_maps": true,
+  "observability": { "enabled": true },
+  "services": [
+    { "binding": "API", "service": "ace-stores-api" }
+  ]
+}
