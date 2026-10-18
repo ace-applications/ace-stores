@@ -1,0 +1,4 @@
+# Vite fingerprints every file under /assets — safe to cache hard.
+# HTML and route responses are worker-rendered and must stay no-cache.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

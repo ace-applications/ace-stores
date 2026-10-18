@@ -6,38 +6,36 @@
 
 @font-face {
   font-family: "Red Rose";
-  src: url("../assets/Fonts/Red_Rose/RedRose-VariableFont_wght.ttf")
-    format("truetype-variations");
+  src: url("../assets/Fonts/Red_Rose/RedRose-VariableFont_wght.woff2") format("woff2-variations");
   font-weight: 100 900;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Janna LT";
-  src: url("../assets/Fonts/Janna/Janna-LT-Regular.ttf") format("truetype");
+  src: url("../assets/Fonts/Janna/Janna-LT-Regular.woff2") format("woff2");
   font-weight: 400 400;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Janna LT";
-  src: url("../assets/Fonts/Janna/Janna-LT-Bold.ttf") format("truetype");
+  src: url("../assets/Fonts/Janna/Janna-LT-Bold.woff2") format("woff2");
   font-weight: 700 700;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Inter Tight";
-  src: url("../assets/Fonts/Inter_Tight/InterTight-VariableFont_wght.ttf")
-    format("truetype-variations");
+  src: url("../assets/Fonts/Inter_Tight/InterTight-VariableFont_wght.woff2")
+    format("woff2-variations");
   font-weight: 100 900;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Inter";
-  src: url("../assets/Fonts/Inter/Inter-VariableFont_opsz,wght.ttf")
-    format("truetype-variations");
+  src: url("../assets/Fonts/Inter/Inter-VariableFont_opsz,wght.woff2") format("woff2-variations");
   font-weight: 100 900;
   font-display: swap;
 }

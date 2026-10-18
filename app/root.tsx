@@ -14,10 +14,16 @@ import { StoreProvider } from "./lib/store";
 import { Nav } from "./components/Nav";
 import { Footer } from "./components/Footer";
 import { abs, pageMeta } from "./lib/seo";
+import { API_BASE } from "./lib/api";
 import logoMain from "../assets/Logo/ACE Stores Logo/Ace Stores main.png";
 import "./app.css";
 
-export const links: Route.LinksFunction = () => [];
+export const links: Route.LinksFunction = () => [
+  // clients always talk to the API during hydration (get-session) — open the
+  // TLS connection in parallel with the document fetch; the fetch sends
+  // credentials, so the attribute must match or the connection is thrown away
+  { rel: "preconnect", href: API_BASE, crossOrigin: "use-credentials" },
+];
 
 export function meta({}: Route.MetaArgs) {
   return pageMeta({

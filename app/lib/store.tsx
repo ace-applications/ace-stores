@@ -76,6 +76,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       setState((s) => ({ ...s, orders: [] }));
       return;
     }
+    // the desk never renders the buyer's shelf — skip the fetch there; the
+    // library route still refetches on entry, so leaving the desk stays correct
+    if (window.location.pathname.startsWith("/admin")) return;
     let alive = true;
     myOrders()
       .then((orders) => alive && setState((s) => ({ ...s, orders })))
