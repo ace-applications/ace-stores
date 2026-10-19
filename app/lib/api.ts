@@ -22,6 +22,7 @@ export interface ProductShape {
   description: string | null;
   price: number; // whole EGP
   previewUrl: string | null;
+  published: boolean; // drafts are hidden from the storefront
   thumbnailUrl: string | null; // presigned — EXPIRES, refetched per load
   files: { id: number; name: string; sizeBytes: number | null }[];
   tags: { id: number; name: string }[];

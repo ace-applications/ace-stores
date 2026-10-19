@@ -15,8 +15,19 @@ export default [
   route("robots.txt", "routes/robots[.]txt.ts"),
   route("sitemap.xml", "routes/sitemap[.]xml.ts"),
   layout("routes/admin.layout.tsx", [
-    route("admin", "routes/admin.tsx"),
-    route("admin/products", "routes/admin.products.tsx"),
-    route("admin/settings", "routes/admin.settings.tsx"),
+    route("admin", "routes/admin.tsx", [
+      index("routes/admin._index.tsx"),
+      route("orders", "routes/admin.orders.tsx", [
+        index("routes/admin.orders._index.tsx"),
+        route(":id", "routes/admin.orders.$id.tsx"),
+      ]),
+      route("products", "routes/admin.products.tsx", [
+        index("routes/admin.products._index.tsx"),
+        route("new", "routes/admin.products.new.tsx"),
+        route(":id", "routes/admin.products.$id.tsx"),
+      ]),
+      route("tags", "routes/admin.tags.tsx"),
+      route("settings", "routes/admin.settings.tsx"),
+    ]),
   ]),
 ] satisfies RouteConfig;

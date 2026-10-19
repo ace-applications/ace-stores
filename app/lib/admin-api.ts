@@ -14,6 +14,10 @@ export function adminOrders(status?: string, req?: Request): Promise<AdminOrder[
   return api<AdminOrder[]>(`/admin/orders${q}`, undefined, req);
 }
 
+export function adminOrder(id: number, req?: Request): Promise<AdminOrder> {
+  return api<AdminOrder>(`/admin/orders/${id}`, undefined, req);
+}
+
 export function adminApproveOrder(id: number, req?: Request): Promise<{ id: number; status: string }> {
   return api<{ id: number; status: string }>(`/admin/orders/${id}/approve`, { method: "POST" }, req);
 }
@@ -33,6 +37,7 @@ export function adminCreateProduct(
     description?: string | null;
     previewUrl?: string | null;
     thumbnailKey?: string | null;
+    published?: boolean;
   },
   req?: Request,
 ): Promise<ProductShape> {
@@ -51,6 +56,7 @@ export function adminUpdateProduct(
     description: string | null;
     previewUrl: string | null;
     thumbnailKey: string | null;
+    published: boolean;
   }>,
   req?: Request,
 ): Promise<ProductShape> {
@@ -98,8 +104,9 @@ export interface AdminTag {
   name: string;
 }
 
+/** Admin list — includes drafts; the public /products filters them out. */
 export function adminProductsList(req?: Request): Promise<ProductShape[]> {
-  return api<ProductShape[]>("/products", undefined, req);
+  return api<ProductShape[]>("/admin/products", undefined, req);
 }
 
 export function adminTags(req?: Request): Promise<AdminTag[]> {
@@ -116,6 +123,14 @@ export function adminCreateTag(body: { name: string }, req?: Request): Promise<A
 
 export function adminDeleteTag(id: number, req?: Request): Promise<{ ok: boolean }> {
   return api<{ ok: boolean }>(`/admin/tags/${id}`, { method: "DELETE" }, req);
+}
+
+export function adminRenameTag(id: number, name: string, req?: Request): Promise<AdminTag> {
+  return api<AdminTag>(
+    `/admin/tags/${id}`,
+    { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name }) },
+    req,
+  );
 }
 
 export function adminSetProductTags(
