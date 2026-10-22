@@ -10,6 +10,8 @@ export default [
     route("pack/:slug", "routes/pack.$slug.tsx"),
     route("checkout", "routes/checkout.tsx"),
     route("library", "routes/library.tsx"),
+    route("account", "routes/account.tsx"),
+    route("policies", "routes/policies.tsx"),
     route("sign-in", "routes/sign-in.tsx"),
   ]),
   route("robots.txt", "routes/robots[.]txt.ts"),

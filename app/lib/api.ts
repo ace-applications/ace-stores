@@ -114,10 +114,33 @@ export function orderDownloadUrl(fileId: number) {
 
 export interface AppSettings {
   payment_instructions?: string;
+  support_email?: string;
+  announcement?: string;
+  order_expiry_days?: string;
+  policies_terms?: string;
+  policies_privacy?: string;
+  policies_refund?: string;
 }
 
 export function settings(req?: Request): Promise<AppSettings> {
   return api<AppSettings>("/settings", undefined, req);
+}
+
+/** Announcements change rarely; browsers keep a copy for a minute so the
+ *  header strip doesn't refetch per navigation. SSR-safe: pass the request. */
+let settingsCache: { at: number; promise: Promise<AppSettings> } | null = null;
+
+export function settingsCached(req?: Request): Promise<AppSettings> {
+  if (!settingsCache || Date.now() - settingsCache.at > 60_000) {
+    settingsCache = {
+      at: Date.now(),
+      promise: settings(req).catch((err) => {
+        settingsCache = null; // a failure must not poison the next attempt
+        throw err;
+      }),
+    };
+  }
+  return settingsCache.promise;
 }
 
 /* ——— adapter: ProductShape → Pack ——————————————————————

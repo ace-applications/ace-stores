@@ -1,10 +1,13 @@
 import { Link, NavLink, useLocation } from "react-router";
+import { useEffect, useState } from "react";
 import { useStore } from "../lib/store";
-import { authClient } from "../lib/api";
+import { authClient, settingsCached } from "../lib/api";
 import { isAdmin } from "../lib/session";
 import logoWhite from "../../assets/Logo/ACE Stores Logo/Ace Stores White .png";
 
 const LINK = "font-chrome text-[12.5px] font-bold tracking-[0.08em] uppercase px-1.5 py-3 transition-colors sm:px-3";
+
+const BUYER_STRIP = "One price per pack · downloads unlock when we confirm your transfer";
 
 /**
  * Two surfaces, one header. Staff land on the desk and never see shop links;
@@ -16,9 +19,18 @@ export function Nav() {
   const { cart } = useStore();
   const location = useLocation();
   const { data: session } = authClient.useSession();
+  const [announcement, setAnnouncement] = useState<string | null>(null);
   // standing on the sign-in page would loop ?next=/sign-in back onto itself
   const next = location.pathname === "/sign-in" ? "/" : location.pathname + location.search;
   const desk = isAdmin(session?.user);
+
+  // admin can replace the buyer strip copy; a failed read keeps the house copy
+  useEffect(() => {
+    if (desk) return;
+    void settingsCached()
+      .then((s) => setAnnouncement(s.announcement ?? null))
+      .catch(() => {});
+  }, [desk]);
 
   const DESK_LINKS = [
     { to: "/admin", label: "Orders" },
@@ -33,7 +45,7 @@ export function Nav() {
         <p className="font-chrome text-[12px] font-bold tracking-[0.08em] text-ground uppercase">
           {desk
             ? "Staff desk · orders, products, store settings"
-            : "One price per pack · downloads unlock when we confirm your transfer"}
+            : announcement?.trim() || BUYER_STRIP}
         </p>
       </div>
 
@@ -79,6 +91,16 @@ export function Nav() {
                 >
                   Library
                 </NavLink>
+                {session?.user && (
+                  <NavLink
+                    to="/account"
+                    className={({ isActive }) =>
+                      `${LINK} ${isActive ? "text-accent" : "text-dim hover:text-ink"}`
+                    }
+                  >
+                    Account
+                  </NavLink>
+                )}
                 <NavLink
                   to="/checkout"
                   aria-label={`Cart, ${cart.length} item${cart.length === 1 ? "" : "s"}`}

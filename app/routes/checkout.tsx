@@ -19,7 +19,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   // no error swallowing here: a backend outage must not read as an empty cart
   // or as "no bank instructions set". The route error boundary owns it.
   const [packs, s] = await Promise.all([fetchCatalog(), settings(request)]);
-  return { packs, paymentInstructions: s.payment_instructions ?? null };
+  return { packs, paymentInstructions: s.payment_instructions ?? null, supportEmail: s.support_email ?? null };
 }
 
 export function meta({}: Route.MetaArgs) {
@@ -33,7 +33,7 @@ type Step = "cart" | "details" | "done";
 class CheckoutError extends Error {}
 
 export default function Checkout() {
-  const { packs, paymentInstructions } = useLoaderData<typeof loader>();
+  const { packs, paymentInstructions, supportEmail } = useLoaderData<typeof loader>();
   const store = useStore();
   const { data: session, isPending: sessionPending } = authClient.useSession();
   const [step, setStep] = useState<Step>("cart");
@@ -340,9 +340,20 @@ export default function Checkout() {
           </div>
 
           {error && (
-            <p className="text-[13px] text-danger" role="alert">
-              {error}
-            </p>
+            <>
+              <p className="text-[13px] text-danger" role="alert">
+                {error}
+              </p>
+              {supportEmail && (
+                <p className="text-[13px] text-dim">
+                  Stuck? Write{" "}
+                  <a href={`mailto:${supportEmail}`} className="text-accent">
+                    {supportEmail}
+                  </a>{" "}
+                  and we'll sort the order by hand.
+                </p>
+              )}
+            </>
           )}
 
           <div className="flex flex-wrap items-center gap-3">

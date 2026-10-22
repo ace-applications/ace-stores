@@ -49,6 +49,9 @@ All paths relative to `API_BASE`. Prices are **integer EGP** (no piastres). **No
 | `PUT /admin/products/:id/tags` | `{ tagIds: number[] }` | `{ productId, tagIds }` — full replace, `[]` clears |
 | `GET /admin/settings` | — | `Record<string, string>` |
 | `PUT /admin/settings` | `{ entries: Record<string, string> }` | full map after write |
+| `GET /admin/export` | — | `{ exportedAt, users, products, orders, settings }` — one JSON of the whole business record, no auth secrets |
+
+Settings keys the desk should surface (all optional, published verbatim unless noted): `payment_instructions` (checkout panel; empty closes checkout), `support_email` (`mailto:` in checkout error states + `/account`), `announcement` (buyer header strip; empty = house line), `order_expiry_days` (integer 1–365, cron window, default 7), `policies_terms` / `policies_privacy` / `policies_refund` (sections of `/policies`).
 
 ### Shapes
 

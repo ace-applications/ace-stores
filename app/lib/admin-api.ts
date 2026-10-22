@@ -145,6 +145,10 @@ export function adminSetProductTags(
   );
 }
 
+export function adminExport(req?: Request): Promise<unknown> {
+  return api<unknown>("/admin/export", undefined, req);
+}
+
 export function adminSettings(req?: Request): Promise<Record<string, string>> {
   return api<Record<string, string>>("/admin/settings", undefined, req);
 }
