@@ -228,8 +228,8 @@ export function ProductEditor({
           </div>
         </div>
         <div className="mt-5 flex flex-wrap items-center gap-3">
-          <button type="submit" className="btn btn-primary" disabled={busy || !saveable}>
-            {creating ? "Create draft" : dirty ? "Save changes" : "Saved"}
+          <button type="submit" className="btn btn-primary" disabled={busy || !saveable} data-busy={busy || undefined}>
+            {creating ? "Create draft" : busy ? "Saving…" : dirty ? "Save changes" : "Saved"}
           </button>
           {!creating && (
             <button type="button" className="chip" data-on={product!.published} aria-pressed={product!.published} disabled={busy} onClick={() => void togglePublished()}>
@@ -277,7 +277,7 @@ export function ProductEditor({
             <div className="mt-4 flex gap-2">
               <label className="sr-only" htmlFor="ed-newtag">New tag name</label>
               <input id="ed-newtag" className="field max-w-xs" value={newTag} onChange={(e) => setNewTag(e.target.value)} placeholder="Create tag" />
-              <button type="button" className="btn btn-ghost" disabled={busy || !newTag.trim()} onClick={() => void addTag()}>Add</button>
+              <button type="button" className="btn btn-ghost" disabled={busy || !newTag.trim()} data-busy={busy || undefined} onClick={() => void addTag()}>Add</button>
             </div>
           </section>
 
@@ -307,7 +307,7 @@ export function ProductEditor({
             <h2 className="font-display text-xl font-bold tracking-[-0.01em] text-danger uppercase">Danger zone</h2>
             <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
               <p className="text-[13px] text-dim">Deleting removes the storefront pack, its files and its tag links.</p>
-              <button type="button" className="btn btn-primary" data-danger disabled={busy} onClick={() => deleteProduct()}>Delete product</button>
+              <button type="button" className="btn btn-primary" data-danger disabled={busy} data-busy={busy || undefined} onClick={() => deleteProduct()}>Delete product</button>
             </div>
           </section>
         </>

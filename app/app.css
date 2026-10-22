@@ -203,6 +203,25 @@ textarea {
   cursor: not-allowed;
 }
 
+/* in-flight affordance: buttons marked data-busy grow a spinning ring before
+ * their label, so a mutation shows motion from the first frame instead of
+ * reading as a frozen page. */
+.btn[data-busy="true"]::before {
+  content: "";
+  width: 0.9em;
+  height: 0.9em;
+  flex: none;
+  border-radius: 999px;
+  border: 2px solid currentColor;
+  border-inline-end-color: transparent;
+  animation: btn-spin 0.7s linear infinite;
+}
+@keyframes btn-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
 .chip {
   @apply font-semibold uppercase tnum;
   font-family: var(--font-chrome);

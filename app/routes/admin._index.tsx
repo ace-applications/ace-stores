@@ -4,7 +4,7 @@ import { Link, useLoaderData, useRevalidator } from "react-router";
 import { formatPrice } from "../data/products";
 import { adminApproveOrder, adminOrders, adminProductsList, adminRejectOrder } from "../lib/admin-api";
 import { friendlyError } from "../lib/errors";
-import { useConfirm } from "../components/admin-ux";
+import { useConfirm, useToast } from "../components/admin-ux";
 
 /** Overview = the desk's two list endpoints read as-is; every stat is computed
  *  client-side, so the dashboard costs zero backend work. */
@@ -52,17 +52,19 @@ export default function AdminOverview() {
   const [busy, setBusy] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
   const { ask, dialog } = useConfirm();
+  const { show, toast } = useToast();
 
   const pending = orders.filter((o) => o.status === "pending_payment");
   const paid = orders.filter((o) => o.status === "paid");
   const drafts = products.filter((p) => !p.published);
 
   /** every mutation: run, then refresh the loader's data in place */
-  async function run(fn: () => Promise<unknown>) {
+  async function run(fn: () => Promise<unknown>, done?: string) {
     setBusy(true);
     setActionError(null);
     try {
       await fn();
+      if (done) show(done);
       revalidator.revalidate();
     } catch (e) {
       setActionError(friendlyError(e, "That didn't save. Try again."));
@@ -71,11 +73,12 @@ export default function AdminOverview() {
     }
   }
 
-  const approve = (id: number) => run(() => adminApproveOrder(id));
+  const approve = (id: number) => run(() => adminApproveOrder(id), "Approved");
 
   return (
     <>
       {dialog}
+      {toast}
       {error ? (
         <p className="flex flex-wrap items-center gap-3 text-danger">
           Failed to load admin data
@@ -115,7 +118,7 @@ export default function AdminOverview() {
             </div>
           </div>
 
-          <section className="mt-8 panel rounded-2xl p-6">
+          <section className="mt-8 panel rounded-2xl p-6" aria-busy={busy || undefined}>
             <header className="flex flex-wrap items-baseline justify-between gap-3">
               <h2 className="font-display text-xl font-bold tracking-[-0.01em] text-ink uppercase">
                 Payment queue
@@ -139,18 +142,19 @@ export default function AdminOverview() {
                     <span className="min-w-0 flex-1 truncate text-[13.5px] text-dim">{o.user.email}</span>
                     <span className="tnum text-ink">{formatPrice(o.totalPrice)}</span>
                     <span className="flex gap-2">
-                      <button className="btn btn-primary" disabled={busy} onClick={() => void approve(o.id)}>
+                      <button className="btn btn-primary" disabled={busy} data-busy={busy || undefined} onClick={() => void approve(o.id)}>
                         Approve
                       </button>
                       <button
                         className="btn btn-ghost"
                         disabled={busy}
+                        data-busy={busy || undefined}
                         onClick={() =>
                           ask({
                             title: `Reject order #${o.id}?`,
                             confirmLabel: "Reject",
                             danger: true,
-                            action: () => void run(() => adminRejectOrder(o.id)),
+                            action: () => void run(() => adminRejectOrder(o.id), "Rejected"),
                           })
                         }
                       >

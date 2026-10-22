@@ -4,7 +4,7 @@ import { Link, useLoaderData, useRevalidator } from "react-router";
 import { formatDate, formatPrice } from "../data/products";
 import { adminApproveOrder, adminOrders, adminRejectOrder, adminRevokeOrder } from "../lib/admin-api";
 import { friendlyError } from "../lib/errors";
-import { useConfirm } from "../components/admin-ux";
+import { useConfirm, useToast } from "../components/admin-ux";
 
 /** Fetches ALL orders once; status chips and search filter client-side — the
  *  full arrays are small and it keeps chip counts free. */
@@ -65,17 +65,19 @@ export default function AdminOrdersIndex() {
   const [busy, setBusy] = useState<number | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const { ask, dialog } = useConfirm();
+  const { show, toast } = useToast();
 
   function setStatus(s: string) {
     setCurrent(s);
   }
 
   /** every mutation: run, then refresh the loader's data in place */
-  async function run(id: number, fn: () => Promise<unknown>) {
+  async function run(id: number, fn: () => Promise<unknown>, done?: string) {
     setBusy(id);
     setActionError(null);
     try {
       await fn();
+      if (done) show(done);
       revalidator.revalidate();
     } catch (e) {
       setActionError(friendlyError(e, "That didn't save. Try again."));
@@ -84,7 +86,7 @@ export default function AdminOrdersIndex() {
     }
   }
 
-  const approve = (id: number) => run(id, () => adminApproveOrder(id));
+  const approve = (id: number) => run(id, () => adminApproveOrder(id), "Approved");
 
   const reject = (id: number) =>
     ask({ title: `Reject order #${id}?`, confirmLabel: "Reject", danger: true, action: () => void run(id, () => adminRejectOrder(id)) });
@@ -110,6 +112,7 @@ export default function AdminOrdersIndex() {
   return (
     <>
       {dialog}
+      {toast}
       <div className="flex flex-wrap items-baseline justify-between gap-4">
         <h1 className="font-display text-3xl font-extrabold tracking-[-0.02em] text-ink uppercase">Orders</h1>
         <label className="field flex max-w-xs items-center gap-2 py-1.5">
@@ -203,12 +206,12 @@ export default function AdminOrdersIndex() {
                 <Link to={`/admin/orders/${o.id}`} className="btn btn-ghost">Details</Link>
                 {o.status === "pending_payment" && (
                   <>
-                    <button className="btn btn-primary" disabled={busy === o.id} onClick={() => void approve(o.id)}>Approve</button>
-                    <button className="btn btn-ghost" disabled={busy === o.id} onClick={() => reject(o.id)}>Reject</button>
+                    <button className="btn btn-primary" disabled={busy === o.id} data-busy={busy === o.id || undefined} onClick={() => void approve(o.id)}>Approve</button>
+                    <button className="btn btn-ghost" disabled={busy === o.id} data-busy={busy === o.id || undefined} onClick={() => reject(o.id)}>Reject</button>
                   </>
                 )}
                 {o.status === "paid" && (
-                  <button className="btn btn-ghost" disabled={busy === o.id} onClick={() => revoke(o.id)}>Revoke (kills downloads)</button>
+                  <button className="btn btn-ghost" disabled={busy === o.id} data-busy={busy === o.id || undefined} onClick={() => revoke(o.id)}>Revoke (kills downloads)</button>
                 )}
               </footer>
             </article>

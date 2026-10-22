@@ -141,7 +141,7 @@ export default function AdminTags() {
                       onChange={(e) => setRenameValue(e.target.value)}
                       onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Element | null)) setRenaming(null); }}
                     />
-                    <button type="submit" className="btn btn-primary" disabled={busy || !renameValue.trim()}>Save</button>
+                    <button type="submit" className="btn btn-primary" disabled={busy || !renameValue.trim()} data-busy={busy || undefined}>Save</button>
                   </form>
                 ) : (
                   <>
@@ -175,7 +175,7 @@ export default function AdminTags() {
             placeholder="New tag name"
             maxLength={50}
           />
-          <button type="submit" className="btn btn-primary" disabled={busy || !newTag.trim()}>Add tag</button>
+          <button type="submit" className="btn btn-primary" disabled={busy || !newTag.trim()} data-busy={busy || undefined}>Add tag</button>
         </form>
         <p className="label-caps mt-3 text-dim">tags group related packs and filter the catalog</p>
       </div>

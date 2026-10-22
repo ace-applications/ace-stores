@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useLoaderData, useRevalidator } from "react-router";
 import { adminSettings, adminUpdateSettings } from "../lib/admin-api";
 import { friendlyError } from "../lib/errors";
+import { useToast } from "../components/admin-ux";
 
 /** clientLoader on purpose: see admin.tsx — SSR would send no session cookie. */
 export async function clientLoader() {
@@ -37,6 +38,7 @@ export default function AdminSettings() {
   const [payment, setPayment] = useState(settings.payment_instructions ?? "");
   const [saving, setSaving] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
+  const { show, toast } = useToast();
   const clean = payment === (settings.payment_instructions ?? "");
   // the Retry button refetches — the form must follow or "Save" would reseed
   // the textarea from the failed load's empty value
@@ -51,6 +53,7 @@ export default function AdminSettings() {
     setActionError(null);
     try {
       await adminUpdateSettings({ payment_instructions: payment });
+      show("Settings saved");
       revalidator.revalidate();
     } catch (err) {
       setActionError(friendlyError(err, "Those settings didn't save. Try again."));
@@ -61,6 +64,7 @@ export default function AdminSettings() {
 
   return (
     <>
+        {toast}
         <h1 className="font-display text-3xl font-extrabold tracking-[-0.02em] text-ink uppercase">Settings</h1>
 
         {error && (
@@ -93,7 +97,7 @@ export default function AdminSettings() {
             shown to buyers at checkout · empty this closes checkout
           </span>
           <div className="mt-4 flex flex-wrap items-center gap-3">
-            <button type="submit" className="btn btn-primary" disabled={saving || clean || error}>
+            <button type="submit" className="btn btn-primary" disabled={saving || clean || error} data-busy={saving || undefined}>
               {saving ? "Saving…" : "Save"}
             </button>
             {/* always-mounted live region so SRs reliably announce the text change */}

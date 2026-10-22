@@ -66,12 +66,12 @@ export default function AdminOrderDetail() {
   }
 
   /** every mutation: run, then refresh the loader's data in place */
-  async function run(fn: () => Promise<unknown>) {
+  async function run(fn: () => Promise<unknown>, done?: string) {
     setBusy(true);
     setActionError(null);
     try {
       await fn();
-      show("Done");
+      if (done) show(done);
       revalidator.revalidate();
     } catch (e) {
       setActionError(friendlyError(e, "That didn't save. Try again."));
@@ -152,12 +152,12 @@ export default function AdminOrderDetail() {
             <div className="mt-4 flex flex-wrap gap-2">
               {order.status === "pending_payment" && (
                 <>
-                  <button className="btn btn-primary" disabled={busy} onClick={() => void run(() => adminApproveOrder(order.id))}>Approve</button>
-                  <button className="btn btn-ghost" disabled={busy} onClick={() => ask({ title: `Reject order #${order.id}?`, confirmLabel: "Reject", danger: true, action: () => void run(() => adminRejectOrder(order.id)) })}>Reject</button>
+                  <button className="btn btn-primary" disabled={busy} data-busy={busy || undefined} onClick={() => void run(() => adminApproveOrder(order.id), "Approved")}>Approve</button>
+                  <button className="btn btn-ghost" disabled={busy} data-busy={busy || undefined} onClick={() => ask({ title: `Reject order #${order.id}?`, confirmLabel: "Reject", danger: true, action: () => void run(() => adminRejectOrder(order.id), "Rejected") })}>Reject</button>
                 </>
               )}
               {order.status === "paid" && (
-                <button className="btn btn-ghost" disabled={busy} onClick={() => ask({ title: `Revoke order #${order.id}?`, body: "This kills downloads for the buyer.", confirmLabel: "Revoke", danger: true, action: () => void run(() => adminRevokeOrder(order.id)) })}>Revoke (kills downloads)</button>
+                <button className="btn btn-ghost" disabled={busy} data-busy={busy || undefined} onClick={() => ask({ title: `Revoke order #${order.id}?`, body: "This kills downloads for the buyer.", confirmLabel: "Revoke", danger: true, action: () => void run(() => adminRevokeOrder(order.id), "Revoked") })}>Revoke (kills downloads)</button>
               )}
               {["rejected", "expired", "revoked"].includes(order.status) && (
                 <p className="text-dim">This order is closed — no further actions apply.</p>
