@@ -1,4 +1,5 @@
 import type { Route } from "./+types/home";
+import { useRef, useState } from "react";
 import { Link, useLoaderData } from "react-router";
 import { formatPrice, type Pack } from "../data/products";
 import { fetchCatalog, API_BASE } from "../lib/api";
@@ -51,6 +52,24 @@ export default function Home() {
   const featured = packs[0];
   const inCart = featured ? store.cart.includes(featured.id) : false;
   const owned = featured ? store.hydrated && store.inLibrary(featured.productId) : false;
+  const [playingFeatured, setPlayingFeatured] = useState(false);
+  const featuredVideoRef = useRef<HTMLVideoElement>(null);
+
+  const startFeatured = () => {
+    if (!featured?.preview) return;
+    setPlayingFeatured(true);
+    featuredVideoRef.current?.play().catch(() => {});
+  };
+
+  const stopFeatured = () => {
+    if (!featured?.preview) return;
+    setPlayingFeatured(false);
+    if (featuredVideoRef.current) {
+      featuredVideoRef.current.pause();
+      featuredVideoRef.current.currentTime = 0;
+    }
+  };
+
   const videoTile = packs.find((p) => p.family === "video");
   const audioTile = packs.find((p) => p.family === "audio");
   const videoCount = packs.filter((p) => p.family === "video").length;
@@ -85,11 +104,51 @@ export default function Home() {
 
         {/* featured pack */}
         {featured && (
-        <div id="featured" className="panel-raised rise-in rounded-2xl p-5" style={{ animationDelay: "120ms" }}>
-          <div className="label-caps">featured pack</div>
-          <div className="mt-3 overflow-hidden rounded-xl">
-            <CoverArt pack={featured} className="block aspect-square w-full" />
+        <div
+          id="featured"
+          className="panel-raised rise-in rounded-2xl p-5"
+          style={{ animationDelay: "120ms" }}
+          onMouseEnter={startFeatured}
+          onMouseLeave={stopFeatured}
+        >
+          <div className="flex items-center justify-between">
+            <span className="label-caps">featured pack</span>
+            {featured.preview && (
+              <span
+                className="label-caps inline-flex items-center gap-1.5 rounded-full bg-ground/85 px-2.5 py-0.5 text-[10.5px] font-bold tracking-[0.08em] text-ink border border-hairline"
+                aria-hidden="true"
+              >
+                <span
+                  className={`h-1.5 w-1.5 rounded-full ${
+                    playingFeatured ? "bg-accent animate-pulse" : "bg-ink/70"
+                  }`}
+                />
+                {playingFeatured ? "playing demo" : "preview available"}
+              </span>
+            )}
           </div>
+          <Link
+            to={`/pack/${featured.slug}`}
+            className="relative mt-3 block overflow-hidden rounded-xl"
+            onFocus={startFeatured}
+            onBlur={stopFeatured}
+            aria-label={`View ${featured.name}`}
+          >
+            <CoverArt pack={featured} className="block aspect-square w-full" />
+            {featured.preview && (
+              <video
+                ref={featuredVideoRef}
+                src={featured.preview}
+                muted
+                loop
+                playsInline
+                preload="none"
+                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-200 ${
+                  playingFeatured ? "opacity-100" : "pointer-events-none opacity-0"
+                }`}
+              />
+            )}
+          </Link>
           <div className="mt-4 flex items-baseline justify-between gap-3">
             <h2 className="font-display text-2xl font-bold tracking-[-0.01em] text-ink">
               {featured.name}
