@@ -87,7 +87,7 @@ type ProductShape = {
 
 ### Validation limits (mirror in the UI; server enforces)
 
-- `POST /admin/products` — `title` 1–200; `price` int 0–1,000,000; `description` ≤ 5000; `previewUrl` must be a valid URL.
+- `POST /admin/products` — `title` 1–200; `price` int 0–1,000,000; `description` ≤ 5000; `previewUrl` ≤ 500 chars (external URL verbatim or `previews/<key>` path for uploaded video).
 - `PATCH /admin/products/:id` — empty body → `400`.
 - `PUT /admin/products/:id/tags` — unknown tag id → `400`.
 - `PUT /admin/settings` — keys 1–100 chars, values ≤ 10,000 chars.
@@ -261,7 +261,7 @@ Radii: cards/panels **16px**, controls/fields **8px**, chips/pills **999px**. Sp
 ## Scope sketch (what "admin frontend" means here)
 
 1. **Orders desk** (`/admin`) — payments are the operational job. Queue filtered by status (chips, `?status=`), newest first. Row: order id + date, buyer email + name, items (`title × price`), `totalPrice`, `paymentReference` when present, screenshot (render `screenshotUrl` — refetch per load, it expires), status. Actions by state: `approve` / `reject` (from `pending_payment`), `revoke` (from `paid`). Buttons name the action + consequence (confirm revoke: it kills downloads).
-2. **Products** (`/admin/products`) — list (reuse `PackCard` or a leaner table), create, edit (title/price/description), thumbnail via presign→PUT→`PATCH thumbnailKey`, `previewUrl` as external URL, files per product (presign `material` + `POST …/files`, delete via `DELETE /admin/files/:fileId`), tags (create, delete, assign tagIds).
+2. **Products** (`/admin/products`) — list (compact row, search via `useDeferredValue`), create, edit (title, price in whole EGP, description), preview video upload straight to B2 (`kind:"preview"`, mp4/webm, stored as `previews/<key>` and played through `GET /media/preview`), thumbnail via presign→PUT→`PATCH thumbnailKey`, files per product (presign `material` + `POST …/files`, delete via `DELETE /admin/files/:fileId`), tags (create, delete, toggle assign).
 3. **Settings** (`/admin/settings`) — `payment_instructions` textarea (the key checkout needs) → `PUT /admin/settings { entries }`.
 
 Ship order: gate → orders desk → products → settings. Each is verifiable independently against the live API.

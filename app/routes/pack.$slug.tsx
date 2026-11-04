@@ -114,24 +114,26 @@ export default function PackDetail() {
 
           <div className="panel mt-6 rounded-2xl p-5">
             <div className="label-caps">what&apos;s inside</div>
-            {pack.contents.length > 0 ? (
-              <ul className="mt-3 space-y-2">
-                {pack.contents.map((c) => (
-                  <li key={c.note} className="flex items-baseline gap-3 text-[14px] text-dim">
-                    <span className="label-caps w-14 shrink-0 text-ink">{c.label}</span>
-                    <span className="min-w-0 break-words text-ink">{c.note}</span>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="mt-3 text-[14px] text-dim">
-                No preview media yet — this pack ships as a download only.
+            {pack.preview && (
+              /* a real demo exists — it plays here, honest playback rule */
+              <video className="mt-3 w-full rounded-lg border border-hairline" controls preload="metadata" src={pack.preview}>
+                <track kind="captions" />
+              </video>
+            )}
+            <ul className={pack.preview ? "mt-4 border-t border-hairline pt-3 space-y-2" : "mt-3 space-y-2"}>
+              {pack.contents.map((c) => (
+                <li key={c.note} className="flex items-baseline gap-3 text-[14px] text-dim">
+                  <span className="label-caps w-14 shrink-0 text-ink">{c.label}</span>
+                  <span className="min-w-0 break-words text-ink">{c.note}</span>
+                </li>
+              ))}
+            </ul>
+            {!pack.preview && (
+              <p className="mt-4 border-t border-hairline pt-3 text-[13px] text-dim">
+                <span className="label-caps !text-accent">demo in production</span> — no audio or
+                video preview is published for this pack yet. The file list above is the full manifest.
               </p>
             )}
-            <p className="mt-4 border-t border-hairline pt-3 text-[13px] text-dim">
-              <span className="label-caps !text-accent">demo in production</span> — no audio or
-              video preview is published for this pack yet. The file list above is the full manifest.
-            </p>
           </div>
 
           <p className="mt-6 max-w-[68ch] text-[15px] leading-relaxed text-dim">{pack.blurb}</p>

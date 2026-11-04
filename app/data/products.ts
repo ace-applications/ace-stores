@@ -29,6 +29,9 @@ export interface Pack {
   price: number;
   /** real product thumbnail (presigned URL — expires); generated art when absent */
   imageUrl?: string;
+  /** buyer-playable preview media (previews/<key> resolved to a media src, or
+   *  a legacy external link) — absent when no demo exists */
+  preview?: string;
   /** deliverable files (id/name) — download URLs are minted per file */
   files?: { id: number; name: string }[];
 }

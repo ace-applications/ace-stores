@@ -12,6 +12,7 @@ import {
   type AdminTag,
 } from "../lib/admin-api";
 import type { ProductShape } from "../lib/api";
+import { previewSrc } from "../lib/api";
 import { friendlyError } from "../lib/errors";
 import { useConfirm, useToast } from "./admin-ux";
 
@@ -40,14 +41,17 @@ export function ProductEditor({
   // interaction, the round trip is not) — the loader's value reconciles within
   // the revalidation render.
   const [pendingPublished, setPendingPublished] = useState<boolean | null>(null);
+  // previewUrl lives in the Preview section (upload/remove actions only);
+  // the Details save never touches it, so a save cannot clobber an in-flight
+  // preview change on a slow wire.
   const [title, setTitle] = useState(product?.title ?? "");
   const [price, setPrice] = useState(product ? String(product.price) : "");
   const [desc, setDesc] = useState(product?.description ?? "");
-  const [previewUrl, setPreviewUrl] = useState(product?.previewUrl ?? "");
 
   const [newTag, setNewTag] = useState("");
   const fileInput = useRef<HTMLInputElement>(null);
   const thumbInput = useRef<HTMLInputElement>(null);
+  const previewInput = useRef<HTMLInputElement>(null);
   const { ask, dialog } = useConfirm();
   const { show, toast } = useToast();
 
@@ -55,22 +59,20 @@ export function ProductEditor({
      loaded row changes id, and re-set explicitly after each successful save */
   const [baseline, setBaseline] = useState(() =>
     product
-      ? { title: product.title, price: String(product.price), desc: product.description ?? "", previewUrl: product.previewUrl ?? "" }
-      : { title: "", price: "", desc: "", previewUrl: "" },
+      ? { title: product.title, price: String(product.price), desc: product.description ?? "" }
+      : { title: "", price: "", desc: "" },
   );
   useEffect(() => {
     if (product) {
       setTitle(product.title);
       setPrice(String(product.price));
       setDesc(product.description ?? "");
-      setPreviewUrl(product.previewUrl ?? "");
-      setBaseline({ title: product.title, price: String(product.price), desc: product.description ?? "", previewUrl: product.previewUrl ?? "" });
+      setBaseline({ title: product.title, price: String(product.price), desc: product.description ?? "" });
     } else {
       setTitle("");
       setPrice("");
       setDesc("");
-      setPreviewUrl("");
-      setBaseline({ title: "", price: "", desc: "", previewUrl: "" });
+      setBaseline({ title: "", price: "", desc: "" });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- reset only when switching rows; mid-edit revalidates must not clobber typing
   }, [product?.id]);
@@ -79,8 +81,7 @@ export function ProductEditor({
     !creating &&
     (title !== baseline.title ||
       Math.trunc(Number(price) || 0) !== Number(baseline.price) ||
-      desc !== baseline.desc ||
-      previewUrl !== baseline.previewUrl);
+      desc !== baseline.desc);
 
   const blocker = useBlocker(dirty);
   useEffect(() => {
@@ -121,7 +122,6 @@ export function ProductEditor({
       title: title.trim(),
       price: Math.trunc(Number(price) || 0),
       description: desc || null,
-      previewUrl: previewUrl.trim() || null,
     };
     if (creating) {
       setBusy(true);
@@ -137,7 +137,7 @@ export function ProductEditor({
     setBusy(true);
     try {
       await adminUpdateProduct(product!.id, body);
-      setBaseline({ title: body.title, price: String(body.price), desc: body.description ?? "", previewUrl: body.previewUrl ?? "" });
+      setBaseline({ title: body.title, price: String(body.price), desc: body.description ?? "" });
       show("Saved");
       revalidator.revalidate();
     } catch (err) {
@@ -164,6 +164,30 @@ export function ProductEditor({
       show("Thumbnail updated");
     });
   }
+
+  async function uploadPreview(f: File) {
+    await run(async () => {
+      const pres = await adminPresign({ kind: "preview", productId: product!.id, fileName: f.name, contentType: f.type || "video/mp4" });
+      await uploadToBucket(pres.uploadUrl, f, pres.contentType);
+      // store the previews/<key> path, not the presigned URL — the key is
+      // stable and buyers play it through /media/preview
+      await adminUpdateProduct(product!.id, { previewUrl: pres.key });
+      show("Preview updated");
+    });
+  }
+
+  const removePreview = () =>
+    ask({
+      title: "Remove the preview video?",
+      body: "Buying decisions keep working — the pack page falls back to its file manifest.",
+      confirmLabel: "Remove",
+      danger: true,
+      action: () =>
+        void run(async () => {
+          await adminUpdateProduct(product!.id, { previewUrl: null });
+          show("Preview removed");
+        }),
+    });
 
   function uploadMaterial(f: File) {
     return run(async () => {
@@ -227,21 +251,17 @@ export function ProductEditor({
 
       <form onSubmit={save} className="panel rounded-2xl p-6">
         <h2 className="font-display text-xl font-bold tracking-[-0.01em] text-ink uppercase">Details</h2>
-        <div className="mt-5 grid gap-4 sm:grid-cols-2">
-          <div className="sm:col-span-2">
+        <div className="mt-5 space-y-4">
+          <div>
             <label className="label-caps" htmlFor="ed-title">Title</label>
             <input id="ed-title" className="field mt-2" value={title} onChange={(e) => setTitle(e.target.value)} required maxLength={200} />
           </div>
-          <div>
+          <div className="max-w-xs">
             <label className="label-caps" htmlFor="ed-price">Price (EGP)</label>
             <input id="ed-price" className="field mt-2 tnum" type="number" value={price} onChange={(e) => setPrice(e.target.value)} required min={0} max={1e6} />
+            <span className="label-caps mt-1 block">whole EGP, no decimals</span>
           </div>
           <div>
-            <label className="label-caps" htmlFor="ed-preview">Preview URL</label>
-            <input id="ed-preview" className="field mt-2" value={previewUrl} onChange={(e) => setPreviewUrl(e.target.value)} placeholder="https://…" />
-            <span className="label-caps mt-1 block">optional — link to hosted preview media</span>
-          </div>
-          <div className="sm:col-span-2">
             <label className="label-caps" htmlFor="ed-desc">Description</label>
             <textarea id="ed-desc" className="field mt-2 h-24" value={desc} onChange={(e) => setDesc(e.target.value)} maxLength={5e3} />
           </div>
@@ -261,6 +281,41 @@ export function ProductEditor({
 
       {!creating && (
         <>
+          <section className="mt-6 panel rounded-2xl p-6">
+            <h2 className="font-display text-xl font-bold tracking-[-0.01em] text-ink uppercase">Preview</h2>
+            {product!.previewUrl ? (
+              <div className="mt-4 flex flex-wrap items-start gap-4">
+                <video
+                  controls
+                  preload="metadata"
+                  className="max-w-md w-full rounded-lg border border-hairline"
+                  src={previewSrc(product!.previewUrl) ?? undefined}
+                >
+                  <track kind="captions" />
+                </video>
+                <div className="flex flex-col gap-2">
+                  <input ref={previewInput} type="file" accept="video/mp4,video/webm" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) void uploadPreview(f); e.target.value = ""; }} />
+                  <button type="button" className="btn btn-ghost" disabled={busy} data-busy={busy || undefined} onClick={() => previewInput.current?.click()}>Replace preview</button>
+                  <button type="button" className="btn btn-ghost" data-danger disabled={busy} onClick={() => removePreview()}>Remove preview</button>
+                  <span className="label-caps text-dim">plays on the pack page — buyers see it without buying</span>
+                </div>
+              </div>
+            ) : (
+              <div className="mt-4 flex flex-wrap items-center gap-4">
+                <div className="flex h-40 w-40 items-center justify-center rounded-lg border border-hairline" aria-hidden>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="text-dim">
+                    <path d="M13.5 8.5 17 6.5v7l-3.5-2M3.5 5.5h10v9h-10z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+                  </svg>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <input ref={previewInput} type="file" accept="video/mp4,video/webm" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) void uploadPreview(f); e.target.value = ""; }} />
+                  <button type="button" className="btn btn-primary" disabled={busy} data-busy={busy || undefined} onClick={() => previewInput.current?.click()}>Upload preview</button>
+                  <span className="label-caps text-dim">mp4 · webm — uploads straight to storage</span>
+                </div>
+              </div>
+            )}
+          </section>
+
           <section className="mt-6 panel rounded-2xl p-6">
             <h2 className="font-display text-xl font-bold tracking-[-0.01em] text-ink uppercase">Cover</h2>
             <div className="mt-4 flex flex-wrap items-center gap-4">

@@ -4,6 +4,16 @@ import { ApiError } from "./errors";
 
 export const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8787";
 
+/** Preview playback source: a stored `previews/<key>` plays through the
+ *  backend's redirect route (the bucket itself stays private); anything else
+ *  is a legacy external link and is used verbatim. */
+export function previewSrc(previewFile?: string | null): string | null {
+  if (!previewFile) return null;
+  return previewFile.startsWith("previews/")
+    ? `${API_BASE}/media/preview?key=${encodeURIComponent(previewFile)}`
+    : previewFile;
+}
+
 /** Server-side transport override. A Worker cannot fetch another *.workers.dev
  *  hostname (routing returns 404), so the SSR worker routes API calls through a
  *  service binding instead. Set once by workers/app.ts; the browser path never
@@ -202,6 +212,7 @@ export function productToPack(p: ProductShape, taken: Set<string>): Pack {
     size: formatSize(p.files.reduce((s, f) => s + (f.sizeBytes ?? 0), 0)),
     price: p.price,
     imageUrl: p.thumbnailUrl ?? undefined,
+    preview: previewSrc(p.previewUrl) ?? undefined,
     files: p.files.map((f) => ({ id: f.id, name: f.name })),
   };
 }
