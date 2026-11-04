@@ -52,6 +52,10 @@
   --color-accent: #8b5cf6;
   --color-accent-soft: #a78bfa;
   --color-danger: #ff5470;
+  --color-danger-soft: #ff7a92;
+  --color-bright: #ffffff;
+  --color-shadow: rgb(0 0 0 / 0.45);
+  --color-shadow-deep: rgb(0 0 0 / 0.5);
 
   --font-sans: "Janna LT", ui-serif, Georgia, "Times New Roman", serif;
   --font-display: "Red Rose", "Inter Tight", "Inter", ui-sans-serif, system-ui, sans-serif;
@@ -75,7 +79,7 @@ body {
 
 ::selection {
   background: var(--color-accent);
-  color: #fff;
+  color: var(--color-bright);
 }
 
 :focus-visible {
@@ -103,7 +107,7 @@ textarea {
 .panel-raised {
   background: var(--color-panel2);
   border: 1px solid var(--color-hairline);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 8px 24px var(--color-shadow);
 }
 
 .label-caps {
@@ -150,7 +154,7 @@ textarea {
   color: var(--color-ground);
 }
 .btn-primary:hover {
-  background: #fff;
+  background: var(--color-bright);
   transform: translateY(-1px);
 }
 
@@ -169,7 +173,7 @@ textarea {
   color: #0b0c10;
 }
 .btn-primary[data-danger]:hover {
-  background: #ff7a92;
+  background: var(--color-danger-soft);
 }
 
 /* desk status toast — fixed slate above the fold, text only */
@@ -185,7 +189,7 @@ textarea {
   padding: 0.6rem 1.2rem;
   color: var(--color-ink);
   font-size: 13.5px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 12px 32px var(--color-shadow-deep);
 }
 
 .btn-ghost {
@@ -298,6 +302,14 @@ textarea {
   animation: skeleton-pulse 1.6s ease-in-out infinite;
 }
 
+/* Admin order rows: off-screen cards skip render work (INP budget — long
+   desks shouldn't turn scroll into layout). Intrinsic size keeps scroll
+   position stable until a row paints. */
+.desk-orders article[style*="content-visibility"] {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 240px;
+}
+
 @keyframes skeleton-pulse {
   0%,
   100% {
@@ -333,7 +345,7 @@ textarea {
 }
 .card-lift:hover {
   transform: translateY(-4px);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 16px 40px var(--color-shadow-deep);
   border-color: var(--color-hairline-bright);
 }
 

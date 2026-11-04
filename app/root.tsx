@@ -15,15 +15,34 @@ import { Nav } from "./components/Nav";
 import { Footer } from "./components/Footer";
 import { abs, pageMeta } from "./lib/seo";
 import { API_BASE } from "./lib/api";
+import { wireInpCanary } from "./lib/inp-canary";
 import logoMain from "../assets/Logo/ACE Stores Logo/Ace Stores main.png";
 import "./app.css";
+
+// dev-only click→paint canary (tree-shaken in production); see lib/inp-canary
+wireInpCanary();
 
 export const links: Route.LinksFunction = () => [
   // clients always talk to the API during hydration (get-session) — open the
   // TLS connection in parallel with the document fetch; the fetch sends
   // credentials, so the attribute must match or the connection is thrown away
   { rel: "preconnect", href: API_BASE, crossOrigin: "use-credentials" },
+  // chrome text above the fold is Inter Tight/Red Rose — preload those two
+  // faces (Janna/Inter render below the fold or as fallback); crossorigin is
+  // required or the preload is discarded as a different mode. Hash suffixes
+  // come from what Vite emits; update when fonts change.
+  { rel: "preload", as: "font", type: "font/woff2", crossOrigin: "anonymous", href: "/assets/InterTight-VariableFont_wght-bZOGigTP.woff2" },
+  { rel: "preload", as: "font", type: "font/woff2", crossOrigin: "anonymous", href: "/assets/RedRose-VariableFont_wght-BcJOlkaJ.woff2" },
 ];
+
+/** Worker-rendered HTML is personalized (session in the page, announcements),
+ *  so it must never sit in a shared cache: same rule as public/_headers but
+ *  on the response itself, which _headers cannot touch for Worker output. */
+export function headers() {
+  return {
+    "Cache-Control": "private, no-cache",
+  };
+}
 
 export function meta({}: Route.MetaArgs) {
   return pageMeta({

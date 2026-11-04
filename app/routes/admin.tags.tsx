@@ -51,6 +51,10 @@ export default function AdminTags() {
   const [renameValue, setRenameValue] = useState("");
   const { ask, dialog } = useConfirm();
   const { show, toast } = useToast();
+  // per-tag optimistic rename overlay: the name updates the moment the row
+  // commits, the loader's truth reconciles on revalidate
+  const [renamed, setRenamed] = useState<Record<number, string>>({});
+  const shown = (t: AdminTag) => renamed[t.id] ?? t.name;
 
   /** every mutation: run, then refresh the loader's data in place */
   async function run(fn: () => Promise<unknown>) {
@@ -81,8 +85,14 @@ export default function AdminTags() {
     const n = renameValue.trim();
     if (!n) return;
     setRenaming(null);
+    setRenamed((r) => ({ ...r, [t.id]: n }));
     void run(async () => {
       await adminRenameTag(t.id, n);
+      setRenamed((r) => {
+        const next = { ...r };
+        delete next[t.id];
+        return next;
+      });
       show("Renamed");
     });
   }
@@ -145,7 +155,7 @@ export default function AdminTags() {
                   </form>
                 ) : (
                   <>
-                    <span className="min-w-0 flex-1 truncate text-ink">{t.name}</span>
+                    <span className="min-w-0 flex-1 truncate text-ink">{shown(t)}</span>
                     <span className="label-caps text-dim">{usage[t.id] ? `on “${usage[t.id]}”` : "unused"}</span>
                     <button type="button" className="btn btn-ghost" disabled={busy} onClick={() => startRename(t)}>Rename</button>
                     <button

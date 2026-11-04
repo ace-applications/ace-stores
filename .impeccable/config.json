@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "inter tight",
+        "files": [
+          "ace-stores/app/app.css"
+        ],
+        "createdAt": "2026-11-04T16:31:11.812Z",
+        "reason": "DESIGN.md pins Inter Tight for the chrome register (caps labels, metadata, tabular readouts)"
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "files": [
+          "ace-stores/app/app.css"
+        ],
+        "createdAt": "2026-11-04T16:31:12.200Z",
+        "reason": "Intentional stack fallback behind Red Rose + Janna LT per DESIGN.md"
+      }
+    ]
+  }
+}

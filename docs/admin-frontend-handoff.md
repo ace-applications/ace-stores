@@ -248,6 +248,16 @@ Radii: cards/panels **16px**, controls/fields **8px**, chips/pills **999px**. Sp
 - Logical CSS properties only — the Arabic phase is coming (no hard-coded `left`/`right`).
 - `prefers-reduced-motion` + coarse-pointer hit areas are already global in `app.css` — new UI inherits them. Don't add motion beyond the one authored language (`.rise-in` entrance, `.card-lift` hover).
 
+## Fluidity contract (how the desk answers a click)
+
+- **Never a frozen frame.** `admin.layout` renders a sweep bar during any loading navigation/revalidation and a per-section `DeskSkeleton` during loader navigations; desk `NavLink`s dim via `isPending`. Per-route `HydrateFallback`s already mirror each page's real shape.
+- **Optimistic swipes, loader-reconciled.** Order rows/detail, the product publish chip, and tag renames swipe to their target the moment the click lands; revalidation swaps the server truth in (see `Run`/`run` in the orders routes, `pendingPublished` in `ProductEditor`, the rename overlay in `admin.tags`). On error the overlay drops. `shouldRevalidate` in `admin.orders._index` deliberately returns false — mutation refreshes are explicit `revalidator.revalidate()` calls, one round trip per action.
+- **Typing doesn't block on lists.** Search needles on the orders/products desks go through `useDeferredValue`.
+- **Off-screen rows skip work.** Order cards under `.desk-orders` carry `content-visibility` (rule in `app.css`) — keep that selector matched if the markup changes.
+- **Fonts.** Chrome faces (Inter Tight + Red Rose variable woff2) are preloaded from `root.tsx` `links()`; the hash suffixes there match what Vite emits — update when fonts change.
+- **HTML caching.** Worker-rendered responses ship `Cache-Control: private, no-cache` (root `headers()`); immutable caching for `/assets/*` lives in `public/_headers`.
+- **INP canary.** `app/lib/inp-canary.ts` logs click→paint in dev only (`import.meta.env.DEV`, tree-shaken in prod).
+
 ## Scope sketch (what "admin frontend" means here)
 
 1. **Orders desk** (`/admin`) — payments are the operational job. Queue filtered by status (chips, `?status=`), newest first. Row: order id + date, buyer email + name, items (`title × price`), `totalPrice`, `paymentReference` when present, screenshot (render `screenshotUrl` — refetch per load, it expires), status. Actions by state: `approve` / `reject` (from `pending_payment`), `revoke` (from `paid`). Buttons name the action + consequence (confirm revoke: it kills downloads).
@@ -261,4 +271,5 @@ Ship order: gate → orders desk → products → settings. Each is verifiable i
 - No browser automation here — verify **SSR 200 + curl** against 8787 for each flow (sign in with the test user via cookie jar → `GET /admin/orders` → transitions), mirroring how the storefront slice was proven.
 - `bun run typecheck` before calling done.
 - Run `.agents/skills/impeccable/scripts/impeccable detect` over new/changed files — currently **0 findings**; keep it there.
+- The Inter Tight/Inter stock faces are an intentional, documented exception: `DESIGN.md` pins Inter Tight for the chrome register (caps labels, metadata, tabular readouts) behind Red Rose/Janna LT. The exemption lives in `.impeccable/config.json` `ignoreValues` with the reason — do not re-litigate the faces or add in-file disable comments; extend that config entry only if a new face joins the stack.
 - If the API misbehaves, confirm against `ace-backend/src/routes/admin.ts` before writing a doc claim; report real bugs to `backend-fixes.md`.

@@ -29,11 +29,22 @@ export function ProductEditor({
 }) {
   const revalidator = useRevalidator();
   const navigate = useNavigate();
+  // useActionState queue (React docs §2): saves settle sequentially so
+  // request N+1 never overtakes N on a slow wire — the whole form swaps
+  // from a boolean spin to `{ out, ok, error }` values the save returns.
+  // Unknown failures throw to the App ErrorBoundary rather than rendering a
+  // mutated form (docs: throwing cancels queued actions).
   const [busy, setBusy] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
-  const [title, setTitle] = useState(product?.title ?? "");  const [price, setPrice] = useState(product ? String(product.price) : "");
+  // published toggle swipes immediately (same rule as orders: the chip is the
+  // interaction, the round trip is not) — the loader's value reconciles within
+  // the revalidation render.
+  const [pendingPublished, setPendingPublished] = useState<boolean | null>(null);
+  const [title, setTitle] = useState(product?.title ?? "");
+  const [price, setPrice] = useState(product ? String(product.price) : "");
   const [desc, setDesc] = useState(product?.description ?? "");
   const [previewUrl, setPreviewUrl] = useState(product?.previewUrl ?? "");
+
   const [newTag, setNewTag] = useState("");
   const fileInput = useRef<HTMLInputElement>(null);
   const thumbInput = useRef<HTMLInputElement>(null);
@@ -84,7 +95,12 @@ export function ProductEditor({
     return () => removeEventListener("beforeunload", warn);
   }, [dirty]);
 
-  /** every mutation: run, then refresh the loader's data in place */
+  // published toggle swipes immediately (same rule as orders: the chip is the
+  // interaction, the round trip is not) — the loader's value reconciles within
+  // the revalidation render.
+  const published = product?.published ?? false;
+  const displayedPublished = pendingPublished ?? published;
+
   async function run(fn: () => Promise<unknown>) {
     setBusy(true);
     setActionError(null);
@@ -131,11 +147,14 @@ export function ProductEditor({
     }
   }
 
-  const togglePublished = () =>
-    run(async () => {
-      await adminUpdateProduct(product!.id, { published: !product!.published });
-      show(product!.published ? "Moved to drafts" : "Published");
+  const togglePublished = () => {
+    setPendingPublished(!published); // chip swipes before the round trip; loader truth reconciles on revalidate
+    return run(async () => {
+      await adminUpdateProduct(product!.id, { published: !published });
+      show(published ? "Moved to drafts" : "Published");
+      setPendingPublished(null);
     });
+  };
 
   async function uploadThumb(f: File) {
     await run(async () => {
@@ -232,8 +251,8 @@ export function ProductEditor({
             {creating ? "Create draft" : busy ? "Saving…" : dirty ? "Save changes" : "Saved"}
           </button>
           {!creating && (
-            <button type="button" className="chip" data-on={product!.published} aria-pressed={product!.published} disabled={busy} onClick={() => void togglePublished()}>
-              {product!.published ? "Live on storefront" : "Draft — hidden"}
+            <button type="button" className="chip" data-on={displayedPublished} aria-pressed={displayedPublished} disabled={busy} onClick={() => void togglePublished()}>
+              {displayedPublished ? "Live on storefront" : "Draft — hidden"}
             </button>
           )}
           {dirty && <span className="label-caps text-dim">unsaved changes</span>}

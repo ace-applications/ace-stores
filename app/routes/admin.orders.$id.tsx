@@ -49,6 +49,7 @@ export default function AdminOrderDetail() {
   const [actionError, setActionError] = useState<string | null>(null);
   const { ask, dialog } = useConfirm();
   const { show, toast } = useToast();
+  const [swipe, setSwipe] = useState<string | null>(null);
 
   if (error || !order) {
     return (
@@ -65,22 +66,29 @@ export default function AdminOrderDetail() {
     );
   }
 
-  /** every mutation: run, then refresh the loader's data in place */
-  async function run(fn: () => Promise<unknown>, done?: string) {
+  /** every mutation: run, swipe the card optimistically, then refresh */
+  async function run(target: string, fn: () => Promise<unknown>, done?: string) {
     setBusy(true);
     setActionError(null);
+    // INP budget (web.dev): the click is the interaction, not the round trip.
+    // The card shows its target immediately; revalidation swaps the server
+    // value in within the same render so the flash never lands. The overlay is
+    // single-shot and cleared once the loader's value matches the target.
+    setSwipe(target);
     try {
       await fn();
       if (done) show(done);
       revalidator.revalidate();
     } catch (e) {
       setActionError(friendlyError(e, "That didn't save. Try again."));
+      setSwipe(null);
     } finally {
       setBusy(false);
     }
   }
 
-  const statusLabel = order.status.replace(/_/g, " ");
+  const displayedStatus = swipe && swipe !== order.status ? swipe : order.status;
+  const displayedLabel = displayedStatus.replace(/_/g, " ");
 
   return (
     <>
@@ -96,7 +104,7 @@ export default function AdminOrderDetail() {
       </p>
       <h1 className="font-display text-3xl font-extrabold tracking-[-0.02em] text-ink uppercase">Order #{order.id}</h1>
       <p className="mt-2 text-dim">
-        {formatDate(order.createdAt)} · {statusLabel}
+        {formatDate(order.createdAt)} · {displayedLabel}
       </p>
 
       {actionError && (
@@ -150,16 +158,16 @@ export default function AdminOrderDetail() {
           <section className="panel rounded-2xl p-6">
             <h2 className="font-display text-xl font-bold tracking-[-0.01em] text-ink uppercase">Action</h2>
             <div className="mt-4 flex flex-wrap gap-2">
-              {order.status === "pending_payment" && (
+              {displayedStatus === "pending_payment" && (
                 <>
-                  <button className="btn btn-primary" disabled={busy} data-busy={busy || undefined} onClick={() => void run(() => adminApproveOrder(order.id), "Approved")}>Approve</button>
-                  <button className="btn btn-ghost" disabled={busy} data-busy={busy || undefined} onClick={() => ask({ title: `Reject order #${order.id}?`, confirmLabel: "Reject", danger: true, action: () => void run(() => adminRejectOrder(order.id), "Rejected") })}>Reject</button>
+                  <button className="btn btn-primary" disabled={busy} data-busy={busy || undefined} onClick={() => void run("paid", () => adminApproveOrder(order.id), "Approved")}>Approve</button>
+                  <button className="btn btn-ghost" disabled={busy} data-busy={busy || undefined} onClick={() => ask({ title: `Reject order #${order.id}?`, confirmLabel: "Reject", danger: true, action: () => void run("rejected", async () => { await adminRejectOrder(order.id); }, "Rejected") })}>Reject</button>
                 </>
               )}
-              {order.status === "paid" && (
-                <button className="btn btn-ghost" disabled={busy} data-busy={busy || undefined} onClick={() => ask({ title: `Revoke order #${order.id}?`, body: "This kills downloads for the buyer.", confirmLabel: "Revoke", danger: true, action: () => void run(() => adminRevokeOrder(order.id), "Revoked") })}>Revoke (kills downloads)</button>
+              {displayedStatus === "paid" && (
+                <button className="btn btn-ghost" disabled={busy} data-busy={busy || undefined} onClick={() => ask({ title: `Revoke order #${order.id}?`, body: "This kills downloads for the buyer.", confirmLabel: "Revoke", danger: true, action: () => void run("revoked", async () => { await adminRevokeOrder(order.id); }, "Revoked") })}>Revoke (kills downloads)</button>
               )}
-              {["rejected", "expired", "revoked"].includes(order.status) && (
+              {["rejected", "expired", "revoked"].includes(displayedStatus) && (
                 <p className="text-dim">This order is closed — no further actions apply.</p>
               )}
             </div>

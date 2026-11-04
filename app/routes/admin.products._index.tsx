@@ -1,5 +1,5 @@
 import type { Route } from "./+types/admin.products._index";
-import { useState } from "react";
+import { useDeferredValue, useState } from "react";
 import { Link, useLoaderData, useRevalidator } from "react-router";
 import { formatPrice } from "../data/products";
 import { adminProductsList } from "../lib/admin-api";
@@ -46,7 +46,9 @@ export default function AdminProductsIndex() {
   const revalidator = useRevalidator();
   const [search, setSearch] = useState("");
 
-  const needle = search.trim().toLowerCase();
+  // the needle trails the keystrokes by one interruptible render — typing
+  // never waits on the filter pass (same pattern as the orders desk)
+  const needle = useDeferredValue(search).trim().toLowerCase();
   const matching = needle
     ? products.filter((p) => `${p.title} ${p.tags.map((t) => t.name).join(" ")}`.toLowerCase().includes(needle))
     : products;
