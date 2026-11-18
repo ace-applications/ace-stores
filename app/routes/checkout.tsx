@@ -66,16 +66,28 @@ export default function Checkout() {
             order placed
           </span>
           <h1 className="mt-5 font-display text-4xl font-extrabold tracking-[-0.02em] text-ink">
-            Receipt received.
+            {order.status === "paid" ? "Order complete." : "Receipt received."}
           </h1>
           <p className="mt-3 max-w-[52ch] text-[15px] leading-relaxed text-dim">
             Order <span className="tnum text-ink">{order.id}</span> is recorded against{" "}
-            <span className="text-ink">{email}</span> and your receipt is with us. We check
-            transfers by hand — the files unlock in{" "}
-            <Link to="/library" className="text-accent underline underline-offset-4">
-              your library
-            </Link>{" "}
-            once we confirm.
+            <span className="text-ink">{email}</span>{" "}
+            {order.status === "paid" ? (
+              <>
+                and it&apos;s already paid, so everything it unlocks is in{" "}
+                <Link to="/library" className="text-accent underline underline-offset-4">
+                  your library
+                </Link>{" "}
+                now.
+              </>
+            ) : (
+              <>
+                and your receipt is with us. We check transfers by hand — the files unlock in{" "}
+                <Link to="/library" className="text-accent underline underline-offset-4">
+                  your library
+                </Link>{" "}
+                once we confirm.
+              </>
+            )}
           </p>
 
           <ul className="mt-8">
@@ -213,32 +225,38 @@ export default function Checkout() {
     setBusy(true);
     setError(null);
     try {
-      if (!file) throw new CheckoutError("Attach the payment screenshot to place the order.");
       const ref = reference.trim() || undefined;
 
-      let pre: Awaited<ReturnType<typeof presignScreenshot>>;
-      try {
-        pre = await presignScreenshot(file.type);
-      } catch {
-        // never surface the raw request line — a buyer needs a next step, not a status
-        throw new CheckoutError(
-          "We couldn't start the upload, so your receipt didn't send. Your cart is safe — try again in a moment, or email us and we'll take the order another way.",
-        );
-      }
+      // free order: nothing to prove, so no screenshot round trip at all
+      let screenshotKey: string | undefined;
+      if (total > 0) {
+        if (!file) throw new CheckoutError("Attach the payment screenshot to place the order.");
 
-      try {
-        const put = await fetch(pre.uploadUrl, { method: "PUT", body: file });
-        if (!put.ok) throw new Error("upload rejected");
-      } catch {
-        throw new CheckoutError(
-          "Your receipt didn't finish uploading. Your cart is safe — try again in a moment, or email us and we'll take the order another way.",
-        );
+        let pre: Awaited<ReturnType<typeof presignScreenshot>>;
+        try {
+          pre = await presignScreenshot(file.type);
+        } catch {
+          // never surface the raw request line — a buyer needs a next step, not a status
+          throw new CheckoutError(
+            "We couldn't start the upload, so your receipt didn't send. Your cart is safe — try again in a moment, or email us and we'll take the order another way.",
+          );
+        }
+
+        try {
+          const put = await fetch(pre.uploadUrl, { method: "PUT", body: file });
+          if (!put.ok) throw new Error("upload rejected");
+        } catch {
+          throw new CheckoutError(
+            "Your receipt didn't finish uploading. Your cart is safe — try again in a moment, or email us and we'll take the order another way.",
+          );
+        }
+        screenshotKey = pre.key;
       }
 
       const placed = await createOrder({
         items: items.map((p) => ({ productId: Number(p.id) })),
         paymentReference: ref,
-        screenshotKey: pre.key,
+        screenshotKey,
       });
       await store.refreshOrders();
       store.clearCart();
@@ -263,11 +281,24 @@ export default function Checkout() {
         </h1>
         <p className="mt-2 max-w-[56ch] text-[14.5px] text-dim">
           {items.length} pack{items.length === 1 ? "" : "s"} ·{" "}
-          <span className="tnum text-ink">{formatPrice(total)}</span> · files unlock in{" "}
-          <Link to="/library" className="text-accent">
-            your library
-          </Link>{" "}
-          once we confirm your transfer.
+          <span className="tnum text-ink">{formatPrice(total)}</span> ·{" "}
+          {total === 0 ? (
+            <>
+              free — it unlocks in{" "}
+              <Link to="/library" className="text-accent">
+                your library
+              </Link>{" "}
+              right away.
+            </>
+          ) : (
+            <>
+              files unlock in{" "}
+              <Link to="/library" className="text-accent">
+                your library
+              </Link>{" "}
+              once we confirm your transfer.
+            </>
+          )}
         </p>
 
         <form className="mt-8 space-y-6" onSubmit={(e) => void submit(e)}>
@@ -281,7 +312,16 @@ export default function Checkout() {
           <div className="panel rounded-2xl p-5">
             <div className="label-caps">payment</div>
 
-            {!paymentInstructions ? (
+            {total === 0 ? (
+              /* 0 EGP: the API completes these without proof, so ask for none */
+              <div className="mt-3" role="status">
+                <p className="text-[15px] leading-relaxed text-ink">Nothing to pay for this one.</p>
+                <p className="mt-2 max-w-[52ch] text-[14px] leading-relaxed text-dim">
+                  The total is {formatPrice(total)}, so the order completes the moment you place it —
+                  no transfer, no receipt.
+                </p>
+              </div>
+            ) : !paymentInstructions ? (
               /* Honest dead end: we cannot take a payment we cannot explain.
                  Never demand proof of a transfer we never gave details for. */
               <div className="mt-3" role="status">
@@ -357,7 +397,7 @@ export default function Checkout() {
           )}
 
           <div className="flex flex-wrap items-center gap-3">
-            {paymentInstructions && (
+            {(paymentInstructions || total === 0) && (
               <button type="submit" className="btn btn-accent" disabled={busy}>
                 {busy ? "locking…" : `place order — ${formatPrice(total)}`}
               </button>

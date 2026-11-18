@@ -160,7 +160,7 @@ export default function AdminOrderDetail() {
             <div className="mt-4 flex flex-wrap gap-2">
               {displayedStatus === "pending_payment" && (
                 <>
-                  <button className="btn btn-primary" disabled={busy} data-busy={busy || undefined} onClick={() => void run("paid", () => adminApproveOrder(order.id), "Approved")}>Approve</button>
+                  <button className="btn btn-primary" disabled={busy} data-busy={busy || undefined} onClick={() => ask({ title: `Approve payment for order #${order.id}?`, body: "Check the transfer landed first. Approving unlocks the buyer's downloads and grants any licenses this order carries — undoing it means revoking.", confirmLabel: "Approve", action: () => void run("paid", () => adminApproveOrder(order.id), "Approved") })}>Approve</button>
                   <button className="btn btn-ghost" disabled={busy} data-busy={busy || undefined} onClick={() => ask({ title: `Reject order #${order.id}?`, confirmLabel: "Reject", danger: true, action: () => void run("rejected", async () => { await adminRejectOrder(order.id); }, "Rejected") })}>Reject</button>
                 </>
               )}
