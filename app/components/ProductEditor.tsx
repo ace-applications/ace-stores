@@ -15,6 +15,7 @@ import type { ProductShape } from "../lib/api";
 import { previewSrc } from "../lib/api";
 import { friendlyError } from "../lib/errors";
 import { useConfirm, useToast } from "./admin-ux";
+import { Markdown } from "./Markdown";
 
 /** Editor for one product — create mode (`product = null`) or edit mode.
  *  The page dirties relative to the loader's snapshot, warns on navigation
@@ -47,6 +48,7 @@ export function ProductEditor({
   const [title, setTitle] = useState(product?.title ?? "");
   const [price, setPrice] = useState(product ? String(product.price) : "");
   const [desc, setDesc] = useState(product?.description ?? "");
+  const [descTab, setDescTab] = useState<"write" | "preview">("write");
 
   const [newTag, setNewTag] = useState("");
   const fileInput = useRef<HTMLInputElement>(null);
@@ -262,8 +264,45 @@ export function ProductEditor({
             <span className="label-caps mt-1 block">whole EGP, no decimals</span>
           </div>
           <div>
-            <label className="label-caps" htmlFor="ed-desc">Description</label>
-            <textarea id="ed-desc" className="field mt-2 h-24" value={desc} onChange={(e) => setDesc(e.target.value)} maxLength={5e3} />
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <label className="label-caps" htmlFor="ed-desc">Description</label>
+              <div className="flex gap-1" role="tablist" aria-label="Description mode">
+                {(["write", "preview"] as const).map((tab) => (
+                  <button
+                    key={tab}
+                    type="button"
+                    role="tab"
+                    aria-selected={descTab === tab}
+                    className="chip"
+                    data-on={descTab === tab}
+                    onClick={() => setDescTab(tab)}
+                  >
+                    {tab}
+                  </button>
+                ))}
+              </div>
+            </div>
+            {descTab === "write" ? (
+              <>
+                <textarea
+                  id="ed-desc"
+                  className="field mt-2 h-32"
+                  value={desc}
+                  onChange={(e) => setDesc(e.target.value)}
+                  maxLength={5e3}
+                  placeholder="**Bold**, *italic*, - lists, [links](https://…)"
+                />
+                <span className="label-caps mt-1 block">Markdown — preview before saving</span>
+              </>
+            ) : (
+              <div className="panel mt-2 min-h-32 rounded-xl p-4" role="tabpanel">
+                {desc.trim() ? (
+                  <Markdown source={desc} />
+                ) : (
+                  <span className="label-caps text-dim">Nothing to preview yet.</span>
+                )}
+              </div>
+            )}
           </div>
         </div>
         <div className="mt-5 flex flex-wrap items-center gap-3">

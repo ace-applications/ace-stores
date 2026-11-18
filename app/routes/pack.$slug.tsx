@@ -5,6 +5,7 @@ import { fetchCatalog, settings } from "../lib/api";
 import { abs, clamp, pageMeta } from "../lib/seo";
 import logoMain from "../../assets/Logo/ACE Stores Logo/Ace Stores main.png";
 import { CoverArt } from "../components/CoverArt";
+import { Markdown } from "../components/Markdown";
 import { useStore } from "../lib/store";
 
 interface ProductRouteData {
@@ -136,7 +137,7 @@ export default function PackDetail() {
             )}
           </div>
 
-          <p className="mt-6 max-w-[68ch] text-[15px] leading-relaxed text-dim">{pack.blurb}</p>
+          <Markdown source={pack.blurb} className="mt-6 max-w-[68ch]" />
         </section>
 
         {/* ——— the spec panel ————————————————————————————— */}
