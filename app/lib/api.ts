@@ -53,7 +53,7 @@ export interface OrderShape {
   status: "pending_payment" | "paid" | "rejected" | "expired" | "revoked";
   totalPrice: number;
   paymentReference: string | null;
-  screenshotKey: string;
+  screenshotKey: string | null;
   createdAt: string;
   updatedAt?: string;
   items: OrderItemShape[];

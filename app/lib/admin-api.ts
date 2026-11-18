@@ -6,7 +6,7 @@ import { api, type OrderShape, type ProductShape } from "./api";
  */
 export interface AdminOrder extends OrderShape {
   user: { id: string; email: string; name: string };
-  screenshotUrl: string;
+  screenshotUrl: string | null;
 }
 
 export function adminOrders(status?: string, req?: Request): Promise<AdminOrder[]> {
@@ -85,7 +85,7 @@ export function adminPresign(
 
 export function adminAddFile(
   productId: number,
-  body: { name: string; storageKey: string; sizeBytes?: number | null },
+  body: { name: string; storageKey: string; sizeBytes?: number },
   req?: Request,
 ): Promise<{ id: number; name: string; sizeBytes: number | null }> {
   return api<{ id: number; name: string; sizeBytes: number | null }>(

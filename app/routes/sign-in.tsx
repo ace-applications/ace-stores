@@ -105,7 +105,13 @@ export default function SignIn() {
               minLength={8}
               required
             />
-            {mode === "up" && <span className="label-caps mt-1 block">8 characters minimum</span>}
+            {mode === "up" ? (
+              <span className="label-caps mt-1 block">8 characters minimum</span>
+            ) : (
+              <Link to="/forgot-password" className="label-caps mt-1 block text-accent hover:text-ink">
+                forgot password?
+              </Link>
+            )}
           </label>
 
           {error && (

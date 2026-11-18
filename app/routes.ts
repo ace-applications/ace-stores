@@ -13,6 +13,8 @@ export default [
     route("account", "routes/account.tsx"),
     route("policies", "routes/policies.tsx"),
     route("sign-in", "routes/sign-in.tsx"),
+    route("forgot-password", "routes/forgot-password.tsx"),
+    route("reset-password", "routes/reset-password.tsx"),
   ]),
   route("robots.txt", "routes/robots[.]txt.ts"),
   route("sitemap.xml", "routes/sitemap[.]xml.ts"),
