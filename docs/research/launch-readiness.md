@@ -2,6 +2,8 @@
 
 Read-only audit, 2026-11-18, against `ace-backend` @ `d16f724` and `ace-stores` @ `9c6754b` (both trees clean).
 
+> **Resolved later the same day.** Backend PR [#1](https://github.com/ace-applications/ace-backend/pull/1) and frontend PR [#1](https://github.com/ace-applications/ace-stores/pull/1) merged; secrets set and both Workers deployed. Blockers 1–4 and 6 are addressed in code or production data: products 1–3 and 7 deleted (rows + B2 objects), `support_email` seeded, Resend mail wired for password reset and order approval, `/v1/*` live with a working `/v1/auth/public-key`. Blocker 5 (custom domain) deliberately deferred. Payment instructions, terms, privacy and refund copy are editable at `/admin/settings` but still need the business's real text before the first paid sale; catalog is intentionally empty until real files are uploaded. This document below is the original audit, kept as evidence.
+
 **Verdict:** the code is in good shape — 111 backend tests pass, both repos typecheck/lint clean, the order state machine, entitlement checks and admin CRUD are real. What is missing is almost entirely operational: production holds three placeholder products whose files do not exist, checkout is switched off by an empty settings table, the deployed backend is one feature behind the repo, and there is no email path at all.
 Nothing in production has ever been bought — 0 orders, 0 users with a purchase — so no money has been taken yet.
 Ship blocker count: 6. Estimated work to first real sale: a few hours of setup plus real product files.
