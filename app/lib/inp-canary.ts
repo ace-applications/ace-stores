@@ -9,7 +9,8 @@
  * tree-shakes it entirely from production chunks.
  */
 export function wireInpCanary(): void {
-  if (!import.meta.env.DEV) return;
+  // SSR has no document; the dev hook is browser-only
+  if (!import.meta.env.DEV || typeof document === "undefined") return;
   // single module-level listener; re-call is a no-op (setSsrFetch pattern)
   if ((globalThis as { __inpWired?: boolean }).__inpWired) return;
   (globalThis as { __inpWired?: boolean }).__inpWired = true;
