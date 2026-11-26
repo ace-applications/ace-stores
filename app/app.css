@@ -176,6 +176,15 @@ textarea {
   background: var(--color-danger-soft);
 }
 
+/* featured-card teaser — the opening of a Markdown description, faded at the
+   cut so a long product pitch never pushes the hero buttons out of view */
+.md-teaser {
+  max-height: 4.7rem;
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, black 60%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent);
+}
+
 /* desk status toast — fixed slate above the fold, text only */
 .toast {
   position: fixed;
@@ -347,6 +356,12 @@ textarea {
   transform: translateY(-4px);
   box-shadow: 0 16px 40px var(--color-shadow-deep);
   border-color: var(--color-hairline-bright);
+}
+
+/* native <dialog> confirm modal: centered in viewport over the backdrop */
+dialog {
+  margin: auto;
+  inset: 0;
 }
 
 /* coarse pointers (touch) get generous hit areas */

@@ -39,8 +39,7 @@ export function useConfirm() {
       <dialog
         ref={ref}
         onClose={() => setAsk(null)}
-        className="panel panel-raised rounded-2xl p-6 text-ink backdrop:bg-black/60"
-        style={{ maxWidth: "26rem" }}
+        className="panel panel-raised fixed inset-0 m-auto w-[calc(100%-2rem)] max-w-[26rem] rounded-2xl p-6 text-ink backdrop:bg-black/60"
         aria-labelledby="confirm-title"
       >
         {ask && (

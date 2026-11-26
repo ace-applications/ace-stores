@@ -8,6 +8,7 @@ import { abs, pageMeta } from "../lib/seo";
 import logoMain from "../../assets/Logo/ACE Stores Logo/Ace Stores main.png";
 import { PackCard } from "../components/PackCard";
 import { CoverArt } from "../components/CoverArt";
+import { Markdown } from "../components/Markdown";
 import { useStore } from "../lib/store";
 
 export async function loader() {
@@ -157,7 +158,7 @@ export default function Home() {
               {formatPrice(featured.price)}
             </span>
           </div>
-          <p className="mt-2 line-clamp-2 text-[13.5px] leading-relaxed text-dim">{featured.blurb}</p>
+          <Markdown source={featured.blurb} className="md-teaser mt-2" />
           <div className="mt-5 flex flex-wrap items-center gap-2.5">
             {inCart ? (
               <Link to="/checkout" className="btn btn-accent">
