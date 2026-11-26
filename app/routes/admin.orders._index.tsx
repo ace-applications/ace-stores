@@ -107,7 +107,13 @@ export default function AdminOrdersIndex() {
     overlay[o.id] && overlay[o.id] !== o.status ? { ...o, status: overlay[o.id]! } : o,
   );
 
-  const approve = (id: number) => run(id, "paid", () => adminApproveOrder(id), "Approved");
+  const approve = (id: number) =>
+    ask({
+      title: `Approve payment for order #${id}?`,
+      body: "Check the transfer landed first. Approving unlocks the buyer's downloads and grants any licenses this order carries — undoing it means revoking.",
+      confirmLabel: "Approve",
+      action: () => void run(id, "paid", () => adminApproveOrder(id), "Approved"),
+    });
 
   const reject = (id: number) =>
     ask({ title: `Reject order #${id}?`, confirmLabel: "Reject", danger: true, action: () => void run(id, "rejected", () => adminRejectOrder(id)) });

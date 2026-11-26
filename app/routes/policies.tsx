@@ -3,6 +3,7 @@ import { Link, useLoaderData } from "react-router";
 import { useState } from "react";
 import { settings } from "../lib/api";
 import { Shell } from "../components/Shell";
+import { Markdown } from "../components/Markdown";
 
 export async function loader({ request }: Route.LoaderArgs) {
   // no error swallowing: a missing backend must read as an error, not as
@@ -51,6 +52,10 @@ export default function Policies() {
                 <button
                   key={s.tab}
                   type="button"
+                  role="tab"
+                  id={`tab-${s.tab}`}
+                  aria-selected={tab === s.tab}
+                  aria-controls={`policy-${s.tab}`}
                   className="chip"
                   data-on={tab === s.tab || undefined}
                   onClick={() => setTab(s.tab)}
@@ -61,13 +66,17 @@ export default function Policies() {
             </div>
 
             {current && (
-              <section key={current.key} aria-labelledby={`policy-${current.tab}`} className="mt-8">
-                <h2 id={`policy-${current.tab}`} className="font-display text-2xl font-bold text-ink">
+              <section
+                key={current.key}
+                id={`policy-${current.tab}`}
+                role="tabpanel"
+                aria-labelledby={`tab-${current.tab}`}
+                className="mt-8"
+              >
+                <h2 className="font-display text-2xl font-bold text-ink">
                   {current.title}
                 </h2>
-                <div className="mt-4 max-w-[65ch] whitespace-pre-wrap text-[15px] leading-relaxed text-dim">
-                  {config[current.key]}
-                </div>
+                <Markdown source={config[current.key] ?? null} className="mt-4 max-w-[68ch]" />
               </section>
             )}
           </>

@@ -73,7 +73,13 @@ export default function AdminOverview() {
     }
   }
 
-  const approve = (id: number) => run(() => adminApproveOrder(id), "Approved");
+  const approve = (id: number) =>
+    ask({
+      title: `Approve payment for order #${id}?`,
+      body: "Check the transfer landed first. Approving unlocks the buyer's downloads and grants any licenses this order carries — undoing it means revoking.",
+      confirmLabel: "Approve",
+      action: () => void run(() => adminApproveOrder(id), "Approved"),
+    });
 
   return (
     <>
@@ -107,7 +113,7 @@ export default function AdminOverview() {
               <div className="label-caps">Products live</div>
               <div className="tnum mt-2 font-display text-3xl font-bold text-ink">
                 {products.length - drafts.length}
-                {drafts.length > 0 && <span className="label-caps ml-3 align-middle">+{drafts.length} drafts</span>}
+                {drafts.length > 0 && <span className="label-caps ms-3 align-middle">+{drafts.length} drafts</span>}
               </div>
             </div>
             <div className="panel rounded-2xl p-5">

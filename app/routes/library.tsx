@@ -56,11 +56,11 @@ export default function Library() {
             <path
               d="M10 36V16h6v-4h6v4h4v-4h6v4h6v20z"
               fill="none"
-              stroke="#3a3f4a"
+              stroke="var(--color-hairline)"
               strokeWidth="2"
               strokeLinejoin="round"
             />
-            <circle cx="24" cy="26" r="3" fill="#8b5cf6" />
+            <circle cx="24" cy="26" r="3" fill="var(--color-accent)" />
           </svg>
           <h1 className="mt-6 font-display text-3xl font-extrabold text-ink">Your shelf is empty.</h1>
           <p className="mx-auto mt-2 max-w-[46ch] text-[14px] text-dim">

@@ -12,6 +12,7 @@ import {
 } from "../lib/api";
 import { useStore } from "../lib/store";
 import { CoverArt } from "../components/CoverArt";
+import { Markdown } from "../components/Markdown";
 import { OrderLine } from "../components/OrderLine";
 import { Shell } from "../components/Shell";
 
@@ -122,9 +123,9 @@ export default function Checkout() {
         <Shell>
           <div className="panel mx-auto max-w-2xl rounded-2xl px-6 py-16 text-center">
             <svg viewBox="0 0 48 48" className="mx-auto w-12" aria-hidden>
-              <rect x="8" y="14" width="32" height="26" rx="4" fill="none" stroke="#3a3f4a" strokeWidth="2" />
-              <path d="M8 22h32M20 14v-4h8v4" fill="none" stroke="#3a3f4a" strokeWidth="2" />
-              <circle cx="24" cy="30" r="3" fill="#8b5cf6" />
+              <rect x="8" y="14" width="32" height="26" rx="4" fill="none" stroke="var(--color-hairline)" strokeWidth="2" />
+              <path d="M8 22h32M20 14v-4h8v4" fill="none" stroke="var(--color-hairline)" strokeWidth="2" />
+              <circle cx="24" cy="30" r="3" fill="var(--color-accent)" />
             </svg>
             <h1 className="mt-6 font-display text-3xl font-extrabold text-ink">Your cart is empty.</h1>
             <p className="mx-auto mt-2 max-w-[44ch] text-[14px] text-dim">
@@ -339,9 +340,9 @@ export default function Checkout() {
               </div>
             ) : (
               <>
-                <p className="mt-3 border-l-2 border-accent/60 pl-3 text-[13px] leading-relaxed text-dim">
-                  {paymentInstructions}
-                </p>
+                <div className="mt-3 border-s-2 border-accent/60 ps-3">
+                  <Markdown source={paymentInstructions} className="text-[13px] leading-relaxed text-dim" />
+                </div>
                 <p className="mt-4 border-t border-hairline pt-4 text-[13px] text-ink">
                   Transfer <span className="tnum font-bold">{formatPrice(total)}</span> using the
                   details above, then attach your receipt below.
@@ -364,7 +365,7 @@ export default function Checkout() {
                     type="file"
                     required
                     accept="image/png,image/jpeg,image/webp"
-                    className="field file:mr-3 file:rounded-md file:border-0 file:bg-accent/15 file:px-3 file:py-2.5 file:font-chrome file:text-[12px] file:font-bold file:tracking-wide file:text-accent"
+                    className="field file:me-3 file:rounded-md file:border-0 file:bg-accent/15 file:px-3 file:py-2.5 file:font-chrome file:text-[12px] file:font-bold file:tracking-wide file:text-accent"
                     onChange={(e) => setFile(e.target.files?.[0] ?? null)}
                   />
                   <span className="label-caps mt-2 block">

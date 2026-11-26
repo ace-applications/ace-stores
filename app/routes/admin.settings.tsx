@@ -66,6 +66,16 @@ export default function AdminSettings() {
   }, [baseline]);
 
   const changed = !error && TEXT_FIELDS.some((f) => (draft[f.key] ?? "") !== (baseline[f.key] ?? ""));
+
+  useEffect(() => {
+    if (!changed) return;
+    const onBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+    };
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, [changed]);
+
   const emailOk = !draft.support_email || EMAIL_RE.test(draft.support_email.trim());
   const daysOk =
     !draft.order_expiry_days ||

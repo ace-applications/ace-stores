@@ -147,7 +147,7 @@ function SecuritySection({ sessions, currentToken, onAct, busy }: {
             {sessions.map((s) => (
               <li key={s.token} className="border-b border-hairline py-2">
                 <span className="truncate">{s.userAgent ?? "unknown device"}</span>
-                <span className="tnum block text-[12px] text-[#808089]">
+                <span className="tnum block text-[12px] text-faint">
                   {s.ipAddress ? `from ${s.ipAddress} · ` : ""}
                   {s.token === currentToken ? "this device" : "other device"}
                 </span>
