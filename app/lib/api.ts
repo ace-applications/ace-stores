@@ -218,29 +218,11 @@ export function productToPack(p: ProductShape, taken: Set<string>): Pack {
 }
 
 /** fetch + adapt the whole catalog (API has no pagination).
- *  In-flight dedup + short TTL: thumbnails are presigned and expire, so a
- *  long-lived cache would serve dead images; 5 min revalidates per load.
- *  ponytail: module-level, so under SSR it is one cache per process shared
- *  by all requests. Safe while the catalog is public and unmutated; move it
- *  into the loader if it ever becomes per-user. */
-const CATALOG_TTL = 5 * 60 * 1000;
-let catalogCache: { at: number; promise: Promise<Pack[]> } | null = null;
-
-async function loadCatalog(): Promise<Pack[]> {
-  const products = await api<ProductShape[]>("/products");
-  const taken = new Set<string>();
-  return products.map((p) => productToPack(p, taken));
-}
-
+ *  Deliberately uncached: a product sent back to draft in the desk has to leave
+ *  the storefront on the next request, and thumbnails are presigned per load. */
 export function fetchCatalog(): Promise<Pack[]> {
-  if (!catalogCache || Date.now() - catalogCache.at > CATALOG_TTL) {
-    catalogCache = {
-      at: Date.now(),
-      promise: loadCatalog().catch((err) => {
-        catalogCache = null; // a failure must not poison the next attempt
-        throw err;
-      }),
-    };
-  }
-  return catalogCache.promise;
+  return api<ProductShape[]>("/products").then((products) => {
+    const taken = new Set<string>();
+    return products.map((p) => productToPack(p, taken));
+  });
 }

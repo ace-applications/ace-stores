@@ -9,6 +9,16 @@ const LINK = "font-chrome text-[12.5px] font-bold tracking-[0.08em] uppercase px
 
 const BUYER_STRIP = "One price per pack · downloads unlock when we confirm your transfer";
 
+/** The desk's one menu. admin.layout reuses it for the skeleton's section
+ *  label, so the header and the page can never drift into two navigations. */
+export const DESK_NAV = [
+  { to: "/admin", label: "Overview" },
+  { to: "/admin/orders", label: "Orders" },
+  { to: "/admin/products", label: "Products" },
+  { to: "/admin/tags", label: "Tags" },
+  { to: "/admin/settings", label: "Settings" },
+] as const;
+
 /**
  * Two surfaces, one header. Staff land on the desk and never see shop links;
  * buyers and anonymous visitors see the store and never see the desk. The strip
@@ -32,12 +42,6 @@ export function Nav() {
       .catch(() => {});
   }, [desk]);
 
-  const DESK_LINKS = [
-    { to: "/admin", label: "Orders" },
-    { to: "/admin/products", label: "Products" },
-    { to: "/admin/settings", label: "Settings" },
-  ] as const;
-
   return (
     <header className="sticky top-0 z-40">
       {/* announcement strip — product truth, not a fake promotion */}
@@ -49,16 +53,19 @@ export function Nav() {
         </p>
       </div>
 
-      <div className="overflow-x-auto border-b border-hairline bg-ground/95 backdrop-blur-sm">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-2 px-4 sm:gap-4 sm:px-6">
-          <Link to={desk ? "/admin" : "/"} className="flex items-center gap-3" aria-label="ACE Stores home">
+      <div className="border-b border-hairline bg-ground/95 backdrop-blur-sm">
+        <div className="mx-auto flex h-16 max-w-6xl items-center gap-2 px-4 sm:gap-4 sm:px-6">
+          <Link to={desk ? "/admin" : "/"} className="flex shrink-0 items-center gap-3" aria-label="ACE Stores home">
             <img src={logoWhite} alt="ACE Stores" className="h-8 w-auto sm:h-9" />
           </Link>
 
-          <nav className="flex items-center gap-0 sm:gap-2" aria-label={desk ? "Desk" : "Store"}>
+          <nav
+            className="flex min-w-0 flex-1 items-center gap-0 overflow-x-auto sm:justify-end sm:gap-2"
+            aria-label={desk ? "Desk" : "Store"}
+          >
             {desk ? (
               <>
-                {DESK_LINKS.map((l) => (
+                {DESK_NAV.map((l) => (
                   <NavLink
                     key={l.to}
                     to={l.to}
@@ -119,6 +126,8 @@ export function Nav() {
                 </NavLink>
               </>
             )}
+          </nav>
+          <div className="flex shrink-0 items-center gap-1">
             {session?.user ? (
               <>
                 <span className="hidden max-w-[10rem] truncate font-bold tracking-[0.08em] text-dim uppercase sm:block">
@@ -142,7 +151,7 @@ export function Nav() {
                 Sign in
               </NavLink>
             )}
-          </nav>
+          </div>
         </div>
       </div>
     </header>
