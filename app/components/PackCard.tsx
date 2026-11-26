@@ -63,14 +63,14 @@ export function PackCard({ pack, delay = 0 }: { pack: Pack; delay?: number }) {
         )}
 
         {owned && (
-          <span className="label-caps absolute top-3 left-3 rounded-full bg-accent px-2.5 py-1 !text-ground">
+          <span className="label-caps absolute top-3 start-3 rounded-full bg-accent px-2.5 py-1 !text-ground">
             in library
           </span>
         )}
 
         {pack.preview && (
           <span
-            className="label-caps absolute right-3 bottom-3 inline-flex items-center gap-1.5 rounded-full bg-ground/85 px-2.5 py-1 text-[10.5px] font-bold tracking-[0.08em] text-ink backdrop-blur-sm border border-hairline"
+            className="label-caps absolute end-3 bottom-3 inline-flex items-center gap-1.5 rounded-full bg-ground/85 px-2.5 py-1 text-[10.5px] font-bold tracking-[0.08em] text-ink backdrop-blur-sm border border-hairline"
             aria-hidden="true"
           >
             <span

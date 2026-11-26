@@ -133,7 +133,7 @@ export default function Catalog() {
           ))}
         </div>
 
-        <div className="flex items-center gap-1.5 sm:ml-auto" role="group" aria-label="Sort">
+        <div className="flex items-center gap-1.5 sm:ms-auto" role="group" aria-label="Sort">
           <span className="label-caps">sort</span>
           {(
             [
@@ -165,9 +165,9 @@ export default function Catalog() {
       ) : (
         <div className="panel mt-8 rounded-2xl px-6 py-20 text-center">
           <svg viewBox="0 0 48 48" className="mx-auto w-12" aria-hidden>
-            <rect x="8" y="14" width="32" height="26" rx="4" fill="none" stroke="#3a3f4a" strokeWidth="2" />
-            <path d="M8 22h32M20 14v-4h8v4" fill="none" stroke="#3a3f4a" strokeWidth="2" />
-            <circle cx="24" cy="30" r="3" fill="#8b5cf6" />
+            <rect x="8" y="14" width="32" height="26" rx="4" fill="none" stroke="var(--color-hairline)" strokeWidth="2" />
+            <path d="M8 22h32M20 14v-4h8v4" fill="none" stroke="var(--color-hairline)" strokeWidth="2" />
+            <circle cx="24" cy="30" r="3" fill="var(--color-accent)" />
           </svg>
           <p className="mt-6 font-display text-2xl font-bold text-ink">
             {error ? "Catalog unreachable." : "Nothing matches those filters."}

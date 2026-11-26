@@ -112,7 +112,7 @@ export function Nav() {
                   to="/checkout"
                   aria-label={`Cart, ${cart.length} item${cart.length === 1 ? "" : "s"}`}
                   className={({ isActive }) =>
-                    `-order-1 flex items-center gap-2 rounded-lg border px-2.5 py-3 font-bold tracking-[0.08em] uppercase transition-colors sm:order-none sm:ml-1 sm:px-3.5 ${
+                    `-order-1 flex items-center gap-2 rounded-lg border px-2.5 py-3 font-bold tracking-[0.08em] uppercase transition-colors sm:order-none sm:ms-1 sm:px-3.5 ${
                       isActive
                         ? "border-accent text-accent"
                         : cart.length > 0

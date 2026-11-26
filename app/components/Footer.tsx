@@ -44,8 +44,15 @@ export function Footer() {
 
         <div>
           <div className="label-caps">the fine print</div>
+          <ul className="mt-3 space-y-2 text-[13.5px]">
+            <li>
+              <Link to="/policies" className="text-dim hover:text-accent">
+                Store policies
+              </Link>
+            </li>
+          </ul>
           <p className="mt-3 text-[12.5px] leading-relaxed text-faint">
-            Every pack ships under one royalty-free license; final terms are set before launch.
+            Every pack ships under one royalty-free license.
           </p>
           <p className="mt-3 text-[12.5px] leading-relaxed text-faint">{DATA_NOTE}</p>
           <p className="mt-4 text-[12.5px] text-faint tnum">© 2026 ACE LLC</p>

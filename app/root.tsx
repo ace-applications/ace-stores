@@ -135,12 +135,12 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
         <path
           d="M8 30l10-10 8 8 6-6 8 8"
           fill="none"
-          stroke="#3a3f4a"
+          stroke="var(--color-hairline)"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        <circle cx="38" cy="30" r="3" fill="#8b5cf6" />
+        <circle cx="38" cy="30" r="3" fill="var(--color-accent)" />
       </svg>
       <h1 className="mt-6 font-display text-4xl font-extrabold text-ink">{message}</h1>
       <p className="mx-auto mt-3 max-w-[44ch] text-[14px] text-dim">{details}</p>

@@ -404,7 +404,7 @@ export function ProductEditor({
                 {product!.files.map((f) => (
                   <li key={f.id} className="flex items-center justify-between rounded-lg border border-hairline p-2">
                     <span className="truncate text-ink">{f.name}</span>
-                    <span className="ml-2 flex items-center gap-3">
+                    <span className="ms-2 flex items-center gap-3">
                       {f.sizeBytes != null && <span className="tnum label-caps">{(f.sizeBytes / 1024 / 1024).toFixed(1)} MB</span>}
                       <button type="button" className="btn btn-ghost" disabled={busy} onClick={() => deleteFile(f.id)}>Remove</button>
                     </span>

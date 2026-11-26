@@ -42,7 +42,7 @@ export default function AdminProductEdit() {
     <>
       <p className="mb-2">
         <Link to="/admin/products" className="btn btn-ghost">
-          <svg aria-hidden width="14" height="14" viewBox="0 0 16 16" className="mr-1 inline-block">
+          <svg aria-hidden width="14" height="14" viewBox="0 0 16 16" className="me-1 inline-block">
             <path d="M10 3.5 5.5 8 10 12.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           Products

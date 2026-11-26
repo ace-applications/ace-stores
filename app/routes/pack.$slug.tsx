@@ -13,13 +13,13 @@ interface ProductRouteData {
   purchasable?: boolean;
 }
 
-export async function loader({ params }: Route.LoaderArgs) {
+export async function loader({ params, request }: Route.LoaderArgs) {
   const packs = await fetchCatalog();
   const pack = packs.find((p) => p.slug === params.slug);
   if (!pack) throw new Response("Pack not found", { status: 404 });
   // Whether the store can actually take a payment decides if we may claim
   // InStock — see the JSON-LD below. PRODUCT.md forbids fabricated claims.
-  const { payment_instructions } = await settings().catch(() => ({}) as { payment_instructions?: string });
+  const { payment_instructions } = await settings(request).catch(() => ({}) as { payment_instructions?: string });
   return { pack, purchasable: Boolean(payment_instructions?.trim()) };
 }
 
